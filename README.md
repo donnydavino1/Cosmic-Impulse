@@ -1,4 +1,4 @@
-# 🚀 Stellar Impulse
+# Cosmic Impulse
 
 **Build the spaceship you've always wanted, then fly it through a real, to-scale solar system.**
 
@@ -15,7 +15,7 @@ all under one shared set of real physics.
 
 ### Same rules for everyone, endless ways to play
 
-In Stellar Impulse, the server sets the rules: the physics, the resources, what every engine, weapon and sensor can
+In Cosmic Impulse, the server sets the rules: the physics, the resources, what every engine, weapon and sensor can
 do, and how technology scales. These rules are identical for every player and can't be bought or bent. Everything on
 top of them is yours to reshape without limit. You can customize your ship's look and layout in the game, or go
 further and write your own code to change your cockpit, controls, displays, automation and tools, down to how you
