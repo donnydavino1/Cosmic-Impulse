@@ -1,0 +1,19 @@
+{
+  "about": "Which game modules are RULES (shared physics and gameplay: must be identical for fair battles) and which are CLIENT (looks, controls, UI: change freely). The build hashes the RULES modules into ORB_RULES_FP. See docs/FAIR-PLAY.md.",
+  "rules": [
+    "0100-physics.js",
+    "0300-parts.js",
+    "0400-tech.js",
+    "0500-budgets.js",
+    "0550-layout.js",
+    "0600-manufacturing.js",
+    "0700-fuel.js",
+    "1700-world.js",
+    "1750-contracts.js",
+    "1760-ops.js",
+    "2100-survival.js",
+    "2550-sensors.js",
+    "2560-api.js",
+    "2800-multiplayer.js"
+  ]
+}

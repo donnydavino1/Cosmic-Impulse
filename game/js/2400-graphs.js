@@ -1,0 +1,6 @@
+// ===== HISTORY & GRAPHS =====
+function sample(){const d=s.dom,g=gam(s),D=DR[di],F=D.sail?0:D.k*PW/D.ve*s.burn;HIST.push({v:Math.hypot(s.vx/g-d.vx,s.vy/g-d.vy,s.vz/g-d.vz)/1e3,a:F/mass(),gen:s.genNow/1e3,load:s.loadNow/1e3+(D.el?s.burn*PW/1e3:0),bat:100*s.en/SH.cap,tlo:s.tLo,thi:s.tHi,fuel:D.f?s.fuel[D.f]:0,dose:doseNow().tot*86400e3});if(HIST.length>240)HIST.shift()}
+function drawGraph(cv,box,spec){if(!cv||!cv.getContext)return;const W=Math.max(80,box.clientWidth-16||200),H=Math.max(40,box.clientHeight-14||100);if(cv.width!==W)cv.width=W;if(cv.height!==H)cv.height=H;const x=cv.getContext('2d');x.clearRect(0,0,W,H);
+ const keys=[[spec[0],spec[2]]];if(spec[3])keys.push([spec[3],spec[4]]);let lo=Infinity,hi=-Infinity;HIST.forEach(p=>keys.forEach(([k])=>{lo=Math.min(lo,p[k]);hi=Math.max(hi,p[k])}));if(!isFinite(lo))return;if(hi-lo<1e-9){hi+=1;lo-=1}
+ x.strokeStyle='#1e2a48';x.strokeRect(0,0,W,H);keys.forEach(([k,c])=>{x.strokeStyle=c;x.lineWidth=1.6;x.beginPath();HIST.forEach((p,i)=>{const px=W*i/239,py=H-4-(H-14)*(p[k]-lo)/(hi-lo);i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke()});
+ const last=HIST[HIST.length-1];x.font='10px monospace';x.fillStyle='#cfefff';x.fillText(keys.map(([k])=>(Math.abs(last[k])<.01&&last[k]?last[k].toExponential(2):f1(last[k],2))).join(' / ')+' '+spec[1],4,11);x.fillStyle='#7f8bb3';x.fillText('max '+f1(hi,2),W-80,11)}

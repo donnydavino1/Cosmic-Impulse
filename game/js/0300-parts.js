@@ -1,0 +1,37 @@
+// ===== SHIP PARTS: every installed component has mass and a job; many need research first =====
+const PARTS={
+ frame_al:{cat:'frame',one:true,n:'Aluminium truss frame',m:150,g:3,mat:{iron:50},J:5e8,d:'Light-alloy space frame rated for 3 g of thrust.'},
+ frame_cf:{cat:'frame',one:true,n:'Carbon-composite frame',m:110,g:6,mat:{carbon:400},J:4e9,req:'t_cf',d:'Carbon fibre in epoxy: lighter and stiffer, 6 g.'},
+ frame_ti:{cat:'frame',one:true,n:'Titanium-steel frame',m:260,g:12,mat:{iron:900,nickel:200},J:6e9,req:'t_ti',d:'Heavy but very strong: 12 g, for high-thrust engines.'},
+ bat_li:{cat:'store',n:'Li-ion battery bank (500 kg)',m:500,cap:4.5e8,pmax:1e6,wear:true,mat:{nickel:60,carbon:40,silicates:20},J:2e9,d:'0.9 MJ/kg, up to 1 MW. Loses capacity as it wears.'},
+ bat_ss:{cat:'store',n:'Solid-state battery bank (500 kg)',m:500,cap:9e8,pmax:2e6,wear:true,mat:{nickel:40,silicates:80,platinum:.5},J:8e9,req:'t_ssb',d:'1.8 MJ/kg and safer, but needs platinum.'},
+ fly:{cat:'store',n:'Flywheel stack (1 t)',m:1000,cap:3.6e8,pmax:2e7,mat:{carbon:600,iron:200},J:5e9,req:'t_fly',d:'Carbon rotors in vacuum: only 0.36 MJ/kg, but 20 MW bursts and no wear.'},
+ cap:{cat:'store',n:'Supercapacitor bank (200 kg)',m:200,cap:4e6,pmax:5e8,mat:{carbon:150,iron:30},J:1e9,req:'t_cap',d:'Holds little (20 kJ/kg) but releases 500 MW: lets railguns and pulse lasers fire quickly.'},
+ rtg:{cat:'gen',n:'Radioisotope generator (RTG)',m:45,pe:110,mat:{iron:20},J:1e9,earth:true,d:'Plutonium-238 decay → 110 W day and night for decades. Plutonium only comes from Earth.'},
+ fis1:{cat:'gen',n:'Fission reactor (40 kW)',m:1500,pe:4e4,eta:.25,rad:.3,mat:{iron:900,nickel:200},J:2e10,earth:true,req:'t_fis',d:'Uranium reactor with Stirling engines (25% efficient: 120 kW of heat to radiate). Leaks a little radiation past its shadow shield.'},
+ fis2:{cat:'gen',n:'Fission reactor (1 MW)',m:12000,pe:1e6,eta:.3,rad:.6,mat:{iron:7000,nickel:1500,platinum:2},J:2e11,earth:true,req:'t_fis2',d:'Brayton-cycle reactor. Dumps 2.3 MW of heat: needs high-temperature radiators.'},
+ fus_m:{cat:'gen',n:'Magnetic fusion reactor (100 MW)',m:6e4,pe:1e8,eta:.4,fuel:'fus',mat:{iron:3e4,nickel:8000,platinum:60,carbon:3000},J:5e12,req:'t_mcf',d:'Steady deuterium fusion. Reliable, very heavy, burns deuterium.'},
+ fus_i:{cat:'gen',n:'Inertial fusion reactor (100 MW)',m:2.5e4,pe:1e8,eta:.3,fuel:'fus',mtbf:1e4,mat:{iron:1.2e4,nickel:4000,platinum:120,silicates:3000},J:6e12,req:'t_icf',d:'Laser-imploded pellets. 60% lighter than magnetic fusion, but breaks down more often.'},
+ rad_lo:{cat:'therm',n:'Low-temp radiator (60 m²)',m:120,A:60,loop:'lo',Tmax:400,mat:{iron:60,silicates:40},J:6e8,d:'Ammonia-loop panels for crew, electronics, batteries and electric thrusters (~300 K). Both faces radiate.'},
+ rad_hi:{cat:'therm',n:'High-temp heat-pipe radiator (40 m²)',m:300,A:40,loop:'hi',Tmax:1200,mat:{iron:150,nickel:80,platinum:.5},J:3e9,req:'t_hpr',d:'Liquid-metal heat pipes glowing at up to 1,200 K: ~6 MW each. Takes reactor and hot-engine heat.'},
+ rad_dr:{cat:'therm',n:'Liquid-droplet radiator (400 m²)',m:400,A:400,loop:'hi',Tmax:900,mat:{iron:200,nickel:50,platinum:2},J:1.5e10,req:'t_ldr',d:'A sheet of molten-tin droplets sprayed and recaptured: ~20 MW for 400 kg, but limited to 900 K.'},
+ ls_open:{cat:'life',one:true,n:'Open-loop life support',m:80,p:150,mat:{iron:30},J:3e8,d:'Bottled oxygen, stored water and food; sorbent beds scrub CO₂. Uses everything up.'},
+ ls_regen:{cat:'life',one:true,n:'Regenerative life support',m:700,p:1500,mat:{iron:300,nickel:60,platinum:1},J:8e9,req:'t_eclss',d:'ISS-style: oxygen split from water, 93% of water recycled, CO₂ turned back into water.'},
+ ls_bio:{cat:'life',one:true,n:'Bioregenerative greenhouse',m:3000,p:6000,mat:{carbon:800,silicates:600,iron:500},J:3e10,req:'t_bio',d:'Plants under LEDs make food and oxygen. Heavy and power-hungry, nearly a closed loop.'},
+ sh_al:{cat:'shield',n:'Aluminium plating (+5 g/cm²)',m:1500,ad:5,mat:{iron:300,silicates:1200},J:2e9,d:'Stops most solar-flare protons; weak against cosmic rays.'},
+ sh_pe:{cat:'shield',n:'Polyethylene liner (+5 g/cm²)',m:1500,ad:5,hyd:true,mat:{carbon:1300,water:300},J:4e9,req:'t_pe',d:'Hydrogen-rich plastic: ~60% more effective per kilogram than metal.'},
+ sh_ww:{cat:'shield',n:'Water-wall tanks',m:200,ww:true,mat:{iron:200},J:1e9,req:'t_ww',d:'Tanks around the cabin hold your water supply: every 300 kg adds 1 g/cm², up to 20.'},
+ sh_mag:{cat:'shield',n:'Active magnetic shield',m:4000,p:1e6,mag:true,mat:{nickel:1500,iron:1500,platinum:40},J:5e11,req:'t_mag',d:'Superconducting coils deflect charged particles (−90% flare dose, −50% cosmic rays) for 1 MW.'},
+ whip:{cat:'shield',n:'Whipple micrometeoroid shield',m:300,whip:true,mat:{iron:250,carbon:50},J:1e9,d:'Thin bumper layers vaporise dust grains before they reach the hull: −90% impact damage.'},
+ lab1:{cat:'lab',one:true,n:'Research computer',m:30,p:300,rp:1,mat:{},J:0,d:'Simulations and data analysis: 1 research point per hour.'},
+ lab2:{cat:'lab',one:true,n:'Onboard laboratory',m:800,p:2e4,rp:6,mat:{iron:300,silicates:200,platinum:1},J:5e9,req:'t_lab2',d:'Spectrometers, microscopes, a materials test rig: 6 RP/hour.'},
+ lab3:{cat:'lab',one:true,n:'Research station module',m:5000,p:3e5,rp:30,mat:{iron:2000,silicates:1500,platinum:10,carbon:500},J:1e11,req:'t_lab3',d:'Full laboratory with a small accelerator: 30 RP/hour.'},
+ fab1:{cat:'fab',one:true,n:'3D-printing fabricator',m:200,pw:1e5,mat:{},J:0,d:'Puts up to 100 kW into manufacturing.'},
+ fab2:{cat:'fab',one:true,n:'Industrial fabricator',m:3000,pw:5e6,mat:{iron:1500,nickel:300,silicates:300},J:5e10,req:'t_fab2',d:'Smelters, mills and electrolysers: 5 MW of manufacturing.'},
+ fab3:{cat:'fab',one:true,n:'Orbital factory module',m:3e4,pw:5e8,mat:{iron:1.5e4,nickel:3000,silicates:5000,platinum:30},J:2e12,req:'t_fab3',d:'500 MW of manufacturing for reactors and antimatter.'}};
+const CATN={frame:'🏗 Structure',store:'🔋 Energy storage',gen:'⚛ Power generation',therm:'🌡 Cooling',life:'🫁 Life support',shield:'🛡 Shielding',lab:'🔬 Research',fab:'🏭 Manufacturing'};
+const MTBF={frame:1e6,store:4e4,gen:3e4,therm:8e4,life:2.5e4,shield:6e4,lab:3e4,fab:3e4};
+const ENGR={vas:{req:'t_vas',mat:{iron:300,nickel:100,platinum:1,silicates:50},J:5e10},mpd:{req:'t_mpd',mat:{iron:600,nickel:300,platinum:3},J:2e11},ntr:{req:'t_ntr',mat:{iron:1500,nickel:300,platinum:5},J:1e11,earth:true},
+ sail:{req:'t_sail',mat:{carbon:150,silicates:50},J:2e9},fus:{req:'t_mcf',mat:{iron:5000,nickel:1000,platinum:30,carbon:500,silicates:500},J:1e12},icf:{req:'t_icf',mat:{iron:4000,nickel:800,platinum:60,silicates:800},J:1.5e12},
+ am:{req:'t_am',mat:{iron:40000,nickel:8000,platinum:150,carbon:3000,silicates:4000},J:1e15},beam:{req:'t_beam',mat:{iron:30000,nickel:12000,platinum:300,carbon:2000},J:3e15}};
+const WEPR={plaser:{req:'t_laser',m:300,mat:{silicates:100,iron:100,platinum:1},J:1e9},rail:{req:'t_rail',m:800,mat:{iron:800,nickel:200,carbon:50},J:5e9},missile:{req:'t_missile',m:150,mat:{iron:400,carbon:100},J:2e9},pbeam:{req:'t_pbeam',m:5000,mat:{iron:1000,nickel:500,platinum:20},J:5e11}};

@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Stellar Impulse: realistic solar system sandbox</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/*@CSS*/
+</style></head><body>
+<div id="hud"></div><div id="wbar"><div id="raidb" class="h"></div><div id="wslots"></div></div><div id="top"><div id="stats"></div><div id="tc"></div><div id="radio"></div><div id="btns"><button id="shopbtn">🛠 ENGINEERING<small>ship · fabricate · research · fuel  (key B)</small></button><button id="guidebtn">📖 GUIDE<small>how to play · every key · rebind</small></button><button id="mpbtn">🌐 MULTIPLAYER<small>play with a friend  (key P)</small></button><button id="navbtn">🧭 NAVIGATE<small>autopilot to the Sun &amp; planets  (key N)</small></button></div></div>
+<div id="shop" class="h"><div class="card"><h2>🛠 Engineering</h2><div id="shophead"></div><div id="shopbody"></div><button id="shopclose">Close  (B or Esc)</button></div></div>
+<div id="nav" class="h"><div class="card"><h2>🧭 Navigation computer</h2>
+<p><b style="color:var(--fg)">Why is the Sun hard to reach?</b> Earth carries you around the Sun at about 30 km/s. To move inward you have to cancel that speed, which makes it the most expensive trip in the solar system. The autopilot flies it the efficient way: first it spirals outward until you escape Earth, then it brakes against your motion around the Sun so your orbit shrinks step by step. It uses your real engine, propellant and energy. Speed up time (⏩) while it works.</p>
+<div id="navhead"></div><div id="navbody"></div><button id="navclose">Close  (N or Esc)</button></div></div>
+<div id="fb"></div>
+<div id="cockpit"><canvas id="dust"></canvas>
+<svg id="canopy" viewBox="0 0 1000 600" preserveAspectRatio="none"><defs><linearGradient id="cg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2c3854"/><stop offset="1" stop-color="#0c1120"/></linearGradient></defs>
+<path d="M -10 610 C -10 200 180 24 500 24 C 820 24 1010 200 1010 610 L 1010 -10 L -10 -10 Z" fill="#060912"/>
+<path d="M -10 610 C -10 200 180 24 500 24 C 820 24 1010 200 1010 610" fill="none" stroke="url(#cg)" stroke-width="30" vector-effect="non-scaling-stroke"/>
+<path d="M -10 610 C -10 200 180 24 500 24 C 820 24 1010 200 1010 610" fill="none" stroke="#7fd3ff" stroke-opacity=".6" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<path d="M 330 37 L 410 29 M 590 29 L 670 37" stroke="#ffb84d" stroke-width="5" vector-effect="non-scaling-stroke"/>
+<path d="M 95 160 L 120 130 M 905 160 L 880 130" stroke="#ff6a3d" stroke-width="7" vector-effect="non-scaling-stroke"/></svg>
+<svg id="ret" viewBox="-50 -50 100 100"><circle r="30" fill="none" stroke="#cfefff" stroke-width="1.4" opacity=".85"/><circle r="45" fill="none" stroke="#7fd3ff" stroke-width=".8" stroke-dasharray="7 5" opacity=".6"/><circle r="4" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M0 -30v-9M0 30v9M-30 0h-9M30 0h9" stroke="#cfefff" stroke-width="1.4"/></svg>
+<div id="status"></div>
+<div id="fpbar"></div><div id="dash"><div class="scr" id="dl"></div><div class="scr mid"><h5>SCANNER</h5><canvas id="radar" width="260" height="132"></canvas></div><div class="scr" id="dr"></div></div></div>
+<div id="obj"></div>
+<div id="mpw" class="h"><div class="card"><h2>🌐 Multiplayer</h2><div id="mpst"></div><div id="mpb"></div>
+<div class="sec"><h4>MANUAL CONNECTION (no server needed: exchange these codes by chat or email)</h4><textarea id="mpcode" rows="4" style="width:100%;background:#060a18;color:#cfefff;border:1px solid #3a4468;border-radius:6px;font:11px monospace" placeholder="Invite / reply codes appear here, or paste one here"></textarea></div>
+<div id="mpm"></div><div class="sec"><h4>CHAT</h4><div id="mpchat" style="max-height:120px;overflow:auto;width:100%;font-size:12px"></div><input id="mpin" placeholder="Say something… (Enter)" style="width:100%;background:#060a18;color:#fff;border:1px solid #3a4468;border-radius:6px;padding:6px;font:inherit"></div>
+<button id="mpc" style="margin-top:8px;width:100%">Close  (P or Esc)</button></div></div>
+<div id="wpal" class="h"><div class="card"><h2>🧩 Dashboard editor</h2><div style="color:var(--mut)">Your cockpit (1st person, key V) is built from widgets: drag a widget by its title bar, resize from its corner, ✕ to remove. Each layout is saved separately.</div><div id="wpalb"></div><button id="wpalc" style="margin-top:10px;width:100%">Close  (I or Esc)</button></div></div>
+<div id="go" class="h"><div class="card"><h2>☠ Mission lost</h2><div id="gotxt"></div><div id="gob" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px"></div></div></div><div id="navinfo" class="h"></div><div id="wpn"></div><div id="toast" class="h" title="click to close"></div><canvas id="art"></canvas><div id="svname"></div>
+<div id="cust" class="h"><div class="card"><h2>🎨 Customize your ship</h2><div style="color:var(--mut)">Changes show live in 🚀 Ship view. Solar wings grow with the panels you buy, tanks grow with your propellant, and exhaust color follows your drive type.</div><div id="custbody"></div><button id="custclose" style="margin-top:10px;width:100%">Close  (K or Esc)</button></div></div><div id="xh" class="h">＋</div><div id="prol" class="h">◎ moving this way</div>
+<div id="ctrl" class="h"><div class="card"><h2>📖 Guide &amp; key settings</h2>
+<h3>HOW TO PLAY</h3><div id="gplay"></div>
+<h3>KEY BINDINGS: click “Change”, then press the key you want (saved automatically)</h3><table id="keytab"></table><button id="keyreset">Reset all keys to defaults</button>
+<h3>THRUST MODES</h3><table>
+<tr><td>3rd person, X/Y/Z mode</td><td>Thrust keys push along the fixed axes shown on your ship (+X pink, +Y yellow, +Z cyan).</td></tr>
+<tr><td>3rd person, orbit mode</td><td>Thrust 1 speeds you up along your path (orbit grows), thrust 2 slows you down, 3/4 push toward/away from the planet, 5/6 tilt the orbit.</td></tr>
+<tr><td>1st person</td><td>Thrust keys follow where you look: forward, back, left, right, up, down.</td></tr></table>
+<h3>ENGINES &amp; FUEL</h3><table>
+<tr><td>🔥 Chemical rocket</td><td>Fuel: liquid hydrogen + liquid oxygen. Energy comes from the fuel's chemistry. Exhaust 4.4 km/s. Strong thrust, uses fuel fast.</td></tr>
+<tr><td>⚛ Ion thruster</td><td>Fuel: xenon gas. Energy comes from your battery/solar panels. Exhaust 29 km/s. Very efficient, very gentle.</td></tr>
+<tr><td>☀ Fusion drive</td><td>Fuel: deuterium + helium-3. Energy comes from nuclear fusion of the fuel. Exhaust 0.05c.</td></tr>
+<tr><td>✴ Antimatter photon rocket</td><td>Fuel: matter + antimatter. Annihilates completely into light; exhaust = light speed. The only way to 0.99c.</td></tr>
+<tr><td>Why exhaust speed matters</td><td>A rocket can only go a few times faster than its exhaust before the fuel needed explodes exponentially (the rocket equation). That is why chemical rockets cannot reach even 1,000 km/s.</td></tr>
+<tr><td>Mass</td><td>Your mass includes all fuel tanks, and even your stored energy (E = mc²), which matters at relativistic energies.</td></tr></table>
+<h3>VIEWS</h3><table>
+<tr><td>🎥 3rd person</td><td>Map-like view of the solar system around your ship.</td></tr>
+<tr><td>👁 1st person</td><td>Cockpit view with dashboard, scanner and markers.</td></tr>
+<tr><td>🚀 Ship view</td><td>Close-up of your own ship. Drag to circle it, scroll to zoom.</td></tr>
+<tr><td>📻 Space radio</td><td>Original music generated live by the game (royalty-free). ◀ ▶ change channel: Deep Drift, Solar Wind, Pulsar, Nebula Choir. Click the volume to change it.</td></tr>
+<tr><td>☀ Go to the Sun</td><td>In 🧭 NAVIGATE (or its key): the autopilot compares all engines, buys the best fuel with your energy, flies as close to the Sun as that allows, and tells you exactly what it needs next if it runs out.</td></tr>
+<tr><td>⛏ Mining &amp; weapons</td><td>Pick a target (🎯), pick a weapon (🔫), hold 🔥 FIRE. Mining laser: hold within 10 km of an asteroid to collect material. Pulse laser, railgun, missiles and particle beam must be built first (🛠 → 🔬 Build). Practice drones can be launched from 🛠 → 🔫.</td></tr>
+<tr><td>🔬 Tech tree</td><td>Engines and weapons beyond the starting kit are built from mined materials plus energy. 🛠 → 🔬 Build shows exactly what each one needs.</td></tr>
+<tr><td>Projected path</td><td>While the autopilot flies, a cyan line shows the projected path and the panel at bottom-left shows the arrival time in game time and in real time at your current speed.</td></tr>
+<tr><td>🧭 Stabilizer</td><td>Locks your view to your orbit so the planet stays put instead of swirling around. Uses reaction wheels: 50 W of power, no propellant.</td></tr></table>
+<h3>MOUSE AND FIXED KEYS</h3><table>
+<tr><td>Mouse drag</td><td>Rotate the camera, or look around in 1st person</td></tr><tr><td>Scroll wheel</td><td>Zoom</td></tr>
+<tr><td>Arrow keys</td><td>Always also work as thrust 1–4</td></tr><tr><td>Tab</td><td>Next camera target</td></tr><tr><td>Esc</td><td>Close any window (or cancel a key change)</td></tr></table>
+<h3>ON-SCREEN BUTTONS</h3><table>
+<tr><td>Top bar: stats</td><td>Energy available (and income), solar panels, velocity, mass. Information only.</td></tr>
+<tr><td>⏪ ⏯ ⏩, Reset ×300</td><td>Slower, pause, faster, back to the native 300× speed. The rate is shown beside them.</td></tr>
+<tr><td>🛠 ENGINEERING</td><td>Opens the shop. Panels: buy 10, 100, 1,000 or 10,000 m², double them, or spend all energy. Propellant: buy 10 to 10,000 kg. Engine: drive type (Ion, Fusion, Photon) and power ×10 / ÷10. Testing cheats: free energy.</td></tr>
+<tr><td>🧭 NAVIGATE</td><td>Pick a destination distance from the Sun, buy the propellant the trip needs, stop the autopilot, or point the camera at the Sun.</td></tr>
+<tr><td>Bottom bar: 6 thrust buttons</td><td>Hold to fire, same as the keys. Labels change with the mode.</td></tr>
+<tr><td>Mode, View</td><td>Same as M and V.</td></tr>
+<tr><td>🎥 target, ＋/－ Zoom</td><td>Camera focus and zoom.</td></tr>
+<tr><td>📖 GUIDE (top right)</td><td>This window.</td></tr><tr><td>🚀 Ship view, 🧭 Stabilizer</td><td>Close-up of your ship; steady view.</td></tr>
+<tr><td>🎨 Customize</td><td>Ship name, hull and trim colors, hull shape, solar wing layout.</td></tr><tr><td>More info</td><td>Detailed readout on the left.</td></tr></table>
+<button id="ctrlclose" style="margin-top:10px;width:100%">Close  (C or Esc)</button></div></div>
+<div id="ui"></div><div id="lb"></div><div id="help"><div><h2>🚀 STELLAR IMPULSE: how to play</h2>
+<p style="margin:4px 0 10px">📖 New here, or want to know everything? Read the <a href="https://claude.ai/artifact/PcSnhuD1QhDPnV3zuNw6eX" target="_blank" rel="noopener" style="color:#5fe0ff">Stellar Impulse Wiki</a> (also <code>wiki.html</code> in the download).</p>
+<p style="border:1px solid #ff6a5a;background:rgba(60,10,14,.7);border-radius:8px;padding:8px 12px"><b>🚀 Ready to fly:</b> your chemical rocket is selected and carries enough fuel to escape Earth (about 3.9 km/s of burn). Hold <b>W</b> to speed up along your orbit; your orbit stretches out until Earth lets you go. <b>⚔ Want action right away?</b> Press <b>0</b> to call in a wave of raider drones. Fire with the number keys: <b>1</b> mining laser · <b>2</b> pulse laser · <b>3</b> particle beam · <b>4</b> railgun · <b>5</b> missiles (hold for beams). <b>O</b> switches target, <b>V</b> cycles cameras (chase, cockpit, orbit map). Lasers spread out with distance, so they hit hardest inside 50 km; enemy missiles can be shot down.</p>
+<b>Goal:</b> collect solar energy, turn it into more panels and fuel, and build up enough power to fly at relativistic speed (up to 0.99c) while your ship clock falls behind the rest of the universe.
+<ol>
+<li><b>Find your ship.</b> You start in the 3rd-person chase camera, right behind your ship. Press <b>V</b> to cycle cameras: chase → 1st-person cockpit → orbit map. On the orbit map, the orange dot orbiting Earth is you. The <b style="color:#44ff88">green arrow</b> shows where you are moving, the <b style="color:#ff8a00">orange loop</b> shows your whole orbit. Drag to rotate the view, scroll to zoom, <b>F</b> to look at other planets.</li>
+<li><b>Collect energy.</b> Your solar panels fill your battery while you are in sunlight (ENERGY AVAILABLE, top of screen).</li>
+<li><b>Spend it.</b> Click the big <b>🛠 ENGINEERING</b> button (or press <b>B</b>). Buy more solar panels and you collect energy faster. Each purchase shows how much faster. Panels work far better close to the Sun.</li>
+<li><b>Fly.</b> You start in <b>orbit mode</b>: <b>W</b> speeds you up along your path, <b>S</b> slows you down, <b>A</b>/<b>D</b> push toward/away from the planet. Press <b>M</b> for fixed axes instead: your ship shows three colored axes: <b style="color:#ff6ec7">+X</b>, <b style="color:#ffe14d">+Y</b> and <b style="color:#4dd2ff">+Z</b>. Hold <b>D</b>/<b>A</b> to push along +X/−X, <b>W</b>/<b>S</b> along +Y/−Y, <b>E</b>/<b>Q</b> along +Z/−Z (up/down). The axes are fixed to the solar system, so rotate the camera to line them up the way you like. Press <b>M</b> to switch to orbit mode (W = speed up along your path, S = slow down), which is the efficient way to raise or lower an orbit. A <b style="color:#ff5533">red arrow</b> shows your push, and the message at the bottom tells you what is happening.</li>
+<li><b>Views.</b> <b>V</b>: 1st-person cockpit. <b>G</b>: 🚀 ship view, a close-up of your ship (customize it with <b>K</b>). <b>T</b>: 🧭 stabilizer, keeps your view steady. The green <b>📖 GUIDE</b> button explains every key and lets you change them.</li>
+<li><b>Control time.</b> <b>⏩ Faster</b> (or the <b>.</b> key) makes everything happen quicker, <b>Space</b> pauses.</li>
+<li><b>Keep your ship alive.</b> Your ship is a machine: every part has mass, uses or makes power, and makes heat that radiators must get rid of. The crew needs oxygen, water and food, and must be shielded from radiation (take shelter with <b>Z</b> during solar storms). Parts wear out and fail: fix them with spare-parts kits. 🛠 ENGINEERING (<b>B</b>) explains what limits your ship and why.</li>
+<li><b>Research and build.</b> Research technologies in 🛠 → 🔬 Research (labs make research points; discoveries give bonus points), then manufacture parts in 🏭 Fabricate. Manufacturing runs on your power over time.</li>
+<li><b>Fight.</b> Press <b>0</b> to call in raider drones, then fire with <b>1</b>–<b>5</b> or the weapon bar at the bottom. Each wave is bigger; from wave 2 they fire missiles you can shoot down. Beat a wave for missiles and metals. Lose, and you lose your ship. Get more than 400 km away and they give up.</li>
+<li><b>Mine &amp; build.</b> Fly to an asteroid (🧭 NAVIGATE → Asteroids), select the mining laser and hold the 🔥 FIRE key (<b>L</b>) to mine it from within 10 km. Materials unlock new engines and weapons in 🛠 → 🔬 Build. Near Earth you can order fuel from Earth; in deep space you make it from asteroid water.</li>
+<li><b>Engines.</b> Four real drive types, each with its own fuel: 🔥 chemical rocket (rocket fuel), ⚛ ion thruster (xenon + battery power), ☀ fusion drive (deuterium + helium-3) and ✴ antimatter photon rocket. 🛠 ENGINEERING shows what each one does, the top speed your fuel gives you, and how much fuel you would need for a target speed.</li>
+<li><b>Try relativity.</b> In 🛠 ENGINEERING: TESTING “Free +1e21 J”, pick the ✴ Antimatter photon rocket, press “Buy enough to reach 0.99c”, then hold your forward key with time sped up.</li>
+</ol>
+<button onclick="document.getElementById('help').classList.add('h')">Got it, let me play</button> <button style="border-color:#ff6a5a;color:#ffd7d2" onclick="document.getElementById('help').classList.add('h');raidStart()">⚔ Fight raiders now</button> <button onclick="document.getElementById('help').classList.add('h');openGuide()">📖 Full guide &amp; key settings</button></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<!--@STAMP-->
+<script>
+/*@JS*/
+</script>
+<!--@PLATFORM--></body></html>

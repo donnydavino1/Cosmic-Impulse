@@ -1,0 +1,33 @@
+# Asteroides y minería
+
+Los asteroides guardan los materiales de todo lo que construyes ([[Piezas|Parts]]): hielo de agua, carbono,
+silicatos, hierro, níquel y metales del platino.
+
+## Dónde están
+
+- **8 asteroides cercanos a la Tierra** orbitan cerca de 1 UA, junto a la trayectoria terrestre: Kestrel, Halcyon,
+  Tamsin, Ophir, Velka, Corvo, Nimbus y Petra. Pequeños (de decenas a cientos de metros) y fáciles de alcanzar.
+- **30 asteroides del cinturón principal** entre Marte y Júpiter, a 2,2–3,2 UA del Sol, de hasta unos 5 km.
+
+Usa 🧭 NAVEGAR → Asteroides: el piloto automático escapa de tu planeta, iguala la órbita del asteroide y aparca a 1,5 km.
+
+## De qué están hechos
+
+| Tipo | Hielo de agua | Carbono | Silicatos | Hierro | Níquel | Metales del platino |
+|---|---|---|---|---|---|---|
+| **C** (rico en carbono) | 15 % | 5 % | 70 % | 8 % | 1,5 % | trazas |
+| **S** (rocoso) | 1 % | 0,5 % | 75 % | 18 % | 4 % | trazas |
+| **M** (metálico) | – | 0,2 % | 10 % | 80 % | 9 % | 0,01 % |
+
+Los de tipo C dan agua (para beber, oxígeno e hidrógeno combustible); los de tipo M dan metal.
+
+## Tres formas de minar
+
+| Método | Cómo | Notas |
+|---|---|---|
+| ⛏ Láser de minería (tecla 1, mantén) | vaporiza roca; unos 2 MJ por kg | recoge el 80 % de lo que corta, solo a menos de 10 km |
+| Armas | los impactos rompen la roca; unos 0,5 MJ por kg | solo se recoge el 25 % |
+| [[Drones mineros|Drones and Probes]] | excavan 18 kg por hora cada uno mientras haces otra cosa | quédate a menos de 30 km |
+
+Todo lo que minas se cuenta por elemento en el libro de cuentas: la materia nunca se crea (Ley 3,
+[[Las leyes de Stellar Impulse|The Laws of Stellar Impulse]]). Los contratos de minería pagan extra ([[Contratos|Contracts]]).

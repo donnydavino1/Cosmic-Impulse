@@ -1,0 +1,104 @@
+<style>
+/* ===== PHONE LAYOUT ===== */
+html,body{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button{touch-action:manipulation}
+#top,#hud,#keys,#ui,#fb,#fpbar,#dash,#status,#svname,#wpn,#radio{display:none!important}
+#obj{top:calc(40px + env(safe-area-inset-top,0px))!important;left:6px;right:auto;max-width:62vw;font-size:10px;padding:4px 14px 5px 8px;opacity:.9}
+#navinfo{top:calc(86px + env(safe-area-inset-top,0px))!important;bottom:auto!important;left:6px!important;max-width:70vw;font-size:10px;padding:5px 8px}
+#toast{top:calc(120px + env(safe-area-inset-top,0px));font-size:12px;padding:8px 12px}
+#wbar{left:auto!important;right:6px!important;bottom:calc(8px + env(safe-area-inset-bottom,0px))!important;width:min(210px,50vw)!important}
+#wslots{grid-template-columns:repeat(2,1fr)!important;gap:3px}
+.ws{padding:5px 6px 7px!important;font-size:10px!important}
+#raidb{font-size:10px;padding:3px 6px}
+.card{padding:10px 12px!important;font-size:12px!important;max-width:100%!important;box-sizing:border-box;overflow-x:auto}
+#shop,#nav,#ctrl,#wpal,#go,#mpw{padding:6px!important;padding-top:calc(58px + env(safe-area-inset-top,0px))!important;justify-content:flex-start!important}
+#cust{padding:6px!important;padding-top:calc(58px + env(safe-area-inset-top,0px))!important}
+#help{padding-top:calc(10px + env(safe-area-inset-top,0px))}
+.card table{display:block;overflow-x:auto}
+#help>div{font-size:12px}
+#mstat{position:absolute;top:calc(6px + env(safe-area-inset-top,0px));left:6px;right:58px;z-index:4;background:rgba(10,14,30,.82);border:1px solid #3a4468;border-radius:8px;padding:5px 8px;font-size:11px;line-height:1.35;color:var(--fg);pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#mstat b{color:var(--ac)}
+#mmenu{position:absolute;top:calc(6px + env(safe-area-inset-top,0px));right:6px;z-index:30;width:46px;height:46px;font-size:22px;padding:0;border-radius:10px;background:rgba(58,42,5,.95);border:2px solid var(--ac);color:#ffe2a8}
+#mpad{position:absolute;left:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:3;display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,52px);gap:5px}
+#mpad button{padding:0;font-size:18px;line-height:1;border-radius:12px;background:rgba(10,14,30,.8);border:1px solid #4a5688;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#mpad button small{font-size:8.5px;color:var(--mut);margin-top:2px;white-space:nowrap}
+#mpad button.on{background:rgba(255,184,77,.35);border-color:var(--ac)}
+#mpad .cv{font-size:16px;background:rgba(30,40,80,.85)}
+#mdraw{position:absolute;top:0;right:0;bottom:0;width:min(330px,88vw);z-index:29;background:rgba(8,12,28,.97);border-left:1px solid var(--ac);display:none;flex-direction:column;padding:calc(58px + env(safe-area-inset-top,0px)) 10px calc(10px + env(safe-area-inset-bottom,0px))}
+#mdraw.open{display:flex;animation:mdin .18s ease-out}@keyframes mdin{from{opacity:0;transform:translateX(30px)}}
+html,body{overflow:hidden!important;max-width:100vw;position:fixed;inset:0}
+#mdraw h3{margin:0 0 8px;color:var(--ac);font-size:14px;display:flex;align-items:center;gap:8px}
+#mdlist{overflow:auto;display:flex;flex-direction:column;gap:6px;flex:1}
+#mdlist button{text-align:left;padding:11px 12px;font-size:13px;border-radius:9px;line-height:1.3}
+#mdlist button.cat{display:flex;justify-content:space-between;background:rgba(30,40,80,.7)}
+#mdlist button small{display:block;color:var(--mut);font-size:10.5px;margin-top:2px}
+#mdlist .back{background:rgba(58,42,5,.6);border-color:var(--ac)}
+body.fp #vitals{top:calc(40px + env(safe-area-inset-top,0px))!important;left:4px;right:56px;gap:3px;justify-content:flex-start}
+.vc,.vh{font-size:9.5px!important;padding:2px 5px 4px!important;gap:3px!important}.vc .vl{display:none}
+body.fp #obj,body.fp #navinfo,body.fp #wl{display:none!important}body.fp #wbar{top:auto!important}
+#mradar{display:none;position:absolute;left:auto;bottom:auto;right:6px;top:calc(150px + env(safe-area-inset-top,0px));width:150px;height:102px;z-index:3;background:rgba(3,9,18,.6);border:1px solid rgba(120,220,255,.3);pointer-events:none}body.fp #mradar{display:block}
+@media (orientation:landscape) and (max-height:500px){#mpad{grid-template-columns:repeat(3,46px);grid-template-rows:repeat(3,46px)}#mstat{right:auto;max-width:60vw}#obj{display:none}}
+</style>
+<div id="mstat"></div><button id="mmenu" aria-label="Menu">☰</button>
+<div id="mpad"></div><canvas id="mradar" width="220" height="150"></canvas>
+<div id="mdraw"><h3 id="mdtitle">Menu</h3><div id="mdlist"></div></div>
+<script>
+// ===== PHONE CONTROLS: every key is also reachable from the ☰ menu =====
+try{R.setPixelRatio(Math.min(devicePixelRatio,1.5))}catch(e){}
+document.body.classList.add('mob');
+// --- thrust pad (hold), with the camera switch in the middle
+const PADK=[['up','⤒','E'],['fwd','▲','W'],['down','⤓','Q'],['left','◀','A'],null,['right','▶','D'],[null],['back','▼','S'],[null]];
+const PADT={fwd:['Forward','+Y','Speed up'],back:['Back','−Y','Slow down'],left:['Left','−X','Inward'],right:['Right','+X','Outward'],up:['Up','+Z','Tilt +'],down:['Down','−Z','Tilt −']};
+{const pad=$('mpad');PADK.forEach(p=>{const b=document.createElement('button');pad.appendChild(b);
+ if(p===null){b.className='cv';b.innerHTML='🎥<small>camera</small>';b.onclick=()=>cycleView();return}
+ if(p[0]===null){b.style.visibility='hidden';return}
+ const k=TK[p[0]];b.dataset.id=p[0];b.innerHTML=p[1]+'<small></small>';
+ const on=e=>{e.preventDefault();K[k]=1;AP=null;b.classList.add('on');try{b.setPointerCapture(e.pointerId)}catch(_){}},off=()=>{K[k]=0;b.classList.remove('on')};
+ b.onpointerdown=on;b.onpointerup=off;b.onpointercancel=off;b.onlostpointercapture=off})}
+// --- the side menu: categories → actions
+const MCAT=[['view','🎥 Camera & view'],['time','⏱ Time'],['fight','🔫 Weapons & combat'],['fly','🚀 Flight & autopilot'],['ship','🛠 Ship, build & research'],['social','🌐 Multiplayer & music'],['help','📖 Help & settings'],['more','… Everything else']];
+const MMAP={view:'view',ship:'view',stab:'view',focus:'view',zin:'view',zout:'view',info:'view',dash:'view',wpal:'view',
+ pause:'time',slower:'time',faster:'time',w1:'fight',w2:'fight',w3:'fight',w4:'fight',w5:'fight',weapon:'fight',target:'fight',fire:'fight',raid:'fight',
+ mode:'fly',nav:'fly',sun:'fly',shelter:'fly',fwd:'fly',back:'fly',left:'fly',right:'fly',up:'fly',down:'fly',
+ shop:'ship',custom:'ship',unlock:'ship',mp:'social',radio:'social',chan:'social',guide:'help',wiki:'help',lang:'help',contracts:'ship',ops:'ship',builder:'ship'};
+const MSTAY={zin:1,zout:1,pause:1,slower:1,faster:1,target:1,weapon:1,radio:1,chan:1,focus:1,stab:1,info:1,mode:1,dash:1};
+const PANELS=['shop','nav','help','ctrl','cust','wpal','mpw','ctrw','opsw','bldw'];
+const MEXTRA={view:[['🎥 Next camera (chase → cockpit → map)',()=>cycleView(),1]],
+ fight:[['🎯 Launch 3 practice drones (no danger)',()=>spawnDrones()],['🔥 Fire beam for 2 s (mining laser / particle beam)',()=>{fireDown();setTimeout(()=>fireHeld=false,2000)}]],
+ ship:[['💾 Save / load game (🛠 → Save tab)',()=>{toggleShop();const t=[...document.querySelectorAll('#shopbody .tabs button')].find(b=>/Save/.test(b.textContent));if(t)t.click()}],['🧪 Testing tools (🛠 → Testing tab)',()=>{toggleShop();const t=[...document.querySelectorAll('#shopbody .tabs button')].find(b=>/Testing/.test(b.textContent));if(t)t.click()}]],
+ help:[['👋 Show the welcome screen',()=>$('help').classList.remove('h')],['🖥 Open the desktop version',()=>{location.href='stellar-impulse.html'}]],
+ more:[]};
+let mcat=null;const mdr=$('mdraw');
+function closeWins(){PANELS.forEach(i=>{const e=$(i);if(e)e.classList.add('h')})}
+function mOpen(c){mcat=c===undefined?mcat:c;mdr.classList.add('open');mRender()}
+function mClose(){mdr.classList.remove('open');mcat=null}
+function mBtn(L,label,sub,fn,cls){const b=document.createElement('button');if(cls)b.className=cls;b.innerHTML=label+(sub?'<small>'+sub+'</small>':'');b.onclick=fn;L.appendChild(b);return b}
+function mRender(){const L=$('mdlist');L.innerHTML='';
+ if(mcat==null){$('mdtitle').textContent='☰ Menu';
+  mBtn(L,'✕ Close all windows',null,()=>{closeWins();mClose()},'back');
+  MCAT.forEach(([id,n])=>{const cnt=ACTS.filter(a=>(MMAP[a[0]]||'more')===id&&a[3]).length+(MEXTRA[id]||[]).length;if(cnt)mBtn(L,n+' <span style="color:var(--mut)">›</span>',null,()=>{mcat=id;mRender()},'cat')});return}
+ $('mdtitle').textContent=(MCAT.find(c=>c[0]===mcat)||['',''])[1];
+ mBtn(L,'‹ Back',null,()=>{mcat=null;mRender()},'back');
+ (MEXTRA[mcat]||[]).forEach(([n,f,stay])=>mBtn(L,n,null,()=>{f();if(!stay)mClose()}));
+ ACTS.filter(a=>(MMAP[a[0]]||'more')===mcat).forEach(a=>{
+  if(!a[3]){const k=TK[a[0]];const b=mBtn(L,'✋ Hold: '+a[2],'held while your finger is down',null);
+   const on=e=>{e.preventDefault();K[k]=1;AP=null},off=()=>K[k]=0;b.onpointerdown=on;b.onpointerup=off;b.onpointerleave=off;b.onpointercancel=off;return}
+  mBtn(L,a[2],MSTAY[a[0]]?'menu stays open':null,()=>{initAudio();a[3]();if(!MSTAY[a[0]])mClose();else mRender()})})}
+$('mmenu').onclick=()=>{if(mdr.classList.contains('open'))mClose();else mOpen(null)};
+// --- touch camera: one finger drags the view, two fingers pinch to zoom
+const TP=new Map();let pinch0=0;
+addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||e.target!==R.domElement)return;TP.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(mdr.classList.contains('open'))mClose();if(TP.size===2){const[a,b]=[...TP.values()];pinch0=Math.hypot(a.x-b.x,a.y-b.y)}},true);
+addEventListener('pointermove',e=>{if(e.pointerType==='mouse'||!TP.has(e.pointerId))return;e.stopPropagation();const p=TP.get(e.pointerId),dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+ if(TP.size===1){const k=FP?.004:.008;az-=dx*k;el=Math.max(-1.5,Math.min(1.5,el+(FP?-1:1)*dy*k));stabCapture()}
+ else if(TP.size===2){const[a,b]=[...TP.values()],d=Math.hypot(a.x-b.x,a.y-b.y);if(pinch0>0&&d>0)zoom(pinch0/d);pinch0=d}},true);
+const tEnd=e=>{TP.delete(e.pointerId);if(TP.size<2)pinch0=0};addEventListener('pointerup',tEnd,true);addEventListener('pointercancel',tEnd,true);
+// --- compact status line and pad captions
+setInterval(()=>{try{const o=elements(),hp=Math.max(0,s.hull/hullMax());
+ $('mstat').innerHTML=`🔋<b>${Math.round(100*s.en/Math.max(1,SH.cap))}%</b> · ${f1(o.v/1e3,2)} km/s around ${s.dom.n} · alt ${km(o.r-s.dom.R)} · ${paused?'⏸ paused':'⏩ ×'+WARP[wi]} · 🛡${Math.round(hp*100)}% ${s.burn>0?' · 🔥 BURN':''}`;
+ document.querySelectorAll('#mpad button[data-id]').forEach(b=>{const t=PADT[b.dataset.id],c=FP?t[0]:XYZ?t[1]:t[2],sm=b.querySelector('small');if(sm.textContent!==c)sm.textContent=c});}catch(e){}},400);
+setInterval(()=>{if(FP)try{radarDraw($('mradar'))}catch(e){}},250);
+// phone players get a short intro first
+{const h=$('help').querySelector('div');if(h){const p=document.createElement('p');p.style.cssText='border:1px solid #5fe0ff;background:rgba(10,40,70,.7);border-radius:8px;padding:8px 12px';
+ p.innerHTML='<b>📱 Phone controls.</b> <b>☰</b> (top right) opens a menu with every action from the keyboard version. The pad bottom-left thrusts while you hold it (🎥 in the middle switches camera). The weapon buttons bottom-right fire (hold for beams). Drag to look around, pinch to zoom.';h.insertBefore(p,h.children[1])}}
+</script>

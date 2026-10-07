@@ -1,0 +1,6 @@
+/* contracts board (1750-contracts.js) */
+#ctrw{position:absolute;inset:0;background:rgba(2,3,10,.75);display:flex;align-items:flex-start;justify-content:center;z-index:6;padding:12px;overflow:auto}
+#ctrw .card{margin:auto;background:#0b1024;border:1px solid #ffb84d;border-radius:12px;padding:14px 18px;max-width:640px;width:100%;font-size:12.5px}
+#ctrw h2{margin:0 0 4px;color:var(--ac)}#ctrw h4{margin:12px 0 6px;color:#7fd3ff;letter-spacing:.08em}
+.ctr{border:1px solid #2a3766;border-radius:8px;padding:8px 10px;margin:6px 0;background:rgba(18,27,61,.6)}.ctr small{color:var(--mut)}.ctr button{float:right;margin-top:-2px}
+.cbar{height:4px;background:#121b3d;border-radius:2px;margin:5px 0}.cbar i{display:block;height:100%;background:#5dff8a;border-radius:2px}

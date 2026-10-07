@@ -1,0 +1,6 @@
+/* ship builder (2595-builder-ui.js) */
+#bldw{position:absolute;inset:0;background:rgba(2,3,10,.75);display:flex;align-items:flex-start;justify-content:center;z-index:6;padding:12px;overflow:auto}
+#bldw .card{margin:auto;background:#0b1024;border:1px solid #ffb84d;border-radius:12px;padding:14px 18px;max-width:720px;width:100%;font-size:12.5px}
+#bldw h2{margin:0 0 4px;color:var(--ac)}#bldw .opsn{color:var(--mut);font-size:11.5px}
+.bldt{border-collapse:collapse;width:100%;margin:8px 0}.bldt td,.bldt th{border-bottom:1px solid #24305a;padding:4px 6px;text-align:left}.bldt th{color:#7fd3ff}
+.bld-up{color:#5dff8a}.bld-dn{color:#ff8a6a}#bldsv svg text{font-family:inherit}

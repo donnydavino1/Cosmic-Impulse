@@ -1,0 +1,8 @@
+// ===== STABILIZER: hold the view fixed in the local orbit frame (radial, along-track, normal) =====
+let LK=null;const dirAE=()=>[Math.cos(el)*Math.cos(az),Math.cos(el)*Math.sin(az),Math.sin(el)];
+function lvlh(){const d=s.dom,g=gam(s),rx=s.x-d.x,ry=s.y-d.y,rz=s.z-d.z,r=Math.hypot(rx,ry,rz)||1,vx=s.vx/g-d.vx,vy=s.vy/g-d.vy,vz=s.vz/g-d.vz,Rr=[rx/r,ry/r,rz/r];
+ let Nn=[ry*vz-rz*vy,rz*vx-rx*vz,rx*vy-ry*vx];const nl=Math.hypot(...Nn)||1;Nn=Nn.map(x=>x/nl);return[Rr,[Nn[1]*Rr[2]-Nn[2]*Rr[1],Nn[2]*Rr[0]-Nn[0]*Rr[2],Nn[0]*Rr[1]-Nn[1]*Rr[0]],Nn]}
+function stabCapture(){const F=lvlh(),v=dirAE();LK={dom:s.dom,c:F.map(b=>b[0]*v[0]+b[1]*v[1]+b[2]*v[2])}}
+function stabApply(){if(!LK||LK.dom!==s.dom){stabCapture();return}const[Rr,T,Nn]=lvlh(),c=LK.c,v=[0,1,2].map(i=>Rr[i]*c[0]+T[i]*c[1]+Nn[i]*c[2]),l=Math.hypot(...v)||1;
+ az=Math.atan2(v[1],v[0]);el=Math.max(-1.5,Math.min(1.5,Math.asin(v[2]/l)))}
+{const fb2=$('fpbar');btn(fb2,()=>(STAB?'🧭 Stabilizer ON':'🧭 Stabilizer OFF')+'  '+KN(BIND.stab),()=>{STAB=!STAB;stabCapture()});btn(fb2,()=>'🎥 Next camera  '+KN(BIND.view),()=>cycleView());btn(fb2,()=>'🚀 Ship view  '+KN(BIND.ship),()=>toggleSV());btn(fb2,()=>'📖 Guide  '+KN(BIND.guide),()=>openGuide());{const b=btn(fb2,()=>'🔥 FIRE '+WEP[WI].n+'  '+KN(BIND.fire));b.onpointerdown=()=>fireDown();const up=()=>fireHeld=false;b.onpointerup=up;b.onpointerleave=up;b.onpointercancel=up}btn(fb2,()=>'🎯 Target  '+KN(BIND.target),()=>cycleT());btn(fb2,()=>'🧩 Layout: '+DASH.cur+'  '+KN(BIND.dash),()=>nextLayout());btn(fb2,()=>'🧩 Edit dashboard  '+KN(BIND.wpal),()=>$('wpal').classList.toggle('h'));btn(fb2,()=>(s.shelter?'☢ IN SHELTER':'☢ Shelter')+'  '+KN(BIND.shelter),()=>toggleShelter())}

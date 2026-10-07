@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Stellar Impulse Arena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="src/arena/arena.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+  <canvas id="view" aria-label="Battle view"></canvas>
+
+  <main id="menu" class="screen menu">
+    <h1>Stellar Impulse Arena</h1>
+    <p class="lede">Design a nuclear-age warship in seconds, then fight with real physics: waste heat, burning armour, light-speed lasers and kinetic missiles.</p>
+    <div class="menu-actions">
+      <button id="go-ai" class="primary">Fight the AI</button>
+      <button id="go-online">Play a friend online</button>
+      <a href="stellar-impulse.html">Play the main game (solar system)</a>
+    </div>
+    <p class="foot">Free and open source under GNU GPLv2. Rule set <span id="ruleset"></span>, fingerprint <span id="fp"></span>.</p>
+  </main>
+
+  <section id="design" class="screen design" hidden>
+    <header>
+      <button data-go="menu">Back</button>
+      <h2>Build your ship</h2>
+    </header>
+    <div class="design-grid">
+      <div>
+        <h3>Pick a class</h3>
+        <div id="classes" class="classes"></div>
+      </div>
+      <div>
+        <h3>Tune it</h3>
+        <div id="sliders"></div>
+      </div>
+      <div>
+        <h3>What it can do</h3>
+        <ul id="abilities" class="abilities"></ul>
+        <details>
+          <summary>Under the hood: the physics numbers</summary>
+          <table id="numbers" class="numbers"></table>
+        </details>
+      </div>
+    </div>
+
+    <div id="match-ai" class="match">
+      <label>Opponent <select id="opponent"></select></label>
+      <label>Starting distance <select id="distance"></select></label>
+      <label>Speed <select id="speed"><option value="1">Real time</option><option value="2">2× (practice)</option><option value="4">4× (practice)</option></select></label>
+      <span class="grow"></span>
+      <button id="launch-ai" class="primary">Launch</button>
+    </div>
+
+    <div id="match-online" class="match" hidden>
+      <label>Your name <input id="pilot" type="text" maxlength="20"></label>
+      <button id="host">Host a match</button>
+      <label>Room code <input id="room" type="text" maxlength="8" size="8"></label>
+      <button id="join">Join</button>
+      <span id="room-code" class="room-code"></span>
+      <span class="grow"></span>
+      <label>Starting distance <select id="distance-online"></select></label>
+      <button id="ready">I’m ready</button>
+      <button id="launch-online" class="primary" disabled>Launch</button>
+      <p id="net-status" class="status" style="width:100%;margin:0">Not connected. One player hosts, the other joins with the room code.</p>
+      <details style="width:100%">
+        <summary>Can’t connect? Exchange codes by hand instead (no server needed)</summary>
+        <p class="status">Host presses 1 and sends the code to the friend. Friend pastes it, presses 2 and sends the reply back. Host pastes the reply and presses 3.</p>
+        <textarea id="manual-code" placeholder="Codes appear here, or paste one here"></textarea>
+        <button id="manual-1">1. Create invite</button>
+        <button id="manual-2">2. Answer invite</button>
+        <button id="manual-3">3. Finish</button>
+      </details>
+    </div>
+  </section>
+
+  <section id="hud" hidden>
+    <div id="self" class="card hud-self"></div>
+    <div id="target" class="card hud-target"></div>
+    <div id="feed" class="hud-feed" aria-live="polite"></div>
+    <div id="weapons" class="hud-weapons"></div>
+    <div id="keys" class="card hud-keys"></div>
+    <div id="clock" class="hud-clock"></div>
+    <div id="labels"></div>
+  </section>
+
+  <section id="result" class="screen result" hidden>
+    <h2 id="result-title"></h2>
+    <p id="result-cause" class="lede"></p>
+    <table id="result-table"></table>
+    <div class="actions">
+      <button id="rematch" class="primary">Fight again</button>
+      <button data-go="design">Change the design</button>
+      <button data-go="menu">Main menu</button>
+    </div>
+  </section>
+
+  <script type="module" src="src/arena/main.js"></script>
+</body>
+</html>

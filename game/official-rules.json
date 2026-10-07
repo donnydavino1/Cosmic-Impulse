@@ -1,0 +1,25 @@
+{
+  "about": "Physics fingerprints of official rules releases. Games whose ORB_RULES_FP is listed here show ✓ Official rules. Add one with: node tools/build-game.mjs --release",
+  "releases": [
+    {
+      "version": "0.5.0",
+      "fp": "dcb42ca7a4f1ad10",
+      "date": "2026-10-06"
+    },
+    {
+      "version": "0.6.0",
+      "fp": "66deaeb82b8cd26e",
+      "date": "2026-10-06"
+    },
+    {
+      "version": "0.10.0",
+      "fp": "901d5a36611fb8e4",
+      "date": "2026-10-06"
+    },
+    {
+      "version": "0.11.0",
+      "fp": "a4cdd96a769baf8b",
+      "date": "2026-10-06"
+    }
+  ]
+}
