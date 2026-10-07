@@ -10,6 +10,23 @@ all under one shared set of real physics.
 ✅ **Runs in your web browser**: nothing to install, works on computers and phones.
 ✅ **Three languages**: English, Español, 中文.
 
+### ⚖ Same rules for everyone, endless ways to play
+
+In Stellar Impulse, the server sets the rules: the physics, the resources, what every engine, weapon and sensor can
+do, and how technology scales. These rules are identical for every player and can't be bought or bent. Everything on
+top of them is yours to reshape without limit. You can customize your ship's look and layout in the game, or go
+further and write your own code to change your cockpit, controls, displays, automation and tools, down to how you
+experience the game at all. No matter how much you change, you only ever see the same information as everyone else:
+the same sensor data, the same physics and the same limits. That means customization changes *how* you play, making
+the game more comfortable, efficient or uniquely yours, but never makes the match unfair. The best player wins
+through skill, design and creativity, not through hidden advantages.
+
+**How this works technically:** [Fair Play and Rules (wiki)](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Fair-Play-and-Rules)
+explains it in plain language. [`docs/FAIR-PLAY.md`](docs/FAIR-PLAY.md) has the full technical details: which code
+counts as shared rules, how each game's "physics fingerprint" proves both players use the same rules, and what
+happens when they don't. [Build Your Own Stellar Impulse (wiki)](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Build-Your-Own-Stellar-Impulse)
+shows how to rebuild the whole interface, even with an AI assistant, while still battling everyone fairly.
+
 ---
 
 ## ▶ Play now (one click)
