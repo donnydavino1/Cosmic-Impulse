@@ -1,6 +1,10 @@
-# Cosmic Impulse
+<p align="center"><img src="docs/images/cosmic-impulse-ship.png" alt="A Cosmic Impulse spaceship: crew cabin, gold-foil tank, solar wings, truss, reactor, radiators and engine" width="760"></p>
 
-**Build the spaceship you've always wanted, then fly it through a real, to-scale solar system.**
+<h1 align="center">Cosmic Impulse</h1>
+
+<p align="center"><b>Build the spaceship you've always wanted, then fly it through a real, to-scale solar system.</b></p>
+
+<p align="center"><a href="https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse.html"><b>▶ Play</b></a> &nbsp;·&nbsp; <a href="https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse-mobile.html"><b>📱 Phone</b></a> &nbsp;·&nbsp; <a href="https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Home"><b>📖 Wiki</b></a></p>
 
 Design its engines, weapons, armour and power. Explore, mine asteroids, build, and battle other players,
 all under one shared set of real physics.
@@ -32,14 +36,14 @@ shows how to rebuild the whole interface, even with an AI assistant, while still
 
 ---
 
-## ▶ Play now (one click)
+## Play now (one click)
 
 | | |
 |---|---|
-| 🏠 **Start page** | [donnydavino1.github.io/Stellar-Impulse](https://donnydavino1.github.io/Stellar-Impulse/) |
-| 💻 **Play on a computer** | [Play Cosmic Impulse](https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse.html) |
-| 📱 **Play on a phone** | [Play the phone version](https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse-mobile.html) |
-| 📖 **Player guide (wiki)** | [English](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Home) · [Español](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#es/Home) · [中文](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#zh/Home) |
+| **Start page** | [donnydavino1.github.io/Stellar-Impulse](https://donnydavino1.github.io/Stellar-Impulse/) |
+| **Play on a computer** | [▶ Play Cosmic Impulse](https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse.html) |
+| **Play on a phone** | [📱 Play the phone version](https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse-mobile.html) |
+| **Player guide** | 📖 [English](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Home) · [Español](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#es/Home) · [中文](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#zh/Home) |
 
 You don't need a GitHub account to play. Just click a link above.
 
@@ -49,7 +53,7 @@ then [Your First 10 Hours](https://donnydavino1.github.io/Stellar-Impulse/wiki.h
 
 ---
 
-## 🎮 How to play (the short version)
+## How to play (the short version)
 
 You start in orbit around Earth with a small ship. Collect sunlight with your solar panels, research new
 technology, build better parts, mine asteroids, and fly anywhere in the solar system.
@@ -60,9 +64,11 @@ technology, build better parts, mine asteroids, and fly anywhere in the solar sy
 | **V** | Switch camera: behind your ship → cockpit → map of your orbit |
 | **B** | 🛠 Engineering: build parts, research, buy fuel |
 | **N** | 🧭 Navigation and autopilot |
-| **7** | 🧱 Ship Builder: arrange and upgrade your ship's modules |
+| **F6** | 🛰 Orbit planner: geostationary, geosynchronous or any circular orbit |
+| **7** | 🧱 Ship Builder: arrange, build and upgrade your ship's modules |
 | **8** | 🛸 Operations: mining drones and science probes |
 | **9** | 📋 Contracts: missions with rewards |
+| **6** | 📡 Radar: active or passive (stealth) |
 | **1 – 5** | Choose and fire a weapon (hold for beams) |
 | **O** | Pick the next target |
 | **0** | Call in a wave of enemy raider drones |
@@ -80,22 +86,27 @@ The full list of controls is in the wiki:
 
 ---
 
-## 🚀 What you can do
+## What you can do
 
 - **Fly with real physics.** Orbits work like they do for real spacecraft. Push forward and you go *up*.
   Get close to the speed of light and your ship's clock slows down.
 - **Design your ship.** In the 🧱 Ship Builder, the order of your modules changes how fast you turn, how hard you
-  can thrust, and how much radiation reaches your crew. Upgrade every part from Mk I to Mk V.
+  can thrust, and how much radiation reaches your crew. Mount modules beside the spine in symmetric rings, and
+  upgrade every part from Mk I to Mk V.
+- **Choose from 16 engines,** all real or seriously proposed designs: chemical, ion and Hall thrusters, nuclear
+  thermal, solar and electric sails, fusion and antimatter drives.
+- **Explore a real solar system:** every planet, the major moons, real asteroids, the Kuiper belt, and Proxima
+  Centauri, 4.25 light-years away.
 - **Keep your crew alive.** They need oxygen, water, food, a cool cabin, and shelter from solar storms.
 - **Mine and explore.** Send mining drones to asteroids and science probes to other planets.
 - **Fight.** Battle raider drones, or another player. Lasers get weaker with distance; missiles can be shot down.
 - **Play together.** One player hosts and shares a short room code; the other joins.
-- **Make it yours.** Choose a cockpit style (realistic, military, retro…), a radar display (3D or a rotating
-  sonar sweep), and your ship's look.
+- **Make it yours.** Fly with a physical cockpit of switches and gauges (or realistic, military and retro panels),
+  a 3D or rotating sonar radar, and your own ship's look.
 
 ---
 
-## 🧭 Finding your way around this page (for GitHub beginners)
+## Finding your way around this page (for GitHub beginners)
 
 This page is a **repository**: the folder where all of the game's files live. You don't need to understand
 it to play. If you're curious:
@@ -123,13 +134,13 @@ it to play. If you're curious:
 | `tests/`, `tools/` | Automatic checks and build tools | For developers |
 | `src/`, `arena.html`, `dist/` | An older combat experiment | For developers |
 | `.github/` | Instructions for GitHub's robots (tests and the website) | No |
-| `orbital.html`, `orbital-mobile.html`, `prototype/` | Old addresses; they forward to the new game | No |
+| `stellar-impulse.html`, `orbital.html`, `prototype/` | Old addresses; they forward to the game | No |
 | `README.md` | This page | |
 | `LICENSE` | The open-source license (GNU GPLv2) | |
 
 ---
 
-## 🌌 Vision
+## Vision
 
 > Build the spaceship you've always wanted. Design your engines, weapons, armour, power systems, interiors and
 > almost anything else you can imagine. Then take your creation into a massive, to-scale solar system to
@@ -147,7 +158,7 @@ Read more: [Vision and Philosophy](https://donnydavino1.github.io/Stellar-Impuls
 
 ---
 
-## 🛠 For developers and AI assistants
+## For developers and AI assistants
 
 Everything a developer needs is in these files:
 
@@ -176,6 +187,6 @@ The website at donnydavino1.github.io updates by itself about a minute after eve
 
 ---
 
-## 📜 License
+## License
 
 Cosmic Impulse is free and open source under the **GNU General Public License, version 2**. See [LICENSE](LICENSE).
