@@ -1,140 +1,160 @@
-# Stellar Impulse
+# 🪐 Stellar Impulse
 
-**Build the spaceship you've always wanted.** Design its engines, weapons, armour and power, then
-take it into a to-scale solar system to explore, mine, build and battle other players, all under
-one shared set of physics.
+**Build the spaceship you've always wanted, then fly it through a real, to-scale solar system.**
 
-Stellar Impulse is free to play and open source (GNU GPLv2). Real money can never buy ships, weapons,
-resources, upgrades or advantages. Read the [Vision](docs/VISION.md) for the full idea, or the
-[non-technical overview (PDF)](docs/Stellar-Impulse-Overview.pdf) for how the game works.
+Design its engines, weapons, armour and power. Explore, mine asteroids, build, and battle other players,
+all under one shared set of real physics.
 
-## One-click links
+✅ **Free forever**: real money can never buy ships, weapons, resources or advantages.
+✅ **Open source**: anyone can read, change and improve it.
+✅ **Runs in your web browser**: nothing to install, works on computers and phones.
+✅ **Three languages**: English, Español, 中文.
 
-Once GitHub Pages is on (Settings → Pages → Source: **GitHub Actions**; the `website` workflow in
-`.github/workflows/pages.yml` then publishes on every push to `main`), everything is a plain web address:
+---
 
-| | Address |
+## ▶ Play now (one click)
+
+| | |
 |---|---|
-| Start page | `https://<user>.github.io/<repo>/` |
-| ▶ Play (computer) | `https://<user>.github.io/<repo>/stellar-impulse.html` |
-| 📱 Play (phone) | `https://<user>.github.io/<repo>/stellar-impulse-mobile.html` |
-| 📖 Wiki | `https://<user>.github.io/<repo>/wiki.html` (`#es/Home` Español, `#zh/Home` 中文) |
+| 🏠 **Start page** | [donnydavino1.github.io/Stellar-Impulse](https://donnydavino1.github.io/Stellar-Impulse/) |
+| 💻 **Play on a computer** | [Play Stellar Impulse](https://donnydavino1.github.io/Stellar-Impulse/stellar-impulse.html) |
+| 📱 **Play on a phone** | [Play the phone version](https://donnydavino1.github.io/Stellar-Impulse/stellar-impulse-mobile.html) |
+| 📖 **Player guide (wiki)** | [English](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Home) · [Español](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#es/Home) · [中文](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#zh/Home) |
 
-Put the start page in the repository's **About → Website** field so it shows at the top of the GitHub page.
+You don't need a GitHub account to play. Just click a link above.
 
-## Languages
+**New here?** Start with the wiki's
+[Vision and Philosophy](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Vision-and-Philosophy) page,
+then [Getting Started](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Getting-Started).
 
-The game and wiki come in **English, Español and 中文**: 🌐 on the welcome screen, 🎨 Customize → LANGUAGE, or **F8**.
-Translators: see `game/i18n/` and `docs/MODDING.md` → Translations.
+---
 
-## Learn to play
+## 🎮 How to play (the short version)
 
-The **[Stellar Impulse Wiki](https://claude.ai/artifact/PcSnhuD1QhDPnV3zuNw6eX)** (also `wiki.html` here, source in `wiki/`)
-explains the game for players: getting started, controls, orbits, engineering, survival, combat, sensors,
-customisation, multiplayer, fair play, and how to **build your own version with an AI** while still battling
-everyone fairly. AI assistants should start with [`AGENTS.md`](AGENTS.md).
-
-## Working on the game
-
-**Start with [`CONTINUE.md`](CONTINUE.md)**: it explains the module layout, the build and test commands, and the
-current plan (what to do now and next). The game source is in `game/` and builds into the two playable files with
-`node tools/build-game.mjs`. Formats other programs can rely on are in [`docs/PROTOCOL.md`](docs/PROTOCOL.md);
-how to make styles, radars and new modules is in [`docs/MODDING.md`](docs/MODDING.md); hosting and joining games is in
-[`docs/MULTIPLAYER.md`](docs/MULTIPLAYER.md).
-
-## Play
-
-Open **`stellar-impulse.html`** (or the repository's GitHub Pages site and press *Play Stellar Impulse*). It runs in any
-modern browser and needs an internet connection the first time (it loads three.js and PeerJS from public CDNs).
-
-**On a phone,** open **`stellar-impulse-mobile.html`**: the same game with a touch layout. A ☰ menu holds every action from
-the keyboard version, a thrust pad sits bottom-left, weapon buttons bottom-right; drag to look and pinch to zoom.
-
-You start in orbit around Earth with a small ship whose chemical rocket carries enough fuel to escape Earth right away. Collect sunlight, build panels, engines and
-weapons, mine asteroids, and fly anywhere in a to-scale solar system with real orbital mechanics and relativity.
+You start in orbit around Earth with a small ship. Collect sunlight with your solar panels, research new
+technology, build better parts, mine asteroids, and fly anywhere in the solar system.
 
 | Key | What it does |
 |---|---|
-| **V** | Cycle cameras: 3rd-person chase → 1st-person cockpit → orbit map. The cockpit shows a vitals strip with everything that can kill you |
-| **W A S D Q E** | Thrust (orbit mode: W speeds you up along your path) · **M** switches to fixed X/Y/Z axes |
-| **1–5** | Select and fire: mining laser, pulse laser, particle beam, railgun, missiles (hold for beams) |
-| **O** | Next target |
-| **0** | Call in a wave of raider drones |
-| **B** | Engineering: build, research, buy fuel |
-| **N** | Navigation and autopilot |
-| **C** | Full guide and key rebinding |
-| **F9** | Testing: unlock every technology, engine and weapon (also in 🛠 → 🧪 Testing, where you can also turn instant orders on or off; they are on for now) |
+| **W A S D Q E** | Fire your engine (in orbit mode, **W** speeds you up along your path) |
+| **V** | Switch camera: behind your ship → cockpit → map of your orbit |
+| **B** | 🛠 Engineering: build parts, research, buy fuel |
+| **N** | 🧭 Navigation and autopilot |
+| **7** | 🧱 Ship Builder: arrange your ship's modules |
+| **8** | 🛸 Operations: mining drones and science probes |
+| **9** | 📋 Contracts: missions with rewards |
+| **1 – 5** | Choose and fire a weapon (hold for beams) |
+| **O** | Pick the next target |
+| **0** | Call in a wave of enemy raider drones |
+| **K** | 🎨 Customize how your ship looks |
+| **P** | 🌐 Play with a friend (multiplayer) |
+| **C** | 📖 Full in-game guide, and change any key |
+| **F8** | Switch language |
+| **F9** | Testing: unlock everything |
 
-**Ship Builder (key 7).** Arrange your modules along the spine: the layout sets your turn time, your g limit, how
-much reactor radiation reaches the crew, and whether the storm shelter works. Your 3D ship is built from the same
-layout, in a realistic look (real lighting, no cartoon glows; the stylized look is one toggle away).
+**On a phone:** tap **☰** (top right) for every action, hold the pad (bottom left) to fly, and tap the weapon
+buttons (bottom right) to fire. Drag to look around, pinch to zoom.
 
-**Drones and probes (key 8).** Research robotics to send mining drones to a nearby asteroid while you do something
-else, and deep-space probes to fly Hohmann transfers to other worlds; their data returns at the speed of light.
+The full list of controls is in the wiki:
+[Controls](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Controls).
 
-**Combat.** Raiders close in from 25–45 km and shoot back. From wave 2 they fire missiles you can shoot down.
-Lasers obey diffraction, so the energy they deliver falls with the square of distance (full power within
-50 km for the pulse laser). Beat a wave for missiles and metals; lose and you lose your ship.
+---
 
-**Look.** Planets are painted procedurally (no image files), with glowing atmospheres and Saturn's rings, under a
-nebula sky. Around your ship drifts a debris field so you can feel your motion; it is visual only and never
-affects the physics. Turn it off in 🎨 Customize for realistic, nearly empty space.
+## 🚀 What you can do
 
-**Multiplayer:** press P; one player hosts and shares the room code, the other joins. No internet matchmaking?
-There's a 3-step manual connection. Full guide: [`docs/MULTIPLAYER.md`](docs/MULTIPLAYER.md).
+- **Fly with real physics.** Orbits work like they do for real spacecraft. Push forward and you go *up*.
+  Get close to the speed of light and your ship's clock slows down.
+- **Design your ship.** In the 🧱 Ship Builder, the order of your modules changes how fast you turn, how hard you
+  can thrust, and how much radiation reaches your crew. Your 3D ship is built from the same layout.
+- **Keep your crew alive.** They need oxygen, water, food, a cool cabin, and shelter from solar storms.
+- **Mine and explore.** Send mining drones to asteroids and science probes to other planets.
+- **Fight.** Battle raider drones, or another player. Lasers get weaker with distance; missiles can be shot down.
+- **Play together.** One player hosts and shares a short room code; the other joins.
+- **Make it yours.** Change your ship's look, your cockpit screens and your radar display.
 
-The **combat lab** (`arena.html`) is an experimental head-to-head ship duel with its own designer. Its ideas
-will be merged into the main game.
+---
 
-## Repository layout
+## 🧭 Finding your way around this page (for GitHub beginners)
 
-```
-src/rules/rules.js    The Rules: every constant and scaling law. Single source of truth.
-src/kernel/           The physics kernel: pure, deterministic, no graphics.
-  design.js           Blueprint → performance (thrust, delta-v, heat, weapons) + plain-language summary
-  battle.js           Battle simulation: ships, heat flow, weapons, missiles, damage
-  math.js             Vectors, intercepts, seeded random numbers
-  fingerprint.js      Hash of the rules, so mismatched games can't fight
-src/arena/            The arena game: designer, AI pilot, renderer, HUD, controls, networking
-arena.html            Combat lab entry page (ES modules)
-dist/                 Built single-file arena (generated by npm run build)
-game/                 The game's source modules (edit these): shell, css/, js/, platform/
-stellar-impulse.html          Built desktop game (generated; do not edit)
-stellar-impulse-mobile.html   Built phone game, same core (generated; do not edit)
-CONTINUE.md           Handoff and plan for the next development session
-prototype/            Old address of the game; redirects to stellar-impulse.html
-tests/                Kernel tests, AI-vs-AI battles, and an interface smoke test
-tools/                Build script, Rules-file generator, duel tracer, overview PDF generator
-docs/                 Vision, architecture notes and the overview PDF
-RULES.md              Human-readable rules, generated from src/rules/rules.js
-```
+This page is a **repository**: the folder where all of the game's files live. You don't need to understand
+it to play. If you're curious:
 
-## Develop
+- **The list of files and folders** above this text is the game's source. Click any folder to open it, and use
+  your browser's Back button to return.
+- **This text you're reading** comes from the file `README.md`.
+- **The green "Code" button → "Download ZIP"** downloads the whole game to your computer. Unzip it and
+  double-click `stellar-impulse.html` to play offline (it needs internet the first time).
+- **"Actions" tab:** robots that test the game and publish the website automatically every time it's updated.
+  A green ✓ means everything worked.
+- **"Issues" tab:** report a bug or suggest an idea. You need a free GitHub account for this.
 
-Requires [Node.js](https://nodejs.org) 22 or newer. There are no dependencies to install.
+### What's in each folder
+
+| Folder or file | What it is | Should I touch it? |
+|---|---|---|
+| `stellar-impulse.html` | **The game** (computer version) | Open it to play |
+| `stellar-impulse-mobile.html` | **The game** (phone version) | Open it to play |
+| `wiki.html` | **The player guide**, all in one page | Open it to read |
+| `index.html` | The start page with the Play buttons | |
+| `game/` | The game's source code, in small pieces | For developers |
+| `wiki/` | The player guide's pages, as text files | Writers can edit these |
+| `docs/` | Design documents and the [vision](docs/VISION.md) | Good reading |
+| `tests/`, `tools/` | Automatic checks and build tools | For developers |
+| `src/`, `arena.html`, `dist/` | An older combat experiment | For developers |
+| `.github/` | Instructions for GitHub's robots (tests and the website) | No |
+| `orbital.html`, `orbital-mobile.html`, `prototype/` | Old addresses; they forward to the new game | No |
+| `README.md` | This page | |
+| `LICENSE` | The open-source license (GNU GPLv2) | |
+
+---
+
+## 🌌 Vision
+
+> Build the spaceship you've always wanted. Design your engines, weapons, armour, power systems, interiors and
+> almost anything else you can imagine. Then take your creation into a massive, to-scale solar system to
+> explore, mine, build, and battle other players in their own spaceships.
+
+Three ideas guide everything:
+
+1. **Make it yours:** total freedom over how your ship looks, works and feels.
+2. **Same rules for everyone:** your customizations never change the physics, so battles are always fair.
+3. **Almost unlimited creation:** the goal is tools to invent what comes next, not just a list of things to unlock.
+
+Read more: [Vision and Philosophy](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Vision-and-Philosophy) ·
+[docs/VISION.md](docs/VISION.md) ·
+[Non-technical overview (PDF)](docs/Stellar-Impulse-Overview.pdf)
+
+---
+
+## 🛠 For developers and AI assistants
+
+Everything a developer needs is in these files:
+
+| File | What it covers |
+|---|---|
+| [`CONTINUE.md`](CONTINUE.md) | **Start here.** How the code is organized, how to build and test, and the current plan |
+| [`AGENTS.md`](AGENTS.md) | The brief for AI assistants working on the game |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the pieces fit together |
+| [`docs/MODDING.md`](docs/MODDING.md) | Styles, radar screens, new modules, and translations |
+| [`docs/FAIR-PLAY.md`](docs/FAIR-PLAY.md) | Which code is shared rules and which you can freely change |
+| [`docs/MULTIPLAYER.md`](docs/MULTIPLAYER.md) | Hosting and joining games |
+| [`docs/PROTOCOL.md`](docs/PROTOCOL.md) | Data formats other programs can rely on |
+| [`CHANGELOG.md`](CHANGELOG.md) | What changed in each version |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Read before changing the rules |
+
+Quick commands (needs [Node.js](https://nodejs.org) 22 or newer; nothing else to install):
 
 ```sh
-npm test           # physics tests, AI-vs-AI battles for every matchup, interface smoke test
-npm run build      # rebuild dist/stellar-impulse-arena.html after changing src/
-npm run rules      # regenerate RULES.md after changing src/rules/rules.js
-node tools/duel.mjs brawler sniper 400   # watch one AI-vs-AI fight minute by minute
-python3 tools/overview_pdf.py           # rebuild docs/Stellar-Impulse-Overview.pdf (needs reportlab)
+node tools/build-game.mjs   # rebuild the game files after editing game/
+npm run build               # rebuild the game, the wiki and the combat lab
+npm test                    # run all automatic checks
+npm run i18n                # check that every text is translated (needs Python + Playwright)
 ```
 
-To try the modular version locally, serve the folder, for example `python3 -m http.server`, then
-open <http://localhost:8000/arena.html>.
+The website at donnydavino1.github.io updates by itself about a minute after every push to the `main` branch.
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the pieces fit together, and
-[CONTRIBUTING.md](CONTRIBUTING.md) before changing the rules.
+---
 
-## Status
+## 📜 License
 
-This is an early, playable foundation. Working now: the physics kernel (nuclear-era engines, power,
-heat, armour, lasers, railguns, missiles, point defence), four ship classes with tradeoff sliders,
-an AI opponent, and two-player online battles. Next: deeper design layers (custom components),
-the solar-system world on the same kernel, an authoritative server for a shared world, and
-technology discovered through research. See the overview PDF for the roadmap.
-
-## License
-
-GNU General Public License, version 2. See [LICENSE](LICENSE).
+Stellar Impulse is free and open source under the **GNU General Public License, version 2**. See [LICENSE](LICENSE).
