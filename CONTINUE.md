@@ -115,7 +115,7 @@ Working and tested in a headless browser:
 
 - **v0.21:** 16 engines (Hall, arcjet, solar thermal, gas-core NTR, direct fusion drive, electric sail added); no trademarked names (keep it that way: generic engine names only).
 
-- **v0.22:** renamed to **Cosmic Impulse** (old file names redirect). The GitHub repo is still `Stellar-Impulse` unless the developer renames it; README links use that path.
+- **v0.22:** renamed to **Cosmic Impulse** (old file names redirect). README links use the repository name `Cosmic-Impulse` (website https://donnydavino1.github.io/Cosmic-Impulse/). README hero image: `docs/images/cosmic-impulse-hero.jpg`, rendered by `python3 tools/render_hero.py 1600 660 --bg` (without `--bg`: transparent `cosmic-impulse-ship.png`).
 
 Not verified visually (no WebGL in the build sandbox): planets, debris, turrets, antenna/trim, hardpoint moves.
 The developer has not yet confirmed that GitHub Pages is switched on (Settings → Pages → Source: GitHub Actions).

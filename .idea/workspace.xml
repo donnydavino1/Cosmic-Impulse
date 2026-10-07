@@ -1,7 +1,243 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc6eea9a-32f9-4545-baa4-996be41d2619" name="Changes" comment="v0.2.1" />
+    <list default="true" id="dc6eea9a-32f9-4545-baa4-996be41d2619" name="Changes" comment="v0.2.2">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/pages.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/test.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nojekyll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGENTS.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CONTINUE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CONTRIBUTING.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/RULES.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arena.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmic-impulse-mobile.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmic-impulse-ship.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cosmic-impulse.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/cosmic-impulse-arena.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/stellar-impulse-arena.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ARCHITECTURE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Cosmic-Impulse-Overview.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/FAIR-PLAY.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/LAWS.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/MODDING.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/MULTIPLAYER.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/PROTOCOL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Stellar-Impulse-Overview.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/VISION.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/css/010-base.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/css/200-cockpit-neo.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/css/210-cockpit-themes.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/css/220-physical-cockpit.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/css/300-contracts.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/css/310-ops.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/css/320-builder.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/i18n/es.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/i18n/zh.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0050-bus.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0060-i18n.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0100-physics.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0200-render.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0300-parts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0400-tech.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0500-budgets.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0550-layout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0560-upgrades.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0600-manufacturing.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0700-fuel.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0800-analyzer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/0900-research.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1000-engineering-ui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1100-keys.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1200-stabilizer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1300-ship-model.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1400-notify.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1500-autopilot.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1600-radio.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1700-world.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1750-contracts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1760-ops.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1800-combat.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1900-look.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/1950-realism.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2000-vitals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2100-survival.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2200-save.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2300-text-panels.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2400-graphs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2500-dashboard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2550-sensors.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2555-radar-plus.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2560-api.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2570-ship-style.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2580-hardpoints.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2590-ops-ui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2595-builder-ui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2600-ui-extras.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2620-cockpit-styles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2630-physical-cockpit.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2640-orbit-planner.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2700-trip-supplies.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/js/2800-multiplayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/official-rules.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/platform/desktop.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/platform/mobile.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/shell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/orbital-mobile.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/orbital.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/sandbox.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arena/ai.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arena/arena.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arena/designer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arena/hud.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arena/input.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arena/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arena/net.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arena/render.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kernel/battle.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kernel/design.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kernel/fingerprint.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kernel/math.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rules/rules.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stellar-impulse-mobile.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stellar-impulse.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/arena-smoke.test.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/game-build.test.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/game-data.test.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/i18n.test.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/kernel.test.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ops.test.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/wiki.test.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/build-game.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/build-wiki.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/build.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/duel.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/export-facts.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/game-data.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/i18n-audit.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/overview_pdf.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/rules-doc.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/smoke/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/smoke/fake3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/smoke/mp_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/smoke/smoke.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Asteroids-and-Mining.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Build-Your-Own-Cosmic-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Build-Your-Own-Stellar-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Cockpit-and-Displays.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Combat.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Contracts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Controls.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Customization.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Drones-and-Probes.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Energy-and-Power.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Engines.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/FAQ.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Fair-Play-and-Rules.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/First-10-Hours.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Flying-and-Orbits.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Fuels.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Getting-Started.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Glossary.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Heat-and-Radiators.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Home.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Multiplayer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Orbital-Mechanics.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Parts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Propulsion-Concepts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Radiation.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Relativity.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Sensors-and-Radar.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Ship-Builder.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Ship-and-Engineering.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Solar-System.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Survival.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Technologies.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/The-Laws-of-Cosmic-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/The-Laws-of-Stellar-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Upgrades.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/Vision-and-Philosophy.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/_Sidebar.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Asteroids-and-Mining.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Build-Your-Own-Cosmic-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Build-Your-Own-Stellar-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Cockpit-and-Displays.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Combat.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Contracts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Controls.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Customization.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Drones-and-Probes.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Energy-and-Power.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Engines.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/FAQ.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Fair-Play-and-Rules.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/First-10-Hours.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Flying-and-Orbits.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Fuels.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Getting-Started.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Glossary.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Heat-and-Radiators.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Home.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Multiplayer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Orbital-Mechanics.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Parts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Propulsion-Concepts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Radiation.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Relativity.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Sensors-and-Radar.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Ship-Builder.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Ship-and-Engineering.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Solar-System.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Survival.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Technologies.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/The-Laws-of-Cosmic-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/The-Laws-of-Stellar-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Upgrades.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/es/Vision-and-Philosophy.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Asteroids-and-Mining.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Build-Your-Own-Cosmic-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Build-Your-Own-Stellar-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Cockpit-and-Displays.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Combat.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Contracts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Controls.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Customization.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Drones-and-Probes.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Energy-and-Power.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Engines.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/FAQ.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Fair-Play-and-Rules.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/First-10-Hours.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Flying-and-Orbits.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Fuels.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Getting-Started.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Glossary.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Heat-and-Radiators.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Home.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Multiplayer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Orbital-Mechanics.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Parts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Propulsion-Concepts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Radiation.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Relativity.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Sensors-and-Radar.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Ship-Builder.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Ship-and-Engineering.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Solar-System.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Survival.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Technologies.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/The-Laws-of-Cosmic-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/The-Laws-of-Stellar-Impulse.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Upgrades.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wiki/zh/Vision-and-Philosophy.md" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,7 +340,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791371393730</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="v0.2.2">
+      <option name="closed" value="true" />
+      <created>1791372123847</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1791372123847</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -127,7 +371,8 @@
     <MESSAGE value="v0.2.0!" />
     <MESSAGE value="v0.2.1!" />
     <MESSAGE value="v0.2.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.2.1" />
+    <MESSAGE value="v0.2.2" />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.2.2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

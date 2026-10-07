@@ -1,10 +1,10 @@
-<p align="center"><img src="docs/images/cosmic-impulse-ship.png" alt="A Cosmic Impulse spaceship: crew cabin, gold-foil tank, solar wings, truss, reactor, radiators and engine" width="760"></p>
+<p align="center"><img src="docs/images/cosmic-impulse-hero.jpg" alt="A Cosmic Impulse spaceship in orbit above Earth: crew cabin, gold-foil tank, solar wings, truss, reactor, radiators and engine" width="100%"></p>
 
 <h1 align="center">Cosmic Impulse</h1>
 
 <p align="center"><b>Build the spaceship you've always wanted, then fly it through a real, to-scale solar system.</b></p>
 
-<p align="center"><a href="https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse.html"><b>▶ Play</b></a> &nbsp;·&nbsp; <a href="https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse-mobile.html"><b>📱 Phone</b></a> &nbsp;·&nbsp; <a href="https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Home"><b>📖 Wiki</b></a></p>
+<p align="center"><a href="https://donnydavino1.github.io/Cosmic-Impulse/cosmic-impulse.html"><b>▶ Play</b></a> &nbsp;·&nbsp; <a href="https://donnydavino1.github.io/Cosmic-Impulse/cosmic-impulse-mobile.html"><b>📱 Phone</b></a> &nbsp;·&nbsp; <a href="https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/Home"><b>📖 Wiki</b></a></p>
 
 Design its engines, weapons, armour and power. Explore, mine asteroids, build, and battle other players,
 all under one shared set of real physics.
@@ -28,10 +28,10 @@ the same sensor data, the same physics and the same limits. That means customiza
 the game more comfortable, efficient or uniquely yours, but never makes the match unfair. The best player wins
 through skill, design and creativity, not through hidden advantages.
 
-**How this works technically:** [Fair Play and Rules (wiki)](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Fair-Play-and-Rules)
+**How this works technically:** [Fair Play and Rules (wiki)](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/Fair-Play-and-Rules)
 explains it in plain language. [`docs/FAIR-PLAY.md`](docs/FAIR-PLAY.md) has the full technical details: which code
 counts as shared rules, how each game's "physics fingerprint" proves both players use the same rules, and what
-happens when they don't. [Build Your Own Cosmic Impulse (wiki)](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Build-Your-Own-Cosmic-Impulse)
+happens when they don't. [Build Your Own Cosmic Impulse (wiki)](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/Build-Your-Own-Cosmic-Impulse)
 shows how to rebuild the whole interface, even with an AI assistant, while still battling everyone fairly.
 
 ---
@@ -40,16 +40,16 @@ shows how to rebuild the whole interface, even with an AI assistant, while still
 
 | | |
 |---|---|
-| **Start page** | [donnydavino1.github.io/Stellar-Impulse](https://donnydavino1.github.io/Stellar-Impulse/) |
-| **Play on a computer** | [▶ Play Cosmic Impulse](https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse.html) |
-| **Play on a phone** | [📱 Play the phone version](https://donnydavino1.github.io/Stellar-Impulse/cosmic-impulse-mobile.html) |
-| **Player guide** | 📖 [English](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Home) · [Español](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#es/Home) · [中文](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#zh/Home) |
+| **Start page** | [donnydavino1.github.io/Cosmic-Impulse](https://donnydavino1.github.io/Cosmic-Impulse/) |
+| **Play on a computer** | [▶ Play Cosmic Impulse](https://donnydavino1.github.io/Cosmic-Impulse/cosmic-impulse.html) |
+| **Play on a phone** | [📱 Play the phone version](https://donnydavino1.github.io/Cosmic-Impulse/cosmic-impulse-mobile.html) |
+| **Player guide** | 📖 [English](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/Home) · [Español](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#es/Home) · [中文](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#zh/Home) |
 
 You don't need a GitHub account to play. Just click a link above.
 
 **New here?** Start with the wiki's
-[Vision and Philosophy](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Vision-and-Philosophy) page,
-then [Your First 10 Hours](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/First-10-Hours).
+[Vision and Philosophy](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/Vision-and-Philosophy) page,
+then [Your First 10 Hours](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/First-10-Hours).
 
 ---
 
@@ -82,7 +82,7 @@ technology, build better parts, mine asteroids, and fly anywhere in the solar sy
 buttons (bottom right) to fire. Drag to look around, pinch to zoom.
 
 The full list of controls is in the wiki:
-[Controls](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Controls).
+[Controls](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/Controls).
 
 ---
 
@@ -152,7 +152,7 @@ Three ideas guide everything:
 2. **Same rules for everyone:** your customizations never change the physics, so battles are always fair.
 3. **Almost unlimited creation:** the goal is tools to invent what comes next, not just a list of things to unlock.
 
-Read more: [Vision and Philosophy](https://donnydavino1.github.io/Stellar-Impulse/wiki.html#en/Vision-and-Philosophy) ·
+Read more: [Vision and Philosophy](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/Vision-and-Philosophy) ·
 [docs/VISION.md](docs/VISION.md) ·
 [Non-technical overview (PDF)](docs/Cosmic-Impulse-Overview.pdf)
 
