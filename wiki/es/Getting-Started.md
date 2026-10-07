@@ -1,6 +1,6 @@
 # Primeros pasos
 
-1. **Abre el juego.** `stellar-impulse.html` en ordenador, `stellar-impulse-mobile.html` en móvil. Elige idioma con 🌐 en la pantalla de bienvenida (o F8).
+1. **Abre el juego.** `cosmic-impulse.html` en ordenador, `cosmic-impulse-mobile.html` en móvil. Elige idioma con 🌐 en la pantalla de bienvenida (o F8).
 2. **Mira alrededor.** Empiezas en la **cámara de persecución en 3ª persona**, 400 km sobre la Tierra. Arrastra para mirar,
    rueda o pellizca para acercar. **V** cambia de cámara: persecución → cabina → mapa orbital.
 3. **Mira el objetivo** (recuadro azul). El primero es un entrenamiento de combate.

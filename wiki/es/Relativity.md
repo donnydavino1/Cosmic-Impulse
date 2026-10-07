@@ -1,7 +1,7 @@
 # Relatividad
 
-Por debajo de unos miles de km/s, basta con Newton. Cerca de la velocidad de la luz (c = 299.792 km/s), Stellar
-Impulse pasa a la relatividad especial, como dice la [[Ley 7|The Laws of Stellar Impulse]].
+Por debajo de unos miles de km/s, basta con Newton. Cerca de la velocidad de la luz (c = 299.792 km/s), Cosmic
+Impulse pasa a la relatividad especial, como dice la [[Ley 7|The Laws of Cosmic Impulse]].
 
 ## Gamma
 

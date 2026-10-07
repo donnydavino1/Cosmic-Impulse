@@ -4,3 +4,6 @@
 #bldw h2{margin:0 0 4px;color:var(--ac)}#bldw .opsn{color:var(--mut);font-size:11.5px}
 .bldt{border-collapse:collapse;width:100%;margin:8px 0}.bldt td,.bldt th{border-bottom:1px solid #24305a;padding:4px 6px;text-align:left}.bldt th{color:#7fd3ff}
 .bld-up{color:#5dff8a}.bld-dn{color:#ff8a6a}#bldsv svg text{font-family:inherit}
+#bldprev{width:100%;height:auto;display:block;margin-top:6px;border-radius:8px}.bldsel{border-color:#ffb84d!important;color:#ffb84d}
+.bldcat{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0}.bldpi{background:#0f1530;border:1px solid #24305a;border-radius:6px;padding:6px 8px}.bldpi button{margin-top:4px}.bldlock{opacity:.55}
+@media (max-width:700px){.bldcat{grid-template-columns:1fr}}

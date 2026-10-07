@@ -1,6 +1,6 @@
 # Fair play: shared rules, personal clients
 
-Stellar Impulse wants two things that pull against each other: **anyone can reshape the game** (often with an AI), and
+Cosmic Impulse wants two things that pull against each other: **anyone can reshape the game** (often with an AI), and
 **anyone can battle anyone fairly**. The answer is to split the code and fingerprint the shared part.
 
 ## The split
@@ -16,6 +16,7 @@ Stellar Impulse wants two things that pull against each other: **anyone can resh
 | `1700-world.js` | weapons, projectiles, damage, mining |
 | `1750-contracts.js` | what contracts pay and how rewards arrive |
 | `0550-layout.js` | how module layout changes turn time, g limit, reactor dose and storm shelter |
+| `0560-upgrades.js` | what each part upgrade improves and costs |
 | `1760-ops.js` | what drones dig, what probes cost, travel and return |
 | `2100-survival.js` | life support, radiation, failures |
 | `2550-sensors.js` | what sensors can detect (tiers, ranges, fidelity) |

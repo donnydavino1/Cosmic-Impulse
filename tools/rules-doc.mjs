@@ -11,7 +11,7 @@ const table = (obj) => ['| Rule | Value |', '|---|---|', ...Object.entries(obj).
 const flat = (obj, pre = '') =>
   Object.entries(obj).flatMap(([k, v]) => (v && typeof v === 'object' && !Array.isArray(v) ? flat(v, `${pre}${k}.`) : [[`${pre}${k}`, v]]));
 
-const out = `# Stellar Impulse Rules
+const out = `# Cosmic Impulse Rules
 
 > Generated from \`src/rules/rules.js\` by \`npm run rules\`. Do not edit by hand.
 

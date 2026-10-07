@@ -37,14 +37,20 @@ Research points (RP) come from your crew and labs over time. Each technology may
 
 | Technology | Cost | Needs | Effect |
 |---|---|---|---|
-| **Plasma propulsion (VASIMR)** | 80 RP | — | Radio-frequency plasma heating and magnetic nozzles. |
-| **Magnetoplasmadynamic thrusters** | 250 RP | Plasma propulsion (VASIMR), High-temperature superconductors | Megawatt-class electric thrust. |
+| **Magnetoplasma propulsion** | 80 RP | — | Radio-frequency plasma heating and magnetic nozzles. |
+| **Magnetoplasmadynamic thrusters** | 250 RP | Magnetoplasma propulsion, High-temperature superconductors | Megawatt-class electric thrust. |
 | **Nuclear thermal propulsion** | 120 RP | Space fission reactors | Reactor-heated hydrogen rockets. |
 | **Solar sails** | 60 RP | Carbon composites | Ultra-thin carbon mirror film and deployable booms. |
 | **Engine refinement Mk II** | 120 RP | — | Upgrade engines you already own: +12% exhaust speed, −30% waste heat, −25% mass per watt. |
 | **Engine refinement Mk III** | 450 RP | Engine refinement Mk II, High-temperature superconductors | A second round of the same improvements. |
 | **Antimatter production** | 3000 RP | High-temperature superconductors, Orbital factory | Accelerators that make antiprotons, magnetic traps to hold them, and the photon rocket. |
 | **Beamed-core antimatter drive** | 5000 RP | Antimatter production | Magnetically steered pions: far more thrust per watt than light. |
+| **Hall-effect thrusters** | 30 RP | — | The workhorse of satellite propulsion: more thrust per watt than gridded ion engines. |
+| **Arcjets** | 25 RP | — | Electric arcs heat hydrogen: simple, sturdy, 12 km/s. |
+| **Solar thermal propulsion** | 60 RP | Carbon composites | Concentrated sunlight heats hydrogen: 8 km/s with no reactor. |
+| **Electric sails** | 120 RP | Carbon composites | Charged tethers ride the solar wind: thrust without propellant that fades only as 1/distance. |
+| **Gas-core nuclear rockets** | 300 RP | Nuclear thermal propulsion | Fissioning uranium gas heats hydrogen: 30 km/s with enormous thrust. |
+| **Direct fusion drive** | 500 RP | High-temperature superconductors | A compact magnetic-mirror fusion reactor whose exhaust is the thrust. |
 
 ## Life support
 

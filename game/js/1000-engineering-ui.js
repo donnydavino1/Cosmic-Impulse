@@ -190,7 +190,7 @@ function drawOrbit(o,fp){if(!(o.eps<0)||!(o.ec<.9999)){eline.visible=false;retur
 let last=performance.now(),fc=0;const v3=new THREE.Vector3();
 function frame(now){requestAnimationFrame(frame);let rem=MP.role==='guest'&&MP.conn?guestRem(now):Math.min((now-last)/1000,.1)*(paused?0:WARP[wi]),n=0;last=now;const T0f=T;
  while(rem>1e-9&&n++<5000){const dt=Math.min(rem,.02*ctl(),600,apDt());step(dt);rem-=dt;T+=dt}
- worldTick(T-T0f,now);survivalTick(T-T0f);ctl();{const d=s.dom,r=Math.hypot(s.x-d.x,s.y-d.y,s.z-d.z);if(r<d.R){const k=d.R/r;s.x=d.x+(s.x-d.x)*k;s.y=d.y+(s.y-d.y)*k;s.z=d.z+(s.z-d.z)*k;s.vx=d.vx;s.vy=d.vy;s.vz=d.vz;s.msg='Landed / crashed on '+d.n}else s.msg=''}
+ worldTick(T-T0f,now);survivalTick(T-T0f);ctl();{const d=s.dom,r=Math.hypot(s.x-d.x,s.y-d.y,s.z-d.z);if(r<d.R)groundContact(d);else s.msg=''}
  if(FP||SV)fi=0;if(STAB&&(FP||SV||fi==0))stabApply();else stabCapture();const fp=FOC[fi];
  ALL.forEach((b,i)=>{if(i>N)return;const x=(b.x-fp.x)/U,y=(b.y-fp.y)/U,z=(b.z-fp.z)/U;mp.set([x,y,z],i*3);if(i<N)meshes[i].position.set(x,y,z);if(i==0)light.position.set(x,y,z);
   if(i&&i<N){const P=B[b.p];rings[i].position.set((P.x-fp.x)/U,(P.y-fp.y)/U,(P.z-fp.z)/U)}});

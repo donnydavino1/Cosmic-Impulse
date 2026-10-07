@@ -18,7 +18,7 @@
 
 ## 报酬如何发放（以及原因）
 
-奖励遵循[[Stellar Impulse 的定律|The Laws of Stellar Impulse]]，所以没有东西会凭空出现：
+奖励遵循[[Cosmic Impulse 的定律|The Laws of Cosmic Impulse]]，所以没有东西会凭空出现：
 
 - **研究点数**是知识，通过无线电发送。即时到账。
 - **能量**由地球的**能量束**传送：只能送达你电池剩余的容量。电池满了就会浪费，所以先腾出空间。

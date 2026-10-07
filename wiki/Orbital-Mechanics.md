@@ -38,6 +38,17 @@ A push gives you the most energy when you are moving fastest: deep in a gravity 
 orbit. Leaving Earth from low orbit for Jupiter takes about 6.3 km/s; the same trip started in deep space needs
 about 8.8 km/s. That is why probes launched from low orbit reach farther.
 
+## Geostationary and geosynchronous orbits
+
+A **synchronous** orbit goes round once in exactly the time the body turns once. For Earth that is 42,164 km from the
+centre (35,786 km up). **Geostationary** means synchronous *and* in the equator: you hang over one spot, like weather
+and TV satellites. **Geosynchronous** keeps your tilt, so you trace a figure-eight over the ground.
+
+Press **F6** (or 🛰 *Orbit planner* in 🧭 NAVIGATE) around any planet or moon: choose geostationary, geosynchronous or
+a custom circular orbit, type the distance from the body's centre, and see the period, speed and Δv before the
+autopilot flies it with your engine and fuel. Some bodies turn so slowly that their synchronous orbit lies beyond the
+reach of their gravity (Venus, the Moon): the planner tells you.
+
 ## Tilting an orbit
 
 Changing the orbit plane by an angle Δi costs Δv = 2·v·sin(Δi/2). At 7.7 km/s, a 10° tilt costs 1.3 km/s: tilt far

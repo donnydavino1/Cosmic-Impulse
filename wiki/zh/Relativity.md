@@ -1,6 +1,6 @@
 # 相对论
 
-低于每秒几千公里时，牛顿力学就够了。接近光速（c = 299,792 km/s）时，Stellar Impulse 改用狭义相对论，见[[定律 7|The Laws of Stellar Impulse]]。
+低于每秒几千公里时，牛顿力学就够了。接近光速（c = 299,792 km/s）时，Cosmic Impulse 改用狭义相对论，见[[定律 7|The Laws of Cosmic Impulse]]。
 
 ## 伽马
 

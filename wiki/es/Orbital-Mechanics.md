@@ -39,6 +39,17 @@ Un empuje te da más energía cuando vas más rápido: en el fondo de un pozo gr
 órbita. Salir de la órbita baja terrestre hacia Júpiter cuesta unos 6,3 km/s; el mismo viaje empezado en el espacio
 profundo necesita unos 8,8 km/s. Por eso las sondas lanzadas desde órbita baja llegan más lejos.
 
+## Órbitas geoestacionarias y geosíncronas
+
+Una órbita **síncrona** da una vuelta exactamente en el tiempo que el cuerpo tarda en girar una vez. Para la Tierra está
+a 42.164 km del centro (35.786 km de altura). **Geoestacionaria** significa síncrona *y* en el ecuador: te quedas sobre
+un mismo punto, como los satélites meteorológicos y de televisión. **Geosíncrona** mantiene tu inclinación, así que
+dibujas un ocho sobre el suelo.
+
+Pulsa **F6** (o 🛰 *Planificador de órbitas* en 🧭 NAVEGAR) alrededor de cualquier planeta o luna: elige geoestacionaria,
+geosíncrona o una órbita circular personalizada, escribe la distancia al centro y mira el periodo, la velocidad y el Δv
+antes de que el piloto automático vuele con tu motor y combustible.
+
 ## Inclinar una órbita
 
 Cambiar el plano de la órbita un ángulo Δi cuesta Δv = 2·v·sen(Δi/2). A 7,7 km/s, inclinar 10° cuesta 1,3 km/s:

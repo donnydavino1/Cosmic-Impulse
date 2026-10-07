@@ -37,14 +37,20 @@ Los puntos de investigación (PI) vienen de tu tripulación y laboratorios con e
 
 | Tecnología | Coste | Requiere | Efecto |
 |---|---|---|---|
-| **Propulsión de plasma (VASIMR)** | 80 RP | — | Calentamiento de plasma por radiofrecuencia y toberas magnéticas. |
-| **Propulsores magnetoplasmadinámicos** | 250 RP | Propulsión de plasma (VASIMR), Superconductores de alta temperatura | Empuje eléctrico de clase megavatio. |
+| **Propulsión de magnetoplasma** | 80 RP | — | Calentamiento de plasma por radiofrecuencia y toberas magnéticas. |
+| **Propulsores magnetoplasmadinámicos** | 250 RP | Propulsión de magnetoplasma, Superconductores de alta temperatura | Empuje eléctrico de clase megavatio. |
 | **Propulsión nuclear térmica** | 120 RP | Reactores de fisión espaciales | Cohetes de hidrógeno calentado por un reactor. |
 | **Velas solares** | 60 RP | Materiales compuestos de carbono | Película de espejo de carbono ultrafina y mástiles desplegables. |
 | **Mejora de motores Mk II** | 120 RP | — | Mejora los motores que ya tienes: +12 % velocidad de escape, −30 % calor residual, −25 % masa por vatio. |
 | **Mejora de motores Mk III** | 450 RP | Mejora de motores Mk II, Superconductores de alta temperatura | Una segunda ronda de las mismas mejoras. |
 | **Producción de antimateria** | 3000 RP | Superconductores de alta temperatura, Fábrica orbital | Aceleradores que crean antiprotones, trampas magnéticas para guardarlos y el cohete de fotones. |
 | **Motor de antimateria de núcleo dirigido** | 5000 RP | Producción de antimateria | Piones dirigidos magnéticamente: mucho más empuje por vatio que la luz. |
+| **Propulsores de efecto Hall** | 30 RP | — | El caballo de batalla de la propulsión de satélites: más empuje por vatio que los motores iónicos de rejillas. |
+| **Arcjets** | 25 RP | — | Arcos eléctricos calientan hidrógeno: sencillo, robusto, 12 km/s. |
+| **Propulsión solar térmica** | 60 RP | Materiales compuestos de carbono | La luz solar concentrada calienta hidrógeno: 8 km/s sin reactor. |
+| **Velas eléctricas** | 120 RP | Materiales compuestos de carbono | Cables cargados aprovechan el viento solar: empuje sin propelente que solo cae como 1/distancia. |
+| **Cohetes nucleares de núcleo gaseoso** | 300 RP | Propulsión nuclear térmica | Gas de uranio en fisión calienta hidrógeno: 30 km/s con un empuje enorme. |
+| **Motor de fusión directa** | 500 RP | Superconductores de alta temperatura | Un reactor de fusión compacto de espejo magnético cuyo escape es el empuje. |
 
 ## Soporte vital
 

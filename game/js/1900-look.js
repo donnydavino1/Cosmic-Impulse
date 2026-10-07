@@ -1,3 +1,5 @@
+// any world without its own painter: its base colour, with mottled variation
+function PAINT_GEN(b){const c=[(b.c>>16)&255,(b.c>>8)&255,b.c&255],sd=b.n.length*7;return(x,y,z)=>{const n=fbm(x*4,y*4,z*4,5,sd),m=fbm(x*12,y*12,z*12,3,sd+1);return c.map(v=>Math.min(255,v*(.7+.5*n)*(.9+.2*m)))}}
 // ===== LOOK & FEEL: painted planets with glowing atmospheres, a nebula sky, and a debris field around your ship =====
 // Everything here is visual only. The debris never collides with anything and has no effect on the physics; turn it off
 // in 🎨 Customize → "Cinematic space debris" for realistic, nearly empty space.
@@ -23,6 +25,18 @@ const PAINT={
   if(ice)return[236,244,250];if(e<.5){const sh=sstep(.4,.5,e);return mixC([10,40,110],[30,120,170],sh)}
   const m=fbm(x*6,y*6,z*6,4,9),dry=sstep(.2,.55,1-Math.abs(lat)/1.1)*sstep(.45,.65,m),hi=sstep(.62,.75,e);
   return mixC(mixC(mixC([46,110,48],[150,128,70],dry),[110,100,90],hi),[230,230,235],sstep(.74,.8,e))},
+ // the realistic look: deep navy oceans, darker and more varied land, deserts, mountains and ice, more fine detail
+ EarthReal:(x,y,z,lat)=>{const e=fbm(x*2.2,y*2.2,z*2.2,7,6)+.12*fbm(x*9,y*9,z*9,4,7)+.04*fbm(x*40,y*40,z*40,2,31)-.06,ice=Math.abs(lat)>1.12+.15*fbm(x*6,y*6,z*6,3,8);
+  if(ice)return mixC([214,226,236],[246,250,252],fbm(x*20,y*20,z*20,2,32));if(e<.5){const sh=sstep(.44,.5,e),dp=fbm(x*5,y*5,z*5,3,33);return mixC(mixC([6,18,52],[10,32,78],dp),[22,74,108],sh*sh)}
+  const m=fbm(x*6,y*6,z*6,5,9),dry=sstep(.15,.55,1-Math.abs(lat)/1.1)*sstep(.42,.62,m),hi=sstep(.6,.76,e),tex=.85+.3*fbm(x*30,y*30,z*30,3,34);
+  return mixC(mixC(mixC([34,62,30],[176,146,102],dry),[96,84,72],hi),[226,228,232],sstep(.77,.82,e)).map(v=>Math.min(255,v*tex))},
+ Uranus:(x,y,z,lat)=>{const n=fbm(x*2,y*2,z*6,3,51);return mixC([140,200,210],[190,230,236],.4+.4*n+.1*Math.sin(lat*6))},
+ Neptune:(x,y,z,lat)=>{const w=fbm(x*3,y*3,z*3,4,52),b=Math.sin(lat*9+w*2);return mixC([40,70,170],[90,130,220],.5+.4*b)},
+ Pluto:(x,y,z,lat)=>{const n=fbm(x*3,y*3,z*3,5,53),heart=sstep(.55,.65,fbm(x*1.2+1,y*1.2,z*1.2,3,54));return mixC(mixC([120,90,70],[200,170,140],n),[236,226,214],heart)},
+ Io:(x,y,z)=>{const n=fbm(x*5,y*5,z*5,5,55),sp=sstep(.68,.74,fbm(x*14,y*14,z*14,3,56));return mixC(mixC([200,170,60],[240,220,120],n),[90,40,20],sp)},
+ Europa:(x,y,z)=>{const n=fbm(x*4,y*4,z*4,4,57),cr=sstep(.48,.5,Math.abs(fbm(x*9,y*9,z*9,4,58)-.5)+.45);return mixC(mixC([215,205,185],[240,236,226],n),[150,100,70],cr*.6)},
+ Titan:(x,y,z,lat)=>{const n=fbm(x*2,y*2,z*2,3,59);return mixC([200,140,60],[230,175,90],.5+.3*n+.1*Math.sin(lat*3))},
+ 'Proxima Centauri':(x,y,z)=>{const n=fbm(x*8,y*8,z*8,4,60);return mixC([255,90,40],[255,170,110],n)},
  Moon:(x,y,z)=>{const n=fbm(x*3,y*3,z*3,5,10),m=sstep(.45,.6,fbm(x*1.5,y*1.5,z*1.5,3,11));return mixC(mixC([150,150,152],[196,196,198],n),[92,92,98],m*.8)},
  Mars:(x,y,z,lat)=>{if(Math.abs(lat)>1.3+.1*fbm(x*8,y*8,z*8,2,12))return[240,236,232];const n=fbm(x*3,y*3,z*3,6,13),d=sstep(.5,.65,fbm(x*1.7,y*1.7,z*1.7,4,14));
   return mixC(mixC([170,74,34],[222,132,78],n),[94,46,32],d*.7)},
@@ -39,9 +53,13 @@ function vividPlanets(){const aniso=R.capabilities&&R.capabilities.getMaxAnisotr
   const X={b,m,tilt,halo:null,clouds:null};PLX.push(X);
   if(HALO[b.n]){const t=haloTex(HALO[b.n]);if(t){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,color:0xffffff,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true}));m.add(sp);X.halo=sp}}
   // paint textures a little later, one body at a time, so the game starts instantly
-  setTimeout(()=>{try{const big=b.n==='Earth',cv=eqTex(big?1024:512,big?512:256,PAINT[b.n]);if(!cv)return;
+  setTimeout(()=>{try{const big=b.n==='Earth',hr=big&&typeof REAL==='function'&&REAL(),cv=eqTex(hr?2048:big?1024:512,hr?1024:big?512:256,hr&&PAINT.EarthReal?PAINT.EarthReal:PAINT[b.n]||PAINT_GEN(b));if(!cv)return;
    if(b.n==='Moon'||b.n==='Mercury')craters(cv,b.n==='Moon'?260:340,'rgba(60,60,64,.35)','rgba(235,235,240,.35)',i);
-   const tx=new THREE.CanvasTexture(cv);tx.anisotropy=aniso;m.material=b.p<0?new THREE.MeshBasicMaterial({map:tx}):new THREE.MeshLambertMaterial({map:tx});
+   const tx=new THREE.CanvasTexture(cv);tx.anisotropy=aniso;m.material=(b.p<0||b.star)?new THREE.MeshBasicMaterial({map:tx}):new THREE.MeshLambertMaterial({map:tx});
+   if(b.n==='Earth'&&hr){try{const W2=cv.width,H2=cv.height,src=cv.getContext('2d').getImageData(0,0,W2,H2).data,nc=document.createElement('canvas');nc.width=W2;nc.height=H2;const nx=nc.getContext('2d'),im=nx.createImageData(W2,H2),d=im.data;
+     for(let j=0;j<H2;j++){const lat=Math.abs(.5-j/H2)*2;if(lat>.8)continue;for(let i=0;i<W2;i++){const k=(j*W2+i)*4,land=src[k+2]<src[k+1]+25&&src[k]>20;if(!land)continue;
+      const n=vNoise(i/W2*60,j/H2*30,0,77),m=vNoise(i/W2*400,j/H2*200,0,78);if(n*m>.42*(1+lat)){const v=Math.min(255,(n*m-.4)*900);d[k]=v;d[k+1]=v*.78;d[k+2]=v*.45;d[k+3]=255}}}
+     nx.putImageData(im,0,0);const lt=new THREE.CanvasTexture(nc);m.material.emissiveMap=lt;m.material.emissive=new THREE.Color(0xffd6a0);m.material.emissiveIntensity=.5;m.material.needsUpdate=true}catch(e){console.warn('city lights',e)}}
    if(b.n==='Earth'){const cc=eqTex(1024,512,(x,y,z)=>{const n=fbm(x*3+fbm(x*2,y*2,z*2,3,21),y*3,z*5,6,22),a=sstep(.5,.72,n);return[255,255,255,a*235]},true);
     if(cc){const ct=new THREE.CanvasTexture(cc);ct.anisotropy=aniso;const cg=new THREE.SphereGeometry(b.R/U*1.004,96,48);cg.rotateX(Math.PI/2);
      X.clouds=new THREE.Mesh(cg,new THREE.MeshLambertMaterial({map:ct,transparent:true,depthWrite:false}));m.add(X.clouds)}}

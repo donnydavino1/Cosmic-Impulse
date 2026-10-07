@@ -1,7 +1,7 @@
 # Calor y radiadores
 
 Cada vatio que usa tu nave acaba como calor, y en el vacío no hay aire que se lo lleve. La única salida es la
-**radiación**: un radiador brilla en infrarrojo (Ley 5 de [[Las leyes de Stellar Impulse|The Laws of Stellar Impulse]]).
+**radiación**: un radiador brilla en infrarrojo (Ley 5 de [[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]]).
 
 ## Cuánto calor disipa un radiador
 
@@ -34,6 +34,21 @@ Los radiadores emiten por las dos caras, así que un panel de 60 m² tiene 120 m
 | Radiador de gotas líquidas | 400 m² | 900 K | alto |
 
 Masas y recetas exactas en [[Piezas|Parts]]; la investigación, en [[Tecnologías|Technologies]].
+
+## El calor del Sol
+
+La luz solar también calienta la nave, más cuanto más cerca estás (crece con el cuadrado de la distancia: 1,4 kW/m² en la
+Tierra, 9 kW/m² en Mercurio, 136 kW/m² a 0,1 UA) y cuanto mayor es tu nave vista de lado. Por encima de lo que aguanta el
+casco, la luz solar **quema el casco**:
+
+| Protección | Aguanta luz solar hasta | Más o menos a esta distancia del Sol |
+|---|---|---|
+| Casco desnudo | 25 kW/m² | 0,23 UA |
+| **Parasol multicapa** (bloquea el 95 % del calor) | 80 kW/m² | 0,13 UA |
+| **Escudo térmico de carbono-carbono** (bloquea el 99,5 %, como la sonda Parker) | 1,2 MW/m² | 0,034 UA |
+
+Ambos son piezas en 🛠 → 🏭 Fabricar (requieren *Materiales compuestos de carbono*) y módulos que puedes colocar en el
+[[Constructor de naves|Ship Builder]].
 
 ## Qué significa para el diseño
 

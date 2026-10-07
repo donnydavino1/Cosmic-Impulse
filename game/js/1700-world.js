@@ -3,7 +3,7 @@ const OBJS=[];let FX=[],beamFx=null,mineRate=0,wMsg='';
 function flyAst(a){const D=DR[di],M=mass(),dv=D.f&&s.prop>0?D.ve*Math.log(M/(M-s.prop)):2000,esc=s.dom!==B[0]?escDv(elements(),di,PW,M):0;AP={ast:a,name:a.n+' ('+a.t+'-type asteroid)',stage:'',vcap:Math.max(150,Math.min(3e4,.3*(dv-esc)))};PJ=null;WT={kind:'ast',a};PRED=null;
  notify(`🧭 Autopilot → ${a.n}, ${fmtD(astDist(a))} away. It escapes ${s.dom!==B[0]?s.dom.n+' first, then':''} matches the asteroid’s orbit and parks 1.5 km away. Cruise speed limited to ${f1(AP.vcap/1e3,1)} km/s to save fuel. Watch the projected path (cyan) and the arrival time (bottom-left).`)}
 function astNeed(){if(!AP||!AP.ast)return 0;const D=DR[di];if(!D.f)return 0;const M=mass(),esc=s.dom!==B[0]?escDv(elements(),di,PW,M):0,req=1.35*(esc+2*Math.max(AP.vcap||0,1500)),dry=M-s.prop;return Math.max(0,dry*(Math.exp(req/D.ve)-1)-s.prop)}
-const tripExtra=()=>!AP?0:AP.ast?astNeed():trip(AP.r).extra;
+const tripExtra=()=>!AP||AP.orb?0:AP.ast?astNeed():trip(AP.r).extra;
 function targets(){const L=[];if(RS&&RS.alive&&!RS.stale){const d=Math.hypot(RS.x-s.x,RS.y-s.y,RS.z-s.z);if(d<2e6)L.push({kind:'pl',o:RS,d})}OBJS.forEach(o=>{if((o.kind==='drone'||o.hostile)&&o.alive)L.push({kind:'drone',o,d:Math.hypot(o.x-s.x,o.y-s.y,o.z-s.z)})});AST.forEach(a=>{const d=astDist(a);if(d<2e6)L.push({kind:'ast',a,d})});return L.sort((x,y)=>x.d-y.d)}
 const sameT=(x,y)=>x&&y&&x.kind===y.kind&&(x.kind==='ast'?x.a===y.a:x.o===y.o);
 function cycleT(){const L=targets();if(!L.length){WT=null;notify('🎯 Nothing within 2,000 km to target. Fly to an asteroid (🧭 NAVIGATE → Asteroids), launch practice drones (🛠 → 🔫 Weapons), or press '+KN(BIND.raid)+' to call in raiders.');return}const k=L.findIndex(t=>sameT(t,WT));WT=L[(k+1)%L.length]}

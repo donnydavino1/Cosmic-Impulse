@@ -1,6 +1,6 @@
 # Energy and Power
 
-Energy is the currency of Stellar Impulse: it buys panels, fuel, parts, research and weapon shots.
+Energy is the currency of Cosmic Impulse: it buys panels, fuel, parts, research and weapon shots.
 
 - **Solar panels** collect sunlight: about 1.36 kW per m² at Earth, falling with the square of distance from the Sun
   (4× less at twice the distance). Panels work far better closer to the Sun, and poorly past Mars.

@@ -1,6 +1,6 @@
-# The Laws of Stellar Impulse (also the wiki page of the same name)
+# The Laws of Cosmic Impulse (also the wiki page of the same name)
 
-Stellar Impulse has no scripted progression and no special cases. Everything comes from a short list of laws, the same
+Cosmic Impulse has no scripted progression and no special cases. Everything comes from a short list of laws, the same
 for every ship, raider and player. Learn these and you can predict anything in the game, design anything, and
 argue with anyone's ship on equal terms.
 
@@ -53,4 +53,4 @@ None of these are coded as features; they fall out of the laws:
 
 The laws are the **rules** of the game, shared by every player so battles are fair (see [[Fair Play and Rules]]).
 How your ship looks, how your cockpit reads, how your controls feel: that's the **client**, and you (or your AI)
-can reshape it completely. See [[Build Your Own Stellar Impulse]].
+can reshape it completely. See [[Build Your Own Cosmic Impulse]].

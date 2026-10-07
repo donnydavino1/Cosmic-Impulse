@@ -1,11 +1,13 @@
 // ===== SYSTEM BUDGETS (recomputed whenever the ship changes) =====
 function recalc(){const S={mass:0,cap:0,pmax:0,rtg:0,reactors:[],load:300,rp:0,fabPw:0,gmax:.5,ad:2,mag:false,whip:false,ls:null,radLoA:20,radHiA:0,radHiT:0,ww:false};
- for(const p of s.parts){const d=PARTS[p.id];S.mass+=d.m;if(p.fail)continue;const c=.5+.5*p.cond;
+ for(const p of s.parts){const d=typeof partEff==='function'?partEff(p):PARTS[p.id];S.mass+=d.m;if(p.fail)continue;const c=.5+.5*p.cond;
   if(d.cat==='frame')S.gmax=Math.max(S.gmax,d.g);else if(d.cat==='store'){S.cap+=d.cap*(d.wear?.5+.5*p.cond:1);S.pmax+=d.pmax}
   else if(d.cat==='gen'){if(d.eta)S.reactors.push({p,d});else S.rtg+=d.pe}
   else if(d.cat==='therm'){if(d.loop==='lo')S.radLoA+=2*d.A*c;else{S.radHiA+=2*d.A*c;S.radHiT=S.radHiT?Math.min(S.radHiT,d.Tmax):d.Tmax}}
-  else if(d.cat==='life'){S.ls=d;S.load+=d.p}else if(d.cat==='shield'){if(d.ad)S.ad+=d.hyd?d.ad*1.6:d.ad;if(d.ww)S.ww=true;if(d.mag){S.mag=true;S.load+=d.p}if(d.whip)S.whip=true}
+  else if(d.cat==='life'){S.ls=d;S.load+=d.p}else if(d.cat==='shield'){if(d.shade)S.shade=Math.max(S.shade||0,d.shade);if(d.hs)S.hs=true;if(d.ad)S.ad+=d.hyd?d.ad*1.6:d.ad;if(d.ww)S.ww=true;if(d.mag){S.mag=true;S.load+=d.p}if(d.whip)S.whip=true}
+  else if(d.cat==='sensor'){S.sensT=Math.max(S.sensT||0,d.tier+Math.floor(((p.mk||1)-1)/2));S.load+=d.p}
   else if(d.cat==='lab'){S.rp=Math.max(S.rp,d.rp);S.load+=d.p}else if(d.cat==='fab')S.fabPw=Math.max(S.fabPw,d.pw)}
+ if(!s.passive)S.load+=2000;  // active radar transmitter
  if(typeof layoutApply==='function')layoutApply(S);
  EFF=s.tech.t_pv3?.47:s.tech.t_pv2?.4:.3;SH=S}
 const engMass=(D,P)=>D.base+D.al*P*(1-.25*(D.mk-1)),wepMass=w=>w.id==='mlaser'?20+PML*6e-4:WEPR[w.id].m;
@@ -18,7 +20,8 @@ function engLimits(D,F,m,dts){if(!SH)recalc();if(D.fail){if(!PREDICTING)s.lim={P
 // power bus + two cooling loops. Low loop ≈ 300 K (crew, electronics, batteries, electric thrusters), high loop up to the radiators' limit (reactors, hot engines).
 function powerStep(dt,flux){if(!SH)recalc();const S=SH,lit=s.lit,sun=flux*s.area*EFF*lit*s.pcond,hasHi=S.radHiA>0,TloMax=318,ThiMax=hasHi?S.radHiT*.97:TloMax;
  const base=S.load+(STAB?50:0),engEl=DR[di].el&&s.burn>0?s.burn*PW:0;
- let hLo=base*.9+100+.3*flux*10*lit+s.wHeat+(s.fabHeat||0),hHi=0;const capLo=qrej(S.radLoA,TloMax),capHi=hasHi?qrej(S.radHiA,ThiMax):0;
+ const xs=S.lay?Math.max(.5,Math.min(6,S.lay.L*4.4/40)):1;
+ let hLo=base*.9+100+.3*flux*10*lit*xs*(1-(S.shade||0))+s.wHeat+(s.fabHeat||0),hHi=0;const capLo=qrej(S.radLoA,TloMax),capHi=hasHi?qrej(S.radHiA,ThiMax):0;
  const demand=base+engEl+(s.jobs.length&&!PREDICTING?S.fabPw:0)+(s.en<S.cap?Math.min(S.pmax,(S.cap-s.en)/600):0)-sun-S.rtg;let reac=0,reacMax=0;
  for(const r of S.reactors){const d=r.d;if(d.fuel&&!(s.fuel[d.fuel]>0))continue;const w=1/d.eta-1,room=hasHi?capHi-hHi:capLo-hLo,mx=Math.max(0,Math.min(d.pe*(.5+.5*r.p.cond),room/w));
   reacMax+=mx;const out=Math.max(0,Math.min(mx,demand-reac));reac+=out;if(hasHi)hHi+=out*w;else hLo+=out*w;if(d.fuel&&!PREDICTING)s.fuel[d.fuel]=Math.max(0,s.fuel[d.fuel]-out/d.eta/3.45e14*dt)}

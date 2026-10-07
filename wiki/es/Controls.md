@@ -46,6 +46,8 @@
 | **9** | 📋 Tablón de contratos (misiones y recompensas) |
 | **8** | 🛸 Operaciones: drones mineros y sondas científicas |
 | **7** | 🧱 Constructor de naves: distribución de módulos y rendimiento |
+| **F6** | 🛰 Planificador de órbitas: geoestacionaria, geosíncrona o cualquier órbita circular |
+| **6** | 📡 Radar activo / pasivo |
 | **F8** | 🌐 Idioma: English / Español / 中文 |
 | **F1** | 📖 Abrir la wiki del jugador |
 | **P** | 🌐 Ventana multijugador |

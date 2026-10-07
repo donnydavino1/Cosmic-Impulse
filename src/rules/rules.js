@@ -1,4 +1,4 @@
-// Stellar Impulse: the shared rule set ("Same Rules").
+// Cosmic Impulse: the shared rule set ("Same Rules").
 //
 // Every number that decides what a ship can do lives in this file. Both players (and, later,
 // every server) must run identical values: they are hashed into the rules fingerprint, and two

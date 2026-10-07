@@ -30,7 +30,7 @@ ventana de Operaciones muestra, para cada mundo: el **Δv** que necesita la sond
 
 ## Qué leyes
 
-| Lo que ves | Ley (ver [[Las leyes de Stellar Impulse|The Laws of Stellar Impulse]]) |
+| Lo que ves | Ley (ver [[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]]) |
 |---|---|
 | Drones y sondas se fabrican con materiales, y la nave pesa exactamente eso más | 3, conservación de la materia |
 | Los drones se recargan de tu batería | 4, energía |

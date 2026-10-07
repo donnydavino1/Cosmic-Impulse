@@ -1,6 +1,6 @@
 {
-  "name": "stellar-impulse",
-  "version": "0.12.0",
+  "name": "cosmic-impulse",
+  "version": "0.22.0",
   "description": "Open-source, physics-first spaceship engineering and battle game.",
   "type": "module",
   "license": "GPL-2.0-only",

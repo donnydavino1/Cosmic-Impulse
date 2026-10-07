@@ -13,6 +13,17 @@ Tus **sensores** deciden hasta dónde y qué tan bien ves; tu **pantalla de rada
 Tu nivel sube con la investigación (un nivel cada 7 tecnologías), y la antena de tu nave cambia de forma con él.
 En multijugador, mejores sensores revelan más sobre tu rival.
 
-**Diseños de radar:** 🎨 Personalizar → PANTALLA DE RADAR: *barrido, holo, rejilla, lista, mínimo*. Añade el widget
+**Piezas de sensores:** tu nivel también sube si fabricas una pieza de sensores (🛠 → 🏭 Fabricar → 📡 Sensores): una
+*antena de radar Doppler* (al menos nivel 2), un *panel de antena en fase* (nivel 3) o una *torreta de lidar y
+espectrómetro* (nivel 4). Mejorarla a Mk III y Mk V añade un nivel cada vez ([[Mejoras|Upgrades]]). Ver también
+[[Cabina y pantallas|Cockpit and Displays]] para el sónar y el radar 3D.
+
+**Activo o pasivo (tecla 6):** el radar *activo* (por defecto) emite pulsos: alcance y precisión completos, pero
+consume 2 kW y cualquiera que escuche te oye. La detección *pasiva* solo escucha: un tercio del alcance y cuatro veces
+el error, pero lo que emite (saqueadores, jugadores con radar activo) se oye a 1,5× tu alcance activo. Una **nave
+silenciosa** (pasiva, motor apagado) solo la ven otros a la mitad de su alcance normal, y a los saqueadores les cuesta
+mucho más fijarla ([[Combate|Combat]]).
+
+**Diseños de radar:** 🎨 Personalizar → PANTALLA DE RADAR: *3d, sónar, barrido, holo, rejilla, lista, mínimo*. Añade el widget
 📡 Sensores a tu cabina desde el editor del panel (**I**). En el móvil aparece un mini radar en la cabina.
-Tú (o tu IA) podéis diseñar nuevas pantallas de radar: ver [[Construye tu propio Stellar Impulse|Build Your Own Stellar Impulse]].
+Tú (o tu IA) podéis diseñar nuevas pantallas de radar: ver [[Construye tu propio Cosmic Impulse|Build Your Own Cosmic Impulse]].

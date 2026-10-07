@@ -11,8 +11,8 @@
 const OPS={droneM:40,droneCargo:50,droneRate:.005,droneV:20,droneRange:5e4,droneWarn:3e4,droneLost:1e5,droneJkg:1.5e6,
  droneMat:{iron:25,nickel:5,silicates:8,carbon:2},droneJ:4e9,
  probeDry:90,probeXeMax:40,probeVe:3e4,probeMat:{iron:40,silicates:30,carbon:12,nickel:7.7,platinum:.3},probeJ:2e10,
- SCI:{Earth:20,Moon:40,Venus:80,Mars:90,Mercury:120,Jupiter:250,Saturn:350,Sun:300},
- TGT:['Moon','Mercury','Venus','Earth','Mars','Jupiter','Saturn','Sun']};
+ SCI:{Earth:20,Moon:40,Venus:80,Mars:90,Mercury:120,Jupiter:250,Saturn:350,Sun:300,Europa:320,Titan:380,Uranus:420,Neptune:480,Pluto:600},
+ TGT:['Moon','Mercury','Venus','Earth','Mars','Jupiter','Europa','Saturn','Titan','Uranus','Neptune','Pluto','Sun']};
 const OPS_FACT={Earth:'Seen from orbit, Earth’s blue atmosphere is a layer only about 100 km thick.',
  Moon:'The Moon’s far side is almost all craters; water ice hides in its permanently shadowed polar craters.',
  Mercury:'Mercury’s days reach 430 °C and its nights fall to −180 °C, yet ice survives in craters at its poles.',
@@ -20,7 +20,12 @@ const OPS_FACT={Earth:'Seen from orbit, Earth’s blue atmosphere is a layer onl
  Mars:'Olympus Mons on Mars is the tallest volcano in the Solar System, about 22 km high.',
  Jupiter:'Jupiter’s Great Red Spot is a storm wider than Earth that has raged for at least 190 years.',
  Saturn:'Saturn’s rings are mostly water ice: hundreds of thousands of km wide, often only about 10 m thick.',
- Sun:'Near the Sun the solar wind streams out at 400–800 km/s and the corona is over a million degrees.'};
+ Sun:'Near the Sun the solar wind streams out at 400–800 km/s and the corona is over a million degrees.',
+ Europa:'Under Europa’s ice shell lies a salty ocean with about twice as much water as all of Earth’s oceans.',
+ Titan:'Titan has a thick nitrogen atmosphere and rains liquid methane into lakes and seas near its poles.',
+ Uranus:'Uranus rolls around the Sun on its side: its axis is tilted 98°, so each pole gets 42 years of daylight.',
+ Neptune:'Neptune has the fastest winds in the Solar System, over 2,000 km/h, and its moon Triton orbits backwards.',
+ Pluto:'Pluto’s bright “heart”, Sputnik Planitia, is a basin of frozen nitrogen that slowly churns like a lava lamp.'};
 const opsNew=()=>({drones:0,fleet:null,probes:0,flights:[],sci:{},haul:0,lt:null});
 if(!s.ops)s.ops=opsNew();
 const opsMul=(m,n)=>Object.fromEntries(Object.entries(m).map(([k,v])=>[k,v*n]));

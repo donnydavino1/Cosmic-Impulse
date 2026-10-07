@@ -20,7 +20,7 @@ tanks right behind them.
 
 ## What the layout changes
 
-| Number | Depends on | Why ([[The Laws of Stellar Impulse]]) |
+| Number | Depends on | Why ([[The Laws of Cosmic Impulse]]) |
 |---|---|---|
 | **180° turn** | how much mass sits far from the centre of mass | Law 2: two 220 N thrusters must spin your moment of inertia |
 | **Railgun re-aim** | half a 180° turn | the railgun is fixed along the ship: the whole ship must point ([[Combat]]) |
@@ -35,6 +35,42 @@ The builder compares **Now** with your **Draft** and colours each change green (
 Arrange the draft, then press **🔧 Refit to this layout**. A refit is a job for your fabricator
 ([[Ship and Engineering]]): moving modules costs 20 kJ for every kilogram moved, and each new truss needs 100 kg of
 iron. Removing a truss gives back half its iron.
+
+## Mounting modules beside the spine
+
+Select a module and press **⤴ Mount beside the module in front** to attach it to the side of that module (its
+*host*) instead of putting it on the spine. Mounted modules don't add length, so the ship gets **shorter**: it turns
+faster and can thrust harder. Several modules on the same host spread evenly around it: **2 = a mirrored pair,
+3 = a triangle, 4 = a cross** (symmetry). Use **◀ / ▶** to move a mounted module to another host, or
+**⤵ Back onto the spine**.
+
+Where you mount things matters:
+- **Tanks mounted around the crew cabin** make the best storm shelter of all (they surround the crew).
+- **Radiators** belong beside the reactor that heats them.
+- A **reactor** mounted beside the crew is close to them: its radiation dose goes up. Keep it on the far end of the
+  spine, behind other modules, if you want a safe crew.
+
+**Drag and drop:** in the side view, drag a module along the line to reorder it, or drag it above or below the line
+to mount it beside the nearest module. The small **end view** on the right looks along the ship at the selected
+module's ring of mounted modules. Upgraded modules show one coloured band per mark on the 3D ship.
+
+## Building and recycling from the builder
+
+The **🧩 Add a part** section lists every part by category, with its mass, materials, energy and the research it
+needs. **🏭 Build** queues it for your fabricator (it joins the tail of the ship). With a module selected you can also
+**⤴ Build beside** it, or **⤴⤴ Build a mirrored pair beside** it: the finished parts are mounted around that module
+automatically. **♻ Recycle this part** gives back half its materials.
+
+Under the side view, a **rendered preview** shows the draft as a lit 3D-looking ship: hull panels, gold-foil tanks,
+open trusses, radiator wings, the sensor dish, the engine bell, and one coloured band per upgrade mark. The table also
+shows the **Δv** your current engine gets from its fuel with the draft's mass.
+
+## Weapons and engines are modules too
+
+Every weapon you have built is a module. **Turrets** (mining laser, pulse laser, particle beam, missiles) mount beside a
+module like any other; the **railgun** is a long spinal weapon that lies along the spine, because the whole ship has to
+turn to aim it. **Engines** sit at the tail: the one in use and any others you own (they add mass there, which moves your
+centre of mass back). The **🚀 Engines at the tail** row lets you switch engine or scrap one.
 
 ## Saved designs
 

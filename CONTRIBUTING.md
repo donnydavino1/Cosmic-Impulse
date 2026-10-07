@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for helping build Stellar Impulse. A few principles keep the game fair and the code healthy.
+Thank you for helping build Cosmic Impulse. A few principles keep the game fair and the code healthy.
 
 1. **The Rules are sacred.** Every gameplay number belongs in `src/rules/rules.js`, nowhere else.
    Changing it changes the rules fingerprint, which means players on different versions can no

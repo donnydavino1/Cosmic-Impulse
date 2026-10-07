@@ -24,7 +24,7 @@
 
 ## 用到哪些定律
 
-| 你看到的 | 定律（见[[Stellar Impulse 的定律|The Laws of Stellar Impulse]]） |
+| 你看到的 | 定律（见[[Cosmic Impulse 的定律|The Laws of Cosmic Impulse]]） |
 |---|---|
 | 无人机和探测器由材料制成，飞船质量精确地增加这么多 | 3，物质守恒 |
 | 无人机用你的电池充电 | 4，能量 |

@@ -4,7 +4,7 @@
 > anything else you can imagine. Then take it into a massive, to-scale solar system to explore, mine, build, and
 > battle other players in their own ships.
 
-This page is the promise Stellar Impulse is built on. Every feature is measured against it.
+This page is the promise Cosmic Impulse is built on. Every feature is measured against it.
 
 ## 1. Make it yours
 
@@ -17,7 +17,7 @@ that information is yours: build your own radar screens, targeting aids, automat
 hand, automate everything, or invent something nobody has thought of.
 
 **In the game today:** [[Ship Builder]] (module layout that changes performance) · [[Customization]] (style,
-hardpoints, cockpit and dashboards) · [[Sensors and Radar]] (radar designs) · [[Build Your Own Stellar Impulse]]
+hardpoints, cockpit and dashboards) · [[Sensors and Radar]] (radar designs) · [[Build Your Own Cosmic Impulse]]
 (rebuild the whole client with an AI).
 
 ## 2. Same rules for everyone
@@ -36,7 +36,7 @@ Multiplayer runs on one shared set of rules:
   technology advances ([[Engines]], [[Parts]], [[Technologies]]).
 
 These rules are identical for everyone; a fingerprint proves it ([[Fair Play and Rules]]). The short version of
-all of them is [[The Laws of Stellar Impulse]].
+all of them is [[The Laws of Cosmic Impulse]].
 
 ## 3. Almost unlimited creation
 
@@ -65,7 +65,7 @@ See [[Technologies]] and [[Engines]].
 
 The long-term goal is a fully open-source game under the **GNU GPLv2**, so players can inspect, modify, improve and
 host their own versions. The goal is not just a big list of things to build, but the tools to invent what comes
-next. See [[Build Your Own Stellar Impulse]].
+next. See [[Build Your Own Cosmic Impulse]].
 
 ### Real, not cartoon
 

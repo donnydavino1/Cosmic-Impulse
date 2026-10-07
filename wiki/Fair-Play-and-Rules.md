@@ -1,6 +1,6 @@
 # Fair Play and Rules
 
-Stellar Impulse is open source and built to be customised, often by an AI assistant. So how can strangers battle fairly?
+Cosmic Impulse is open source and built to be customised, often by an AI assistant. So how can strangers battle fairly?
 
 The game is split into two kinds of code:
 

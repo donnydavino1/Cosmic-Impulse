@@ -56,6 +56,8 @@ Every part has mass, is built from materials plus energy, and many need research
 | **Water-wall tanks** | 200 kg | 200 kg iron | 1×10^9 J | Water-wall habitat | Tanks around the cabin hold your water supply: every 300 kg adds 1 g/cm², up to 20. |
 | **Active magnetic shield** | 4,000 kg | 1500 kg nickel, 1500 kg iron, 40 kg platinum | 5×10^11 J | Active magnetic shielding | Superconducting coils deflect charged particles (−90% flare dose, −50% cosmic rays) for 1 MW. |
 | **Whipple micrometeoroid shield** | 300 kg | 250 kg iron, 50 kg carbon | 1×10^9 J | — | Thin bumper layers vaporise dust grains before they reach the hull: −90% impact damage. |
+| **Multi-layer sunshade** | 150 kg | 60 kg carbon, 30 kg iron, 20 kg silicates | 3×10^9 J | Carbon composites | Layers of reflective film keep 95 % of the Sun's heat off the ship. Survives sunlight up to 80 kW/m² (about 0.13 AU from the Sun). |
+| **Carbon-carbon heat shield** | 700 kg | 600 kg carbon, 80 kg silicates, 40 kg iron | 4×10^10 J | Carbon composites | A thick carbon-foam shield like the Parker Solar Probe's: blocks 99.5 % of the heat and survives 1.2 MW/m² (about 0.034 AU, 7 solar radii). |
 
 ## Lab
 
@@ -64,6 +66,14 @@ Every part has mass, is built from materials plus energy, and many need research
 | **Research computer** | 30 kg | — | 0 J | — | Simulations and data analysis: 1 research point per hour. |
 | **Onboard laboratory** | 800 kg | 300 kg iron, 200 kg silicates, 1 kg platinum | 5×10^9 J | Onboard laboratory | Spectrometers, microscopes, a materials test rig: 6 RP/hour. |
 | **Research station module** | 5,000 kg | 2000 kg iron, 1500 kg silicates, 10 kg platinum, 500 kg carbon | 1×10^11 J | Research station | Full laboratory with a small accelerator: 30 RP/hour. |
+
+## Sensor
+
+| Part | Mass | Materials | Energy to build | Needs | What it does |
+|---|---|---|---|---|---|
+| **Doppler radar dish** | 120 kg | 60 kg iron, 40 kg silicates, 15 kg nickel, 0.05 kg platinum | 3×10^9 J | Onboard laboratory | A tracking dish: your sensors are at least Doppler radar (2,000 km range, adds velocity). Mk III and Mk V add a sensor level. |
+| **Phased-array panel** | 600 kg | 300 kg silicates, 220 kg iron, 40 kg nickel, 0.4 kg platinum | 2×10^10 J | Industrial fabrication | Thousands of small antennas steer the beam electronically: at least a phased array (20,000 km, adds mass and size). |
+| **Lidar and spectrometer turret** | 900 kg | 350 kg silicates, 300 kg iron, 100 kg carbon, 60 kg nickel, 2 kg platinum | 8×10^10 J | Research station | Laser ranging plus spectroscopy: at least lidar sensing (200,000 km, adds composition, hull and ammunition). |
 
 ## Fab
 

@@ -1,6 +1,6 @@
 # Juego limpio y reglas
 
-Stellar Impulse es de código abierto y está hecho para personalizarse, a menudo con un asistente de IA. Entonces, ¿cómo
+Cosmic Impulse es de código abierto y está hecho para personalizarse, a menudo con un asistente de IA. Entonces, ¿cómo
 pueden luchar desconocidos de forma justa?
 
 El juego se divide en dos tipos de código:

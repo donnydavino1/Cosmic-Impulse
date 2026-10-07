@@ -1,6 +1,6 @@
 // Builds the two playable files from the modules in game/:
-//   stellar-impulse.html         desktop (keyboard + mouse)
-//   stellar-impulse-mobile.html  phone (touch layout, ☰ menu for every key)
+//   cosmic-impulse.html         desktop (keyboard + mouse)
+//   cosmic-impulse-mobile.html  phone (touch layout, ☰ menu for every key)
 // Both contain the SAME game core (shell + css + js, byte for byte); only the platform layer differs.
 // The SHA-256 of that core is the game's rules fingerprint (printed, and embedded as ORB_FP).
 // Usage: node tools/build-game.mjs        (or: npm run game)
@@ -36,11 +36,11 @@ export function buildGame({ write = true, release = false } = {}) {
   const mobile = stamped
     .replace('<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
       '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">\n<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">')
-    .replace(/<title>[^<]*<\/title>/, '<title>Stellar Impulse (phone)</title>')
+    .replace(/<title>[^<]*<\/title>/, '<title>Cosmic Impulse (phone)</title>')
     .replace('<!--@PLATFORM-->', () => readFileSync(G('platform', 'mobile.html'), 'utf8'));
   if (write) {
-    writeFileSync(join(root, 'stellar-impulse.html'), desktop);
-    writeFileSync(join(root, 'stellar-impulse-mobile.html'), mobile);
+    writeFileSync(join(root, 'cosmic-impulse.html'), desktop);
+    writeFileSync(join(root, 'cosmic-impulse-mobile.html'), mobile);
   }
   return { fp, rulesFp, official: official.releases, desktop, mobile, core, modules: list('js', '.js'), manifest };
 }
@@ -48,5 +48,5 @@ export function buildGame({ write = true, release = false } = {}) {
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const r = buildGame({ release: process.argv.includes('--release') });
   const off = r.official.some((x) => x.fp === r.rulesFp);
-  console.log(`built stellar-impulse.html (${r.desktop.length} B) and stellar-impulse-mobile.html (${r.mobile.length} B) from ${r.modules.length} modules\n  code fingerprint ORB_FP ${r.fp}\n  physics fingerprint ORB_RULES_FP ${r.rulesFp} ${off ? '(official ✓)' : '(not an official release: battles only with identical builds)'}`);
+  console.log(`built cosmic-impulse.html (${r.desktop.length} B) and cosmic-impulse-mobile.html (${r.mobile.length} B) from ${r.modules.length} modules\n  code fingerprint ORB_FP ${r.fp}\n  physics fingerprint ORB_RULES_FP ${r.rulesFp} ${off ? '(official ✓)' : '(not an official release: battles only with identical builds)'}`);
 }

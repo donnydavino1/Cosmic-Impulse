@@ -10,13 +10,13 @@ import { gameData } from './game-data.mjs';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..'), W = (f) => join(root, 'wiki', f);
 // The wiki is organised in sections (sidebar groups, breadcrumbs, "more in this section"). ORDER follows them.
 export const SECTIONS = [
-  ['start', { en: 'Start here', es: 'Empieza aquí', zh: '从这里开始' }, ['Vision and Philosophy', 'Getting Started', 'Controls', 'The Laws of Stellar Impulse', 'FAQ']],
+  ['start', { en: 'Start here', es: 'Empieza aquí', zh: '从这里开始' }, ['Vision and Philosophy', 'Getting Started', 'First 10 Hours', 'Controls', 'The Laws of Cosmic Impulse', 'FAQ']],
   ['fly', { en: 'Flying', es: 'Pilotaje', zh: '飞行' }, ['Flying and Orbits', 'Orbital Mechanics', 'Relativity']],
-  ['ship', { en: 'Your ship', es: 'Tu nave', zh: '你的飞船' }, ['Ship and Engineering', 'Ship Builder', 'Engines', 'Fuels', 'Parts', 'Technologies', 'Energy and Power', 'Heat and Radiators']],
+  ['ship', { en: 'Your ship', es: 'Tu nave', zh: '你的飞船' }, ['Ship and Engineering', 'Ship Builder', 'Upgrades', 'Engines', 'Propulsion Concepts', 'Fuels', 'Parts', 'Technologies', 'Energy and Power', 'Heat and Radiators']],
   ['life', { en: 'Staying alive', es: 'Sobrevivir', zh: '生存' }, ['Survival', 'Radiation']],
   ['world', { en: 'The solar system', es: 'El sistema solar', zh: '太阳系' }, ['Solar System', 'Asteroids and Mining', 'Drones and Probes', 'Contracts']],
   ['fight', { en: 'Combat and sensors', es: 'Combate y sensores', zh: '战斗与传感器' }, ['Combat', 'Sensors and Radar']],
-  ['make', { en: 'Make it yours', es: 'Hazla tuya', zh: '让它成为你的' }, ['Customization', 'Build Your Own Stellar Impulse', 'Multiplayer', 'Fair Play and Rules']],
+  ['make', { en: 'Make it yours', es: 'Hazla tuya', zh: '让它成为你的' }, ['Customization', 'Cockpit and Displays', 'Build Your Own Cosmic Impulse', 'Multiplayer', 'Fair Play and Rules']],
   ['ref', { en: 'Reference', es: 'Referencia', zh: '参考' }, ['Glossary']]];
 const ORDER = ['Home', ...SECTIONS.flatMap((x) => x[2])];
 
@@ -62,20 +62,20 @@ const mats = (m) => Object.entries(m || {}).map(([k, v]) => `${v} kg ${k}`).join
 // and stay in English so they match the game; everything around them is translated.
 const DT = {
   en: { head: "*Generated from the game's own rules files, so the numbers are always the ones the game uses.*", eT: 'Engines',
-    eI: 'An engine trades **thrust** (how hard it pushes) against **exhaust speed** (how much speed each kilogram of propellant buys).\nThrust = k × power ÷ exhaust speed, so for the same power a slow exhaust pushes harder, and a fast exhaust goes farther.\nDelta-v = exhaust speed × ln(full mass ÷ empty mass) (the rocket equation; see [[The Laws of Stellar Impulse]]).',
+    eI: 'An engine trades **thrust** (how hard it pushes) against **exhaust speed** (how much speed each kilogram of propellant buys).\nThrust = k × power ÷ exhaust speed, so for the same power a slow exhaust pushes harder, and a fast exhaust goes farther.\nDelta-v = exhaust speed × ln(full mass ÷ empty mass) (the rocket equation; see [[The Laws of Cosmic Impulse]]).',
     eC: ['Engine', 'Fuel', 'Exhaust speed', 'Specific impulse', 'Rated power', 'Thrust at rated power', 'Needs'], sun: 'none (sunlight)', start: 'starting engine', build: 'Build', energy: 'of energy',
     fT: 'Fuels', fC: ['Fuel', 'What it is', 'Energy to make (in space)', 'From Earth', "How it's made"],
     pT: 'Parts', pI: 'Every part has mass, is built from materials plus energy, and many need research first. Build them in 🛠 → 🏭 Fabricate.', pC: ['Part', 'Mass', 'Materials', 'Energy to build', 'Needs', 'What it does'],
     tT: 'Technologies', tI: 'Research points (RP) come from your crew and labs over time. Each technology may need others first.', tC: ['Technology', 'Cost', 'Needs', 'Effect'], note: '' },
   es: { head: '*Generado a partir de los propios archivos de reglas del juego, así que las cifras siempre son las que usa el juego.*', eT: 'Motores',
-    eI: 'Un motor compensa **empuje** (cuánto empuja) con **velocidad de escape** (cuánta velocidad compra cada kilo de propelente).\nEmpuje = k × potencia ÷ velocidad de escape: con la misma potencia, un escape lento empuja más y uno rápido llega más lejos.\nDelta-v = velocidad de escape × ln(masa llena ÷ masa vacía) (la ecuación del cohete; ver [[Las leyes de Stellar Impulse|The Laws of Stellar Impulse]]).',
+    eI: 'Un motor compensa **empuje** (cuánto empuja) con **velocidad de escape** (cuánta velocidad compra cada kilo de propelente).\nEmpuje = k × potencia ÷ velocidad de escape: con la misma potencia, un escape lento empuja más y uno rápido llega más lejos.\nDelta-v = velocidad de escape × ln(masa llena ÷ masa vacía) (la ecuación del cohete; ver [[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]]).',
     eC: ['Motor', 'Combustible', 'Velocidad de escape', 'Impulso específico', 'Potencia nominal', 'Empuje a potencia nominal', 'Requiere'], sun: 'ninguno (luz solar)', start: 'motor inicial', build: 'Construcción', energy: 'de energía',
     fT: 'Combustibles', fC: ['Combustible', 'Qué es', 'Energía para fabricarlo (en el espacio)', 'Desde la Tierra', 'Cómo se fabrica'],
     pT: 'Piezas', pI: 'Cada pieza tiene masa, se fabrica con materiales y energía, y muchas requieren investigación. Constrúyelas en 🛠 → 🏭 Fabricar.', pC: ['Pieza', 'Masa', 'Materiales', 'Energía para construir', 'Requiere', 'Qué hace'],
     tT: 'Tecnologías', tI: 'Los puntos de investigación (PI) vienen de tu tripulación y laboratorios con el tiempo. Cada tecnología puede requerir otras antes.', tC: ['Tecnología', 'Coste', 'Requiere', 'Efecto'],
     note: '> Los nombres y descripciones de la tabla salen de los archivos de reglas y aún están en inglés, igual que en el juego.' },
   zh: { head: '*本页由游戏自身的规则文件生成，所以数值永远与游戏一致。*', eT: '发动机',
-    eI: '发动机在**推力**（推得多猛）和**排气速度**（每公斤推进剂能换来多少速度）之间权衡。\n推力 = k × 功率 ÷ 排气速度：同样的功率下，排气慢推力大，排气快则走得远。\nDelta-v = 排气速度 × ln(满载质量 ÷ 空载质量)（火箭方程；参见[[Stellar Impulse 的定律|The Laws of Stellar Impulse]]）。',
+    eI: '发动机在**推力**（推得多猛）和**排气速度**（每公斤推进剂能换来多少速度）之间权衡。\n推力 = k × 功率 ÷ 排气速度：同样的功率下，排气慢推力大，排气快则走得远。\nDelta-v = 排气速度 × ln(满载质量 ÷ 空载质量)（火箭方程；参见[[Cosmic Impulse 的定律|The Laws of Cosmic Impulse]]）。',
     eC: ['发动机', '燃料', '排气速度', '比冲', '额定功率', '额定功率下推力', '前置要求'], sun: '无（阳光）', start: '初始发动机', build: '建造', energy: '能量',
     fT: '燃料', fC: ['燃料', '是什么', '制造能耗（太空中）', '从地球', '制造方式'],
     pT: '部件', pI: '每个部件都有质量，用材料加能量制造，很多还需要先研究。在 🛠 → 🏭 制造 中建造。', pC: ['部件', '质量', '材料', '建造能耗', '前置要求', '作用'],
@@ -107,14 +107,14 @@ ${d.DR.map((e) => `### ${e.ic || ''} ${e.n}\n${e.how || e.d || ''}${d.ENGR && d.
 }
 // Page titles for the sidebar and browser tab, so every title follows the language even if a page body falls back.
 export const TITLES = {
-  es: { 'Home': 'Wiki de Stellar Impulse', 'The Laws of Stellar Impulse': 'Las leyes de Stellar Impulse', 'Getting Started': 'Primeros pasos', 'Controls': 'Controles', 'Contracts': 'Contratos',
-    'Flying and Orbits': 'Vuelo y órbitas', 'Engines': 'Motores', 'Fuels': 'Combustibles', 'Ship and Engineering': 'Nave e ingeniería', 'Drones and Probes': 'Drones y sondas', 'Vision and Philosophy': 'Visión y filosofía', 'Ship Builder': 'Constructor de naves', 'Orbital Mechanics': 'Mecánica orbital', 'Relativity': 'Relatividad', 'Heat and Radiators': 'Calor y radiadores', 'Radiation': 'Radiación', 'Asteroids and Mining': 'Asteroides y minería', 'Solar System': 'Sistema solar', 'Energy and Power': 'Energía y potencia',
+  es: { 'Home': 'Wiki de Cosmic Impulse', 'The Laws of Cosmic Impulse': 'Las leyes de Cosmic Impulse', 'Getting Started': 'Primeros pasos', 'Controls': 'Controles', 'Contracts': 'Contratos',
+    'Flying and Orbits': 'Vuelo y órbitas', 'Engines': 'Motores', 'Fuels': 'Combustibles', 'Ship and Engineering': 'Nave e ingeniería', 'Drones and Probes': 'Drones y sondas', 'Vision and Philosophy': 'Visión y filosofía', 'Ship Builder': 'Constructor de naves', 'Upgrades': 'Mejoras', 'Propulsion Concepts': 'Conceptos de propulsión', 'First 10 Hours': 'Tus primeras 10 horas', 'Cockpit and Displays': 'Cabina y pantallas', 'Orbital Mechanics': 'Mecánica orbital', 'Relativity': 'Relatividad', 'Heat and Radiators': 'Calor y radiadores', 'Radiation': 'Radiación', 'Asteroids and Mining': 'Asteroides y minería', 'Solar System': 'Sistema solar', 'Energy and Power': 'Energía y potencia',
     'Parts': 'Piezas', 'Technologies': 'Tecnologías', 'Survival': 'Supervivencia', 'Combat': 'Combate', 'Sensors and Radar': 'Sensores y radar', 'Customization': 'Personalización',
-    'Multiplayer': 'Multijugador', 'Fair Play and Rules': 'Juego limpio y reglas', 'Build Your Own Stellar Impulse': 'Construye tu propio Stellar Impulse', 'Glossary': 'Glosario', 'FAQ': 'Preguntas frecuentes' },
-  zh: { 'Home': 'Stellar Impulse 百科', 'The Laws of Stellar Impulse': 'Stellar Impulse 的定律', 'Getting Started': '入门', 'Controls': '操作', 'Contracts': '合同',
-    'Flying and Orbits': '飞行与轨道', 'Engines': '发动机', 'Fuels': '燃料', 'Ship and Engineering': '飞船与工程', 'Drones and Probes': '无人机与探测器', 'Vision and Philosophy': '愿景与理念', 'Ship Builder': '飞船建造器', 'Orbital Mechanics': '轨道力学', 'Relativity': '相对论', 'Heat and Radiators': '热量与散热器', 'Radiation': '辐射', 'Asteroids and Mining': '小行星与采矿', 'Solar System': '太阳系', 'Energy and Power': '能量与功率',
+    'Multiplayer': 'Multijugador', 'Fair Play and Rules': 'Juego limpio y reglas', 'Build Your Own Cosmic Impulse': 'Construye tu propio Cosmic Impulse', 'Glossary': 'Glosario', 'FAQ': 'Preguntas frecuentes' },
+  zh: { 'Home': 'Cosmic Impulse 百科', 'The Laws of Cosmic Impulse': 'Cosmic Impulse 的定律', 'Getting Started': '入门', 'Controls': '操作', 'Contracts': '合同',
+    'Flying and Orbits': '飞行与轨道', 'Engines': '发动机', 'Fuels': '燃料', 'Ship and Engineering': '飞船与工程', 'Drones and Probes': '无人机与探测器', 'Vision and Philosophy': '愿景与理念', 'Ship Builder': '飞船建造器', 'Upgrades': '升级', 'Propulsion Concepts': '推进概念', 'First 10 Hours': '你的前 10 小时', 'Cockpit and Displays': '驾驶舱与显示', 'Orbital Mechanics': '轨道力学', 'Relativity': '相对论', 'Heat and Radiators': '热量与散热器', 'Radiation': '辐射', 'Asteroids and Mining': '小行星与采矿', 'Solar System': '太阳系', 'Energy and Power': '能量与功率',
     'Parts': '部件', 'Technologies': '科技', 'Survival': '生存', 'Combat': '战斗', 'Sensors and Radar': '传感器与雷达', 'Customization': '自定义',
-    'Multiplayer': '多人游戏', 'Fair Play and Rules': '公平竞技与规则', 'Build Your Own Stellar Impulse': '打造你自己的 Stellar Impulse', 'Glossary': '术语表', 'FAQ': '常见问题' } };
+    'Multiplayer': '多人游戏', 'Fair Play and Rules': '公平竞技与规则', 'Build Your Own Cosmic Impulse': '打造你自己的 Cosmic Impulse', 'Glossary': '术语表', 'FAQ': '常见问题' } };
 
 // ---- the cover of Home, footers, and automatic links between pages
 const HERO = { en: { tag: 'Build the spaceship you’ve always wanted, then fly it through a real, to-scale solar system: explore, mine, build and battle under the same physics as everyone else.', vis: '🌌 Vision & Philosophy', go: '🚀 Getting started', laws: '⚖ The ten laws', build: '🧱 Ship Builder' },
@@ -122,7 +122,7 @@ const HERO = { en: { tag: 'Build the spaceship you’ve always wanted, then fly 
   zh: { tag: '打造你一直想要的飞船，驾驶它穿越真实、按比例构建的太阳系：在与所有人相同的物理规则下探索、采矿、建造和战斗。', vis: '🌌 愿景与理念', go: '🚀 入门', laws: '⚖ 十条定律', build: '🧱 飞船建造器' } };
 const FOOT = { en: { more: 'More in', from: 'Pages that link here', prev: 'Previous', next: 'Next' }, es: { more: 'Más en', from: 'Páginas que enlazan aquí', prev: 'Anterior', next: 'Siguiente' }, zh: { more: '本节更多', from: '链接到本页的页面', prev: '上一页', next: '下一页' } };
 const ALIAS = {
-  en: { 'Hohmann transfer': 'Orbital Mechanics', 'Oberth effect': 'Orbital Mechanics', 'vis-viva': 'Orbital Mechanics', 'delta-v': 'Flying and Orbits', radiators: 'Heat and Radiators', radiator: 'Heat and Radiators', 'solar storms': 'Radiation', 'solar storm': 'Radiation', 'storm shelter': 'Radiation', sieverts: 'Radiation', 'time dilation': 'Relativity', 'speed of light': 'Relativity', asteroids: 'Asteroids and Mining', asteroid: 'Asteroids and Mining', 'mining laser': 'Asteroids and Mining', 'mining drones': 'Drones and Probes', 'science probes': 'Drones and Probes', probes: 'Drones and Probes', raiders: 'Combat', raider: 'Combat', railgun: 'Combat', contracts: 'Contracts', research: 'Technologies', reactors: 'Energy and Power', reactor: 'Energy and Power', 'solar panels': 'Energy and Power', 'life support': 'Survival', fingerprint: 'Fair Play and Rules', hardpoints: 'Customization', truss: 'Ship Builder', layout: 'Ship Builder', engines: 'Engines', propellant: 'Fuels', Moon: 'Solar System', Mars: 'Solar System', Jupiter: 'Solar System', Saturn: 'Solar System', Venus: 'Solar System', Mercury: 'Solar System', laws: 'The Laws of Stellar Impulse' },
+  en: { 'Hohmann transfer': 'Orbital Mechanics', 'Oberth effect': 'Orbital Mechanics', 'vis-viva': 'Orbital Mechanics', 'delta-v': 'Flying and Orbits', radiators: 'Heat and Radiators', radiator: 'Heat and Radiators', 'solar storms': 'Radiation', 'solar storm': 'Radiation', 'storm shelter': 'Radiation', sieverts: 'Radiation', 'time dilation': 'Relativity', 'speed of light': 'Relativity', asteroids: 'Asteroids and Mining', asteroid: 'Asteroids and Mining', 'mining laser': 'Asteroids and Mining', 'mining drones': 'Drones and Probes', 'science probes': 'Drones and Probes', probes: 'Drones and Probes', raiders: 'Combat', raider: 'Combat', railgun: 'Combat', contracts: 'Contracts', research: 'Technologies', reactors: 'Energy and Power', reactor: 'Energy and Power', 'solar panels': 'Energy and Power', 'life support': 'Survival', fingerprint: 'Fair Play and Rules', hardpoints: 'Customization', truss: 'Ship Builder', layout: 'Ship Builder', upgrade: 'Upgrades', upgrades: 'Upgrades', 'cockpit style': 'Cockpit and Displays', 'sonar': 'Cockpit and Displays', engines: 'Engines', propellant: 'Fuels', Moon: 'Solar System', Mars: 'Solar System', Jupiter: 'Solar System', Saturn: 'Solar System', Venus: 'Solar System', Mercury: 'Solar System', laws: 'The Laws of Cosmic Impulse' },
   es: { 'transferencia de Hohmann': 'Orbital Mechanics', 'efecto Oberth': 'Orbital Mechanics', radiadores: 'Heat and Radiators', 'tormentas solares': 'Radiation', refugio: 'Radiation', 'velocidad de la luz': 'Relativity', asteroides: 'Asteroids and Mining', asteroide: 'Asteroids and Mining', 'drones mineros': 'Drones and Probes', sondas: 'Drones and Probes', saqueadores: 'Combat', 'cañón de riel': 'Combat', contratos: 'Contracts', investigación: 'Technologies', reactor: 'Energy and Power', 'paneles solares': 'Energy and Power', 'soporte vital': 'Survival', huella: 'Fair Play and Rules', armazón: 'Ship Builder', motores: 'Engines', propelente: 'Fuels', Marte: 'Solar System', Júpiter: 'Solar System', Saturno: 'Solar System', Venus: 'Solar System', Mercurio: 'Solar System', Luna: 'Solar System' },
   zh: { 霍曼转移: 'Orbital Mechanics', 奥伯特效应: 'Orbital Mechanics', 散热器: 'Heat and Radiators', 太阳风暴: 'Radiation', 避难所: 'Radiation', 光速: 'Relativity', 小行星: 'Asteroids and Mining', 采矿无人机: 'Drones and Probes', 探测器: 'Drones and Probes', 袭击者: 'Combat', 轨道炮: 'Combat', 合同: 'Contracts', 研究: 'Technologies', 反应堆: 'Energy and Power', 太阳能板: 'Energy and Power', 生命维持: 'Survival', 指纹: 'Fair Play and Rules', 桁架: 'Ship Builder', 发动机: 'Engines', 推进剂: 'Fuels', 火星: 'Solar System', 木星: 'Solar System', 土星: 'Solar System', 金星: 'Solar System', 水星: 'Solar System', 月球: 'Solar System' } };
 // link the first mention of another page's title or alias in ordinary text (not headings, code, table headers or links)
@@ -151,9 +151,9 @@ function solarPage(lang) {
     return `| **${tn(b.n)}** | ${P ? tn(P.n === 'Sun' ? x.sun : P.n) : '—'} | ${P ? (b.p > 0 ? Math.round(b.a / 1e3).toLocaleString('en') + ' km' : (b.a / AU).toFixed(2) + ' AU') : '—'} | ${Math.round(b.R / 1e3).toLocaleString('en')} km | ${g.toFixed(2)} g | ${ve.toFixed(1)} km/s | ${P ? (T > 600 ? (T / 365.25).toFixed(1) + ' ' + x.y : T.toFixed(1) + ' ' + x.d) : '—'} | ${sun} |` };
   return `# ${x.t}\n\n${x.i}\n\n| ${x.c.join(' | ')} |\n|${x.c.map(() => '---').join('|')}|\n${B.map(row).join('\n')}\n\n## ${x.h}\n\n${Object.entries(F).map(([k, v]) => `- **${tn(k)}:** ${dict[v] || v}`).join('\n')}\n`;
 }
-const CHROME = { en: { wiki: 'Stellar Impulse Wiki', q: 'Search…', none: 'No page matches.', play: '▶ Play' },
-  es: { wiki: 'Wiki de Stellar Impulse', q: 'Buscar…', none: 'Ninguna página coincide.', play: '▶ Jugar' },
-  zh: { wiki: 'Stellar Impulse 百科', q: '搜索…', none: '没有匹配的页面。', play: '▶ 开始游戏' } };
+const CHROME = { en: { wiki: 'Cosmic Impulse Wiki', q: 'Search…', none: 'No page matches.', play: '▶ Play' },
+  es: { wiki: 'Wiki de Cosmic Impulse', q: 'Buscar…', none: 'Ninguna página coincide.', play: '▶ Jugar' },
+  zh: { wiki: 'Cosmic Impulse 百科', q: '搜索…', none: '没有匹配的页面。', play: '▶ 开始游戏' } };
 const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 const slug = (n) => n.replace(/ /g, '-');
 function md(t, lang = 'en') { // small Markdown subset: headings, tables, lists, quotes, code, bold, italics, code spans, [[links]]
@@ -199,7 +199,7 @@ export function buildWiki() {
       if (ban) t = t.replace(/^# .+$/m, '# ' + titleOf(n));
       let h = ban + autoLink(md(t, l), l, n, titleOf);
       if (n === 'Home') h += SECTIONS.map(([id, st, ps]) => `<h2>${st[l]}</h2><ul class="dir">` + ps.filter((p) => names.includes(p)).map((p) => `<li><a href="#${l}/${slug(p)}">${esc(titleOf(p))}</a></li>`).join('') + '</ul>').join('');
-      if (n === 'Home') { const x = HERO[l]; h = `<div class="hero"><div class="hero-t">STELLAR IMPULSE</div><p>${x.tag}</p><div class="hero-b"><a class="hb main" href="#${l}/Vision-and-Philosophy">${x.vis}</a><a class="hb" href="#${l}/Getting-Started">${x.go}</a><a class="hb" href="#${l}/The-Laws-of-Stellar-Impulse">${x.laws}</a><a class="hb" href="#${l}/Ship-Builder">${x.build}</a><a class="hb playlink" href="stellar-impulse.html">${CHROME[l].play}</a></div></div>` + h }
+      if (n === 'Home') { const x = HERO[l]; h = `<div class="hero"><div class="hero-t">COSMIC IMPULSE</div><p>${x.tag}</p><div class="hero-b"><a class="hb main" href="#${l}/Vision-and-Philosophy">${x.vis}</a><a class="hb" href="#${l}/Getting-Started">${x.go}</a><a class="hb" href="#${l}/The-Laws-of-Cosmic-Impulse">${x.laws}</a><a class="hb" href="#${l}/Ship-Builder">${x.build}</a><a class="hb playlink" href="cosmic-impulse.html">${CHROME[l].play}</a></div></div>` + h }
       body[n] = h; links[n] = new Set([...h.matchAll(/href="#[a-z]+\/([^"]+)"/g)].map((m) => m[1].replace(/-/g, ' ')));
     }
     let nav = `<a href="#${l}/Home" data-l="${l}">${esc(titleOf('Home'))}</a>`;
@@ -215,7 +215,7 @@ export function buildWiki() {
   }
   const pages = secs.join('\n');
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Stellar Impulse Wiki</title><style>
+<title>Cosmic Impulse Wiki</title><style>
 :root{--bg:#070b18;--pn:#0d1430;--fg:#dde7ff;--mut:#8ea0c8;--ac:#ffb84d;--ln:#5fe0ff}*{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,Segoe UI,sans-serif;display:flex;min-height:100vh}
 nav{width:250px;flex:none;background:var(--pn);border-right:1px solid #24305a;padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto}
@@ -233,7 +233,7 @@ nav .st{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(-
 .foot{margin-top:28px;padding-top:12px;border-top:1px solid #24305a;font-size:14px;color:var(--mut)}.foot div{margin:6px 0}.pn{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
 blockquote{border-left:3px solid var(--ac);margin:10px 0;padding:6px 14px;background:#121b3d;color:#f0e0c0}
 @media (max-width:720px){body{display:block}nav{width:auto;height:auto;position:static}main{padding:16px}}
-</style></head><body><nav><h1>🪐 <span id="wt">Stellar Impulse Wiki</span></h1><a id="play" href="stellar-impulse.html" data-l="*">▶ Play</a><div id="langs">${Object.entries(LANGS).map(([l, n]) => `<button data-set="${l}">${n}</button>`).join('')}</div><input id="q" placeholder="Search…">${Object.values(navs).flat().join('')}</nav>
+</style></head><body><nav><h1>🪐 <span id="wt">Cosmic Impulse Wiki</span></h1><a id="play" href="cosmic-impulse.html" data-l="*">▶ Play</a><div id="langs">${Object.entries(LANGS).map(([l, n]) => `<button data-set="${l}">${n}</button>`).join('')}</div><input id="q" placeholder="Search…">${Object.values(navs).flat().join('')}</nav>
 <main>${pages}<p id="none" style="display:none">No page matches.</p></main>
 <script>
 const S=[...document.querySelectorAll('section')],A=[...document.querySelectorAll('nav a[data-l]:not(#play)')],C=${JSON.stringify(CHROME)};if(/claude/.test(location.hostname))document.querySelectorAll('#play,.playlink').forEach(a=>a.href='https://claude.ai/artifact/QGZvo4jc4NrW7dqb9p7Nrv');let L='en';try{L=localStorage.getItem('orbital-lang')||((navigator.language||'en').slice(0,2));}catch(e){}if(!['en','es','zh'].includes(L))L='en';

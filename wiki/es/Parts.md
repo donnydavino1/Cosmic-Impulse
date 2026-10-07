@@ -56,6 +56,8 @@ Cada pieza tiene masa, se fabrica con materiales y energía, y muchas requieren 
 | **Tanques de pared de agua** | 200 kg | 200 kg de hierro | 1×10^9 J | Hábitat con pared de agua | Tanques alrededor de la cabina guardan tu agua: cada 300 kg añaden 1 g/cm², hasta 20. |
 | **Escudo magnético activo** | 4,000 kg | 1500 kg de níquel, 1500 kg de hierro, 40 kg de platino | 5×10^11 J | Blindaje magnético activo | Bobinas superconductoras desvían partículas cargadas (−90 % dosis de erupciones, −50 % rayos cósmicos) con 1 MW. |
 | **Escudo Whipple contra micrometeoroides** | 300 kg | 250 kg de hierro, 50 kg de carbono | 1×10^9 J | — | Finas capas parachoques vaporizan los granos de polvo antes de que lleguen al casco: −90 % de daño por impactos. |
+| **Parasol multicapa** | 150 kg | 60 kg de carbono, 30 kg de hierro, 20 kg de silicatos | 3×10^9 J | Materiales compuestos de carbono | Capas de película reflectante mantienen el 95 % del calor del Sol fuera de la nave. Aguanta luz solar de hasta 80 kW/m² (unas 0,13 UA del Sol). |
+| **Escudo térmico de carbono-carbono** | 700 kg | 600 kg de carbono, 80 kg de silicatos, 40 kg de hierro | 4×10^10 J | Materiales compuestos de carbono | Un grueso escudo de espuma de carbono como el de la sonda Parker: bloquea el 99,5 % del calor y aguanta 1,2 MW/m² (unas 0,034 UA, 7 radios solares). |
 
 ## Investigación
 
@@ -64,6 +66,14 @@ Cada pieza tiene masa, se fabrica con materiales y energía, y muchas requieren 
 | **Ordenador de investigación** | 30 kg | — | 0 J | — | Simulaciones y análisis de datos: 1 punto de investigación por hora. |
 | **Laboratorio a bordo** | 800 kg | 300 kg de hierro, 200 kg de silicatos, 1 kg de platino | 5×10^9 J | Laboratorio a bordo | Espectrómetros, microscopios, un banco de pruebas de materiales: 6 PI/hora. |
 | **Módulo de estación de investigación** | 5,000 kg | 2000 kg de hierro, 1500 kg de silicatos, 10 kg de platino, 500 kg de carbono | 1×10^11 J | Estación de investigación | Laboratorio completo con un pequeño acelerador: 30 PI/hora. |
+
+## Sensor
+
+| Pieza | Masa | Materiales | Energía para construir | Requiere | Qué hace |
+|---|---|---|---|---|---|
+| **Antena de radar Doppler** | 120 kg | 60 kg de hierro, 40 kg de silicatos, 15 kg de níquel, 0.05 kg de platino | 3×10^9 J | Laboratorio a bordo | Una antena de seguimiento: tus sensores son al menos radar Doppler (alcance 2.000 km, añade la velocidad). Mk III y Mk V añaden un nivel de sensores. |
+| **Panel de antena en fase** | 600 kg | 300 kg de silicatos, 220 kg de hierro, 40 kg de níquel, 0.4 kg de platino | 2×10^10 J | Fabricación industrial | Miles de pequeñas antenas dirigen el haz electrónicamente: al menos una antena en fase (20.000 km, añade masa y tamaño). |
+| **Torreta de lidar y espectrómetro** | 900 kg | 350 kg de silicatos, 300 kg de hierro, 100 kg de carbono, 60 kg de níquel, 2 kg de platino | 8×10^10 J | Estación de investigación | Telemetría láser más espectroscopía: al menos lidar (200.000 km, añade composición, casco y munición). |
 
 ## Fabricación
 

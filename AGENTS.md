@@ -1,6 +1,6 @@
-# AGENTS.md — brief for AI assistants working on Stellar Impulse
+# AGENTS.md — brief for AI assistants working on Cosmic Impulse
 
-You are helping a player (or developer) change Stellar Impulse, an open-source physics spaceship game. Read this first.
+You are helping a player (or developer) change Cosmic Impulse, an open-source physics spaceship game. Read this first.
 
 ## What you may change, and what keeps battles fair
 
@@ -21,7 +21,7 @@ budgets, manufacturing, fuel, weapons/damage, survival, sensors, the ledger/API 
 ## Verify before you finish
 
 ```
-node tools/build-game.mjs        # builds stellar-impulse.html + stellar-impulse-mobile.html, prints fingerprints
+node tools/build-game.mjs        # builds cosmic-impulse.html + cosmic-impulse-mobile.html, prints fingerprints
 npm test                         # build checks, both platforms share one core, script parses, wiki links
 python3 tools/smoke/smoke.py     # optional: headless run of both builds (needs Playwright)
 python3 tools/smoke/mp_test.py   # optional: two-browser multiplayer test
@@ -32,7 +32,7 @@ If it says *not an official release*, a RULES module changed: say so to the play
 
 ## Must-keep invariants
 
-1. Both builds exist and work: `stellar-impulse.html` (keyboard/mouse) and `stellar-impulse-mobile.html` (touch). New key actions go in
+1. Both builds exist and work: `cosmic-impulse.html` (keyboard/mouse) and `cosmic-impulse-mobile.html` (touch). New key actions go in
    `ACTS` and appear in the phone ☰ menu automatically; new panels must fit a 390×844 screen.
 2. Never hand-edit the built HTML files; edit `game/` and rebuild.
 3. Keep data formats compatible (`docs/PROTOCOL.md`); readers ignore unknown fields; breaking changes need `/2`.

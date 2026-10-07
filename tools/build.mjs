@@ -1,4 +1,4 @@
-// Builds dist/stellar-impulse-arena.html: the whole arena in one file you can open by double-clicking.
+// Builds dist/cosmic-impulse-arena.html: the whole arena in one file you can open by double-clicking.
 // (Browsers refuse to load ES modules from file:// URLs, so the modular arena.html needs a web
 // server or GitHub Pages; this bundle does not.)  Usage:  npm run build
 //
@@ -51,8 +51,8 @@ const css = readFileSync(resolve(root, 'src/arena/arena.css'), 'utf8');
 const out = html
   .replace('<link rel="stylesheet" href="src/arena/arena.css">', () => `<style>\n${css}</style>`)
   .replace('<script type="module" src="src/arena/main.js"></script>', () => `<script>\n// Built by tools/build.mjs from the sources in src/. Edit those, not this file.\n${bundle}</script>`)
-  .replace('href="stellar-impulse.html"', 'href="../stellar-impulse.html"');
+  .replace('href="cosmic-impulse.html"', 'href="../cosmic-impulse.html"');
 
 mkdirSync(resolve(root, 'dist'), { recursive: true });
-writeFileSync(resolve(root, 'dist/stellar-impulse-arena.html'), out);
-console.log(`dist/stellar-impulse-arena.html: ${order.length} modules, ${(out.length / 1024).toFixed(0)} KB`);
+writeFileSync(resolve(root, 'dist/cosmic-impulse-arena.html'), out);
+console.log(`dist/cosmic-impulse-arena.html: ${order.length} modules, ${(out.length / 1024).toFixed(0)} KB`);

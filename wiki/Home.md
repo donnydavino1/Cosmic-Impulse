@@ -1,6 +1,6 @@
-# Stellar Impulse Wiki
+# Cosmic Impulse Wiki
 
-**Stellar Impulse** is a free, open-source spaceship game set in a to-scale solar system with real physics: orbits, the
+**Cosmic Impulse** is a free, open-source spaceship game set in a to-scale solar system with real physics: orbits, the
 rocket equation, sunlight that falls off with distance, radiation, heat, and special relativity. You start in low
 Earth orbit with a small ship, and grow it into anything from a mining hauler to a relativistic interstellar
 probe, while raiders, solar storms and empty oxygen tanks try to stop you.
@@ -12,4 +12,4 @@ each page ends with more pages from its section and the pages that link to it, a
 are linked where they first appear.
 
 > Where the technical documentation lives: `docs/` in the repository (architecture, protocols, modding,
-> multiplayer, fair play) and `AGENTS.md` (the brief you hand to an AI). Links on [[Build Your Own Stellar Impulse]].
+> multiplayer, fair play) and `AGENTS.md` (the brief you hand to an AI). Links on [[Build Your Own Cosmic Impulse]].

@@ -1,4 +1,4 @@
-# Stellar Impulse Rules
+# Cosmic Impulse Rules
 
 > Generated from `src/rules/rules.js` by `npm run rules`. Do not edit by hand.
 

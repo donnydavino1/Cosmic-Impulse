@@ -2,7 +2,7 @@
 
 > **打造你一直想要的飞船。** 设计它的发动机、武器、装甲、能源、内饰，以及几乎任何你能想到的东西。然后驾驶它进入一个庞大的、按真实比例构建的太阳系，去探索、采矿、建造，并与驾驶自己飞船的其他玩家作战。
 
-本页是 Stellar Impulse 所依据的承诺。每个功能都以它为衡量标准。
+本页是 Cosmic Impulse 所依据的承诺。每个功能都以它为衡量标准。
 
 ## 1. 让它成为你的
 
@@ -10,7 +10,7 @@
 
 你的自定义永远不会改变底层规则。所有人共享相同的物理、相同的质量、能量、武器输出和传感器上限；你通过能量、资源和科技来扩展它们。而你*如何*读取和使用这些信息由你决定：打造自己的雷达屏幕、瞄准辅助、自动化、警报和工具。手动驾驶、全部自动化，或者发明一种谁都没想到的方式。
 
-**目前游戏中：**[[飞船建造器|Ship Builder]]（会改变性能的模块布局）·[[自定义|Customization]]（风格、挂点、驾驶舱和仪表盘）·[[传感器与雷达|Sensors and Radar]]（雷达样式）·[[打造你自己的 Stellar Impulse|Build Your Own Stellar Impulse]]（借助 AI 重做整个客户端）。
+**目前游戏中：**[[飞船建造器|Ship Builder]]（会改变性能的模块布局）·[[自定义|Customization]]（风格、挂点、驾驶舱和仪表盘）·[[传感器与雷达|Sensors and Radar]]（雷达样式）·[[打造你自己的 Cosmic Impulse|Build Your Own Cosmic Impulse]]（借助 AI 重做整个客户端）。
 
 ## 2. 所有人规则相同
 
@@ -23,7 +23,7 @@
 - 从小行星和其他天体**开采资源**（[[小行星与采矿|Asteroids and Mining]]）；
 - 发动机、武器、装甲、能源、储能等所有部件都有**明确的缩放规则**，科技越先进自由度越大（[[发动机|Engines]]、[[部件|Parts]]、[[科技|Technologies]]）。
 
-这些规则对所有人完全相同，并有指纹为证（[[公平竞技与规则|Fair Play and Rules]]）。它们的简短版本就是[[Stellar Impulse 的定律|The Laws of Stellar Impulse]]。
+这些规则对所有人完全相同，并有指纹为证（[[公平竞技与规则|Fair Play and Rules]]）。它们的简短版本就是[[Cosmic Impulse 的定律|The Laws of Cosmic Impulse]]。
 
 ## 3. 几乎无限的创造
 
@@ -46,7 +46,7 @@
 
 ### 开源
 
-长期目标是在 **GNU GPLv2** 下完全开源，让玩家可以查看、修改、改进并托管自己的版本。目标不只是提供一大堆可建造的东西，而是提供发明下一样东西的工具。见[[打造你自己的 Stellar Impulse|Build Your Own Stellar Impulse]]。
+长期目标是在 **GNU GPLv2** 下完全开源，让玩家可以查看、修改、改进并托管自己的版本。目标不只是提供一大堆可建造的东西，而是提供发明下一样东西的工具。见[[打造你自己的 Cosmic Impulse|Build Your Own Cosmic Impulse]]。
 
 ### 真实，而不是卡通
 

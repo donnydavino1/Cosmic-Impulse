@@ -4,7 +4,7 @@
 > casi cualquier cosa que imagines. Después llévala a un sistema solar enorme y a escala real para explorar, minar,
 > construir y luchar contra otros jugadores en sus propias naves.
 
-Esta página es la promesa sobre la que se construye Stellar Impulse. Cada función se mide con ella.
+Esta página es la promesa sobre la que se construye Cosmic Impulse. Cada función se mide con ella.
 
 ## 1. Hazla tuya
 
@@ -18,7 +18,7 @@ herramientas. Pilota a mano, automatízalo todo o inventa algo que nadie haya pe
 
 **En el juego hoy:** [[Constructor de naves|Ship Builder]] (distribución de módulos que cambia el rendimiento) ·
 [[Personalización|Customization]] (estilo, puntos de anclaje, cabina y paneles) · [[Sensores y radar|Sensors and Radar]]
-(diseños de radar) · [[Construye tu propio Stellar Impulse|Build Your Own Stellar Impulse]] (reconstruye todo el cliente con una IA).
+(diseños de radar) · [[Construye tu propio Cosmic Impulse|Build Your Own Cosmic Impulse]] (reconstruye todo el cliente con una IA).
 
 ## 2. Las mismas reglas para todos
 
@@ -37,7 +37,7 @@ El multijugador funciona con un único conjunto de reglas compartido:
   según avanza la tecnología ([[Motores|Engines]], [[Piezas|Parts]], [[Tecnologías|Technologies]]).
 
 Estas reglas son idénticas para todos; una huella lo demuestra ([[Juego limpio y reglas|Fair Play and Rules]]). La
-versión corta de todas ellas son [[Las leyes de Stellar Impulse|The Laws of Stellar Impulse]].
+versión corta de todas ellas son [[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]].
 
 ## 3. Creación casi ilimitada
 
@@ -69,7 +69,7 @@ Ver [[Tecnologías|Technologies]] y [[Motores|Engines]].
 La meta a largo plazo es un juego totalmente de código abierto bajo **GNU GPLv2**, para que los jugadores puedan
 inspeccionar, modificar, mejorar y alojar sus propias versiones. La meta no es solo una gran lista de cosas que
 construir, sino las herramientas para inventar lo que viene después. Ver
-[[Construye tu propio Stellar Impulse|Build Your Own Stellar Impulse]].
+[[Construye tu propio Cosmic Impulse|Build Your Own Cosmic Impulse]].
 
 ### Real, no de dibujos animados
 

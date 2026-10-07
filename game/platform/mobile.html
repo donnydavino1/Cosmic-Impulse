@@ -60,13 +60,13 @@ const MCAT=[['view','🎥 Camera & view'],['time','⏱ Time'],['fight','🔫 Wea
 const MMAP={view:'view',ship:'view',stab:'view',focus:'view',zin:'view',zout:'view',info:'view',dash:'view',wpal:'view',
  pause:'time',slower:'time',faster:'time',w1:'fight',w2:'fight',w3:'fight',w4:'fight',w5:'fight',weapon:'fight',target:'fight',fire:'fight',raid:'fight',
  mode:'fly',nav:'fly',sun:'fly',shelter:'fly',fwd:'fly',back:'fly',left:'fly',right:'fly',up:'fly',down:'fly',
- shop:'ship',custom:'ship',unlock:'ship',mp:'social',radio:'social',chan:'social',guide:'help',wiki:'help',lang:'help',contracts:'ship',ops:'ship',builder:'ship'};
+ shop:'ship',custom:'ship',unlock:'ship',mp:'social',radio:'social',chan:'social',guide:'help',wiki:'help',lang:'help',contracts:'ship',ops:'ship',builder:'ship',sense:'fight',orbitp:'fly'};
 const MSTAY={zin:1,zout:1,pause:1,slower:1,faster:1,target:1,weapon:1,radio:1,chan:1,focus:1,stab:1,info:1,mode:1,dash:1};
-const PANELS=['shop','nav','help','ctrl','cust','wpal','mpw','ctrw','opsw','bldw'];
+const PANELS=['shop','nav','help','ctrl','cust','wpal','mpw','ctrw','opsw','bldw','orbw'];
 const MEXTRA={view:[['🎥 Next camera (chase → cockpit → map)',()=>cycleView(),1]],
  fight:[['🎯 Launch 3 practice drones (no danger)',()=>spawnDrones()],['🔥 Fire beam for 2 s (mining laser / particle beam)',()=>{fireDown();setTimeout(()=>fireHeld=false,2000)}]],
  ship:[['💾 Save / load game (🛠 → Save tab)',()=>{toggleShop();const t=[...document.querySelectorAll('#shopbody .tabs button')].find(b=>/Save/.test(b.textContent));if(t)t.click()}],['🧪 Testing tools (🛠 → Testing tab)',()=>{toggleShop();const t=[...document.querySelectorAll('#shopbody .tabs button')].find(b=>/Testing/.test(b.textContent));if(t)t.click()}]],
- help:[['👋 Show the welcome screen',()=>$('help').classList.remove('h')],['🖥 Open the desktop version',()=>{location.href='stellar-impulse.html'}]],
+ help:[['👋 Show the welcome screen',()=>$('help').classList.remove('h')],['🖥 Open the desktop version',()=>{location.href='cosmic-impulse.html'}]],
  more:[]};
 let mcat=null;const mdr=$('mdraw');
 function closeWins(){PANELS.forEach(i=>{const e=$(i);if(e)e.classList.add('h')})}

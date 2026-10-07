@@ -11,6 +11,25 @@ silicatos, hierro, níquel y metales del platino.
 
 Usa 🧭 NAVEGAR → Asteroides: el piloto automático escapa de tu planeta, iguala la órbita del asteroide y aparca a 1,5 km.
 
+## Objetos reales
+
+Junto a ellos hay objetos reales en sus órbitas reales (la posición en la órbita es ilustrativa):
+- **Cerca de la Tierra:** Apophis, Bennu (muestreado por OSIRIS-REx), Ryugu (Hayabusa2), Eros (NEAR Shoemaker), Itokawa
+  (Hayabusa) y Didymos (DART).
+- **Cinturón principal:** Ceres (planeta enano, 940 km), Vesta (525 km) y Psyche, un mundo metálico.
+- **Cinturón de Kuiper (30–55 UA):** Eris, Makemake, Haumea, Quaoar, Gonggong, Arrokoth (visitado por New Horizons),
+  Albion y una docena de cuerpos helados más, más allá de Neptuno y alrededor de Plutón. **Sedna** se aleja hacia la
+  nube de Oort interior.
+
+Los cuerpos helados de **tipo I** son 55 % hielo de agua: la mejor gasolinera del sistema solar exterior.
+
+## Peligros
+
+En el **cinturón de Kuiper** y en la **nube de Oort** (2.000–100.000 UA) los restos helados golpean mucho más a menudo
+que cerca de la Tierra, y cada impacto daña el casco. Un escudo Whipple detiene el 90 % ([[Piezas|Parts]]). Próxima
+Centauri, la estrella más cercana, está a 4,25 años luz (268.000 UA), más allá de la nube de Oort
+([[Sistema solar|Solar System]], [[Relatividad|Relativity]]).
+
 ## De qué están hechos
 
 | Tipo | Hielo de agua | Carbono | Silicatos | Hierro | Níquel | Metales del platino |
@@ -30,4 +49,4 @@ Los de tipo C dan agua (para beber, oxígeno e hidrógeno combustible); los de t
 | [[Drones mineros|Drones and Probes]] | excavan 18 kg por hora cada uno mientras haces otra cosa | quédate a menos de 30 km |
 
 Todo lo que minas se cuenta por elemento en el libro de cuentas: la materia nunca se crea (Ley 3,
-[[Las leyes de Stellar Impulse|The Laws of Stellar Impulse]]). Los contratos de minería pagan extra ([[Contratos|Contracts]]).
+[[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]]). Los contratos de minería pagan extra ([[Contratos|Contracts]]).

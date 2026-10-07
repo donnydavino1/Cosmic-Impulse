@@ -1,6 +1,6 @@
-# Wiki de Stellar Impulse
+# Wiki de Cosmic Impulse
 
-**Stellar Impulse** es un juego de naves espaciales libre y de código abierto, en un sistema solar a escala real con
+**Cosmic Impulse** es un juego de naves espaciales libre y de código abierto, en un sistema solar a escala real con
 física real: órbitas, la ecuación del cohete, luz solar que se debilita con la distancia, radiación, calor y
 relatividad especial. Empiezas en órbita baja terrestre con una nave pequeña y la conviertes en lo que quieras: un
 carguero minero o una sonda interestelar relativista, mientras saqueadores, tormentas solares y tanques de oxígeno

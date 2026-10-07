@@ -1,4 +1,4 @@
-// Smoke test for the arena interface: builds dist/stellar-impulse-arena.html, then boots it inside
+// Smoke test for the arena interface: builds dist/cosmic-impulse-arena.html, then boots it inside
 // sandboxed fake browsers (no real DOM or WebGL). It plays a full AI battle to the results screen,
 // and connects two game instances to each other to check that online hits travel both ways.
 import test from 'node:test';
@@ -9,7 +9,7 @@ import vm from 'node:vm';
 import { fingerprint } from '../src/kernel/fingerprint.js';
 
 execFileSync(process.execPath, ['tools/build.mjs']);
-const html = readFileSync('dist/stellar-impulse-arena.html', 'utf8');
+const html = readFileSync('dist/cosmic-impulse-arena.html', 'utf8');
 const bundle = html.match(/<script>\n([\s\S]*?)<\/script>/)[1].replace('net = new Net(', 'net = globalThis.__net = new Net(').replace('const state = {', 'const state = globalThis.__state = {');
 
 /** A stand-in for three.js: any property or call returns another stand-in. */

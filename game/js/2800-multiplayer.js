@@ -41,7 +41,7 @@ function mpRecv(str){let o;try{o=JSON.parse(str)}catch(e){return}if(!o||typeof o
  case'ping':mpSend({t:'pong',a:o.a});break;case'pong':if(num(o.a))MP.rtt=now-o.a;break}}
 function mpTick(){if(!MP.conn)return;const now=performance.now();
  {const sig=wi+'|'+paused+'|'+MP.lock;if(MP.role==='host'&&(now-MP.lastClock>200||sig!==MP.sig)){MP.sig=sig;MP.lastClock=now;mpSendClock()}}   // rate changes are announced immediately
- if(now-MP.lastShip>100){MP.lastShip=now;const g=gam(s),o={t:'ship',T,x:s.x,y:s.y,z:s.z,vx:s.vx/g,vy:s.vy/g,vz:s.vz/g,burn:s.burn,eng:DR[di].id,area:s.area,hull:s.hull,hullMax:hullMax(),alive:s.crew.alive,name:MP.name};
+ if(now-MP.lastShip>100){MP.lastShip=now;const g=gam(s),o={t:'ship',T,x:s.x,y:s.y,z:s.z,vx:s.vx/g,vy:s.vy/g,vz:s.vz/g,burn:s.burn,eng:DR[di].id,area:s.area,hull:s.hull,hullMax:hullMax(),alive:s.crew.alive,name:MP.name,act:!s.passive};
   if(now-MP.lastCust>2000){MP.lastCust=now;o.cust={hull:CUST.hull,acc:CUST.acc,shape:CUST.shape,wings:CUST.wings,trim:CUST.trim,glow:CUST.glow,panel:CUST.panel};
    try{const L=ledger(),el={};for(const k in L.elements)el[k]=+(L.elements[k]/L.mass).toFixed(4);o.led={m:Math.round(L.mass),el,tier:sensorTier(),wep:WEP.filter(w=>isU(w.id)).map(w=>w.id),mis:s.ammo.missile}}catch(e){}}mpSend(o)}
  if(now-MP.lastPing>2000){MP.lastPing=now;mpSend({t:'ping',a:now})}
@@ -53,7 +53,7 @@ function mpTick(){if(!MP.conn)return;const now=performance.now();
 function propagate(o,dt){let x=o.x,y=o.y,z=o.z,vx=o.vx,vy=o.vy,vz=o.vz;if(Math.abs(dt)<1e-3)return[x,y,z,vx,vy,vz];const n=Math.min(200,Math.max(1,Math.ceil(Math.abs(dt)/60))),h=dt/n;
  let a=gravAt(x,y,z);for(let k=0;k<n;k++){vx+=a[0]*h/2;vy+=a[1]*h/2;vz+=a[2]*h/2;x+=vx*h;y+=vy*h;z+=vz*h;a=gravAt(x,y,z);vx+=a[0]*h/2;vy+=a[1]*h/2;vz+=a[2]*h/2}return[x,y,z,vx,vy,vz]}
 function onShip(o){if(!RS){RS={kind:'player',GM:0,ax:0,ay:0,az:0,r:15,age:0,x:0,y:0,z:0,vx:0,vy:0,vz:0};ALL.push(RS)}const st=propagate(o,T-o.T);
- Object.assign(RS,{x:st[0],y:st[1],z:st[2],vx:st[3],vy:st[4],vz:st[5],burn:+o.burn||0,eng:String(o.eng||''),area:+o.area||10,hull:+o.hull||0,hullMax:+o.hullMax||1,alive:o.alive!==false,name:String(o.name||'friend').slice(0,24),seen:performance.now(),stale:false});if(o.cust)RS.cust=o.cust;if(o.led&&typeof o.led==='object'&&num(o.led.m))RS.led=o.led}
+ Object.assign(RS,{x:st[0],y:st[1],z:st[2],vx:st[3],vy:st[4],vz:st[5],burn:+o.burn||0,eng:String(o.eng||''),area:+o.area||10,hull:+o.hull||0,hullMax:+o.hullMax||1,alive:o.alive!==false,act:o.act!==false,name:String(o.name||'friend').slice(0,24),seen:performance.now(),stale:false});if(o.cust)RS.cust=o.cust;if(o.led&&typeof o.led==='object'&&num(o.led.m))RS.led=o.led}
 const plState=t=>({x:RS.x+RS.vx*(t-T),y:RS.y+RS.vy*(t-T),z:RS.z+RS.vz*(t-T),vx:RS.vx,vy:RS.vy,vz:RS.vz,r:15});
 function flyPl(){if(!RS)return;const D=DR[di],M=mass(),dv=D.f&&s.prop>0?D.ve*Math.log(M/(M-s.prop)):2000;AP={ast:{n:RS.name+'’s ship',r:15,id:-1},pl:true,name:'👤 '+RS.name,stage:'',vcap:Math.max(150,Math.min(3e4,.3*dv))};
  WT={kind:'pl',o:RS};PRED=null;PJ=null;notify('🧭 Autopilot → '+RS.name+', '+fmtD(Math.hypot(RS.x-s.x,RS.y-s.y,RS.z-s.z))+' away. It parks 1.5 km from their ship.')}

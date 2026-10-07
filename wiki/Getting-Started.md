@@ -1,6 +1,6 @@
 # Getting Started
 
-1. **Open the game.** `stellar-impulse.html` on a computer, `stellar-impulse-mobile.html` on a phone (or the published links).
+1. **Open the game.** `cosmic-impulse.html` on a computer, `cosmic-impulse-mobile.html` on a phone (or the published links).
    A welcome screen explains the basics; press **Got it** or **⚔ Fight raiders now**.
 2. **Look around.** You start in the **3rd-person chase camera** behind your ship, 400 km above Earth.
    Drag to look, scroll or pinch to zoom. **V** cycles cameras: chase → cockpit → orbit map.

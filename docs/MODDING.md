@@ -1,4 +1,4 @@
-# Modding Stellar Impulse
+# Modding Cosmic Impulse
 
 Three levels, from no code to new systems.
 
@@ -83,3 +83,17 @@ files and also feed the generated wiki pages. Add a language by creating the fil
 
 If your change alters gameplay numbers, the `RULES` fingerprint changes and you can only fight players with the
 same change. That's by design.
+
+## Cockpit styles
+
+A cockpit style is CSS for the dashboard widgets (`body.ck-<name> .wdg`, `.wh`, `.wb`) plus an optional window frame
+(SVG paths in a 1000×600 box, drawn into `#canopy`). Register one from any module or the browser console:
+
+```js
+ORB.cockpit.register('mystyle', { label: 'My style: brass and walnut', frame: '<path d="…" fill="#120c06"/>' });
+ORB.cockpit.use('mystyle');
+```
+
+Built in: `real` (default), `neo`, `military`, `retro`, `classic` (see `game/css/210-cockpit-themes.css`).
+Radar displays work the same way with `ORB.radar.register(name, (ctx, W, H, contacts, opts) => { … }, 'description')`;
+`game/js/2555-radar-plus.js` (sonar and 3D) is a good example to copy.

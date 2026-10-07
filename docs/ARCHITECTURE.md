@@ -1,6 +1,6 @@
 # Architecture
 
-Stellar Impulse ships as **two single-file games** built from one set of modules:
+Cosmic Impulse ships as **two single-file games** built from one set of modules:
 
 ```
 game/
@@ -9,7 +9,7 @@ game/
   js/NNNN-*.js          game code, concatenated in name order into ONE classic <script>
   platform/desktop.html extra layer for desktop (empty today)
   platform/mobile.html  phone layer: touch pad, ☰ menu of every action, mini radar, layout CSS
-tools/build-game.mjs    builds stellar-impulse.html + stellar-impulse-mobile.html, computes ORB_FP
+tools/build-game.mjs    builds cosmic-impulse.html + cosmic-impulse-mobile.html, computes ORB_FP
 tools/smoke/            headless browser smoke test (Playwright + a three.js stand-in)
 ```
 
@@ -41,6 +41,7 @@ Rules of thumb:
 | `0400-tech.js` | `TECH` tree |
 | `0500-budgets.js` | `recalc()` → `SH` (power, heat, shielding, limits) whenever the ship changes |
 | `0550-layout.js` | modular ship layout (RULES): module order `s.lay`, sizes, centre of mass, turn time, g limit by length, reactor shadow shielding, storm-shelter factor, refit jobs → `SH.lay` |
+| `0560-upgrades.js` | part upgrades Mk I–V (RULES): effect per category, cost, knowledge gate; `partEff()` used by `recalc()` |
 | `0600-manufacturing.js` | job queue `s.jobs`, `queueJob`, `finishJob` |
 | `0700-fuel.js` | buying/making fuel and supplies |
 | `0800-analyzer.js` | design analyzer: what limits thrust, why |
@@ -65,11 +66,13 @@ Rules of thumb:
 | `2400-graphs.js` | history samples and small graphs |
 | `2500-dashboard.js` | cockpit widgets `WDEF`, layouts `DASH` |
 | `2550-sensors.js` | sensor tiers, ORB-TLM contacts, radar designs, 📡 widget |
+| `2555-radar-plus.js` | radar designs `sonar` (rotating sweep that updates contacts as it passes) and `3d` (true height, trails, drag to turn) |
 | `2560-api.js` | `ORB.api`, ledger, element compositions |
 | `2570-ship-style.js` | upgrade-driven exterior, style presets, trims, style JSON, radar/cockpit pickers |
 | `2580-hardpoints.js` | movable parts: `CUST.mounts`, offsets applied after `ship:build`, 🎨 HARDPOINTS editor |
 | `2590-ops-ui.js` | 🛸 Operations window (key 8) for drones and probes |
 | `2595-builder-ui.js` | 🧱 Ship Builder window (key 7): side view, draft vs now, refit |
+| `2620-cockpit-styles.js` | cockpit styles (realistic, neo, military, retro, classic): widget skins + window frame; `ORB.cockpit`; overlay de-cluttering |
 | `2600-ui-extras.js` | misc UI refresh |
 | `2700-trip-supplies.js` | supplies calculator |
 | `2800-multiplayer.js` | PeerJS, `RULES` fingerprint, ORB-NET messages, remote ship `RS` |
@@ -105,7 +108,7 @@ viewport (the smoke test takes a 390×844 screenshot).
 
 An earlier experiment with a stricter layered design. Kept for its tests and ideas; candidates to fold in or retire.
 
-Stellar Impulse is built in layers. Each layer only depends on the ones below it.
+Cosmic Impulse is built in layers. Each layer only depends on the ones below it.
 
 ```
 src/rules/     The Rules           Constants and scaling laws. Data only.
@@ -170,7 +173,7 @@ identical code, is the long-term plan.
 | `input.js` | Enemy-relative flight controls and key bindings |
 | `net.js` | Peer-to-peer transport (PeerJS room codes or manual codes) |
 
-`tools/build.mjs` bundles everything into `dist/stellar-impulse-arena.html` so the arena also works when
+`tools/build.mjs` bundles everything into `dist/cosmic-impulse-arena.html` so the arena also works when
 opened straight from disk.
 
 ## Tests

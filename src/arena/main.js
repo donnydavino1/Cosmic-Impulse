@@ -1,4 +1,4 @@
-// Stellar Impulse Arena: screens, the game loop, and the two ways to play (against the AI, or online).
+// Cosmic Impulse Arena: screens, the game loop, and the two ways to play (against the AI, or online).
 
 import { CLASSES, WORLD, TECH, RULESET } from '../rules/rules.js';
 import { evaluate, makeBlueprint, fmtDist, fmtEnergy } from '../kernel/design.js';

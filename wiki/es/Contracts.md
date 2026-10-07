@@ -19,7 +19,7 @@ ofertas a la vez, elegidas según dónde estés; puedes llevar hasta tres a la v
 
 ## Cómo te pagan (y por qué)
 
-Las recompensas siguen [[Las leyes de Stellar Impulse|The Laws of Stellar Impulse]], así que nada aparece de la nada:
+Las recompensas siguen [[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]], así que nada aparece de la nada:
 
 - Los **puntos de investigación** son conocimiento, enviado por radio. Instantáneo.
 - La **energía** llega por **haz de potencia** desde la Tierra: solo lo que cabe en tu batería. Con la batería llena

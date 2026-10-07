@@ -1,7 +1,7 @@
 # Heat and Radiators
 
 Every watt your ship uses ends up as heat, and in a vacuum there is no air to carry it away. The only way out is
-**radiation**: a radiator glows in infrared (Law 5 in [[The Laws of Stellar Impulse]]).
+**radiation**: a radiator glows in infrared (Law 5 in [[The Laws of Cosmic Impulse]]).
 
 ## How much a radiator sheds
 
@@ -33,6 +33,20 @@ Radiators shed from both faces, so a 60 m² panel has 120 m² of surface.
 | Liquid-droplet radiator | 400 m² | 900 K | high |
 
 Exact masses and recipes are on [[Parts]]; research is on [[Technologies]].
+
+## The Sun's heat
+
+Sunlight warms the ship too, more the closer you are (it grows with the square of the distance: 1.4 kW/m² at Earth,
+9 kW/m² at Mercury, 136 kW/m² at 0.1 AU) and the bigger your ship is side-on. Beyond what the hull can take, sunlight
+**burns the hull**:
+
+| Protection | Survives sunlight up to | About this close to the Sun |
+|---|---|---|
+| Bare hull | 25 kW/m² | 0.23 AU |
+| **Multi-layer sunshade** (blocks 95 % of the heat) | 80 kW/m² | 0.13 AU |
+| **Carbon-carbon heat shield** (blocks 99.5 %, like the Parker Solar Probe) | 1.2 MW/m² | 0.034 AU |
+
+Both are parts in 🛠 → 🏭 Fabricate (needs *Carbon composites*), and modules you can place in the [[Ship Builder]].
 
 ## What it means for design
 

@@ -1,0 +1,28 @@
+/* ===== COCKPIT STYLES (js/2620-cockpit-styles.js): body.ck-real / ck-military / ck-retro; neo = 200-cockpit-neo.css ===== */
+/* Realistic: matte instrument panels with bezels and screws, no glow */
+body.ck-real .wdg{background:linear-gradient(180deg,rgba(26,29,34,.94),rgba(14,16,19,.96));backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid #2e333b;border-radius:5px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.05),inset 0 0 0 3px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.5);clip-path:none}
+body.ck-real .wdg::before,body.ck-real .wdg::after{content:'';position:absolute;width:5px;height:5px;border-radius:50%;background:#5a616b;border:0;box-shadow:inset -1px -1px 0 rgba(0,0,0,.6)}
+body.ck-real .wdg::before{top:5px;right:5px}body.ck-real .wdg::after{bottom:5px;left:5px}
+body.ck-real .wh{background:linear-gradient(180deg,#23272d,#1b1e23);border-bottom:1px solid #2e333b;color:#aab3be;font:600 9.5px/1.6 ui-sans-serif,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:3px 10px}
+body.ck-real .wb{color:#dfe5ec;font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+body.ck-real .wb canvas{background:#05070a;border:1px solid #23272d;border-radius:3px}
+body.ck-real #vitals>*{background:#15181c!important;border-color:#2e333b!important;box-shadow:none!important}
+/* Military: olive drab, amber readouts */
+body.ck-military .wdg{background:rgba(18,20,10,.95);backdrop-filter:none;border:1px solid #4b5320;border-radius:0;box-shadow:inset 0 0 0 2px rgba(0,0,0,.4);clip-path:polygon(8px 0,100% 0,100% 100%,0 100%,0 8px)}
+body.ck-military .wdg::before,body.ck-military .wdg::after{display:none}
+body.ck-military .wh{background:#2b2f19;border-bottom:1px solid #4b5320;color:#ffb000;font:700 10px/1.6 ui-monospace,monospace;letter-spacing:.25em;text-transform:uppercase;padding:3px 10px}
+body.ck-military .wb{color:#e8d9a0;font-family:ui-monospace,monospace}body.ck-military .wb b{color:#ffb000}
+body.ck-military .wb canvas{background:#0a0b05;border:1px solid #3c4224}
+/* Retro: green phosphor CRT with scanlines */
+body.ck-retro .wdg{background:#020a03;backdrop-filter:none;border:2px solid #1f3a22;border-radius:10px;box-shadow:inset 0 0 18px rgba(57,255,122,.12),0 0 0 3px #0c120c;clip-path:none}
+body.ck-retro .wdg::before{content:'';position:absolute;inset:0;border:0;width:auto;height:auto;pointer-events:none;border-radius:8px;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px)}
+body.ck-retro .wdg::after{display:none}
+body.ck-retro .wh{background:#071a0b;border-bottom:1px solid #1f3a22;color:#39ff7a;font:700 10px/1.6 ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;text-shadow:0 0 6px rgba(57,255,122,.6);padding:3px 10px}
+body.ck-retro .wb{color:#39ff7a;font-family:ui-monospace,monospace;text-shadow:0 0 5px rgba(57,255,122,.45)}
+body.ck-retro .wb canvas{filter:sepia(1) hue-rotate(70deg) saturate(3)}
+/* overlays in the cockpit: no duplicate objective; weapon line and hints at the top centre, clear of widgets */
+body.fp.objw #obj{display:none!important}
+body.fp #wpn{top:96px!important;bottom:auto!important;right:auto!important;left:50%!important;transform:translateX(-50%)}
+body.fp #status{bottom:auto!important;top:128px;max-width:min(560px,40vw);font-size:11px}
+body.fp #fpbar button{padding:3px 9px;font-size:11px}

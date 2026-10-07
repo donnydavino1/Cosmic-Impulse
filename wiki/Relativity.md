@@ -1,7 +1,7 @@
 # Relativity
 
-Below a few thousand km/s, Newton is enough. Toward the speed of light (c = 299,792 km/s), Stellar Impulse switches to
-special relativity, as in [[Law 7|The Laws of Stellar Impulse]].
+Below a few thousand km/s, Newton is enough. Toward the speed of light (c = 299,792 km/s), Cosmic Impulse switches to
+special relativity, as in [[Law 7|The Laws of Cosmic Impulse]].
 
 ## Gamma
 

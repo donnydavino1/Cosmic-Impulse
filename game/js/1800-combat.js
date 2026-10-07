@@ -67,7 +67,8 @@ function raidTick(dtg,now){
     dx=ux*vt+tx*vc-vrx,dy=uy*vt+ty*vc-vry,dz=uz*vt+tz*vc-vrz,dl=Math.hypot(dx,dy,dz)||1,dv=Math.min(dl,o.acc*dtg);
    o.vx+=dx/dl*dv;o.vy+=dy/dl*dv;o.vz+=dz/dl*dv;o.burn=dv/(o.acc*dtg)}
   o.cd-=dtg;if(o.cd<=0&&d<o.range&&s.crew.alive){o.cd=6+Math.random()*5;sfx('elaser');
-   if(Math.random()<.85-.45*d/o.range){CB.beams.push({o,hit:true,until:now+170});takeHit(o.dmg*fall(d,2.5e4),'laser',o);if(!CB.on)return}
+   // a quiet ship (passive sensing, engine off) is hard to lock onto
+   const quiet=s.passive&&!(s.burn>0);if(Math.random()<(.85-.45*d/o.range)*(quiet?.55:1)){CB.beams.push({o,hit:true,until:now+170});takeHit(o.dmg*fall(d,2.5e4),'laser',o);if(!CB.on)return}
    else CB.beams.push({o,hit:false,off:[(Math.random()-.5)*600,(Math.random()-.5)*600,(Math.random()-.5)*600],until:now+170})}
   o.mcd-=dtg;if(o.mis>0&&o.mcd<=0&&d>8e3&&d<1.5e5){o.mis--;o.mcd=25+Math.random()*20;launchEnemyMissile(o)}}
  for(const m of OBJS.slice())if(m.hostile&&m.fuel<=0&&Math.hypot(m.x-s.x,m.y-s.y,m.z-s.z)>2e5)rmObj(m); // spent missiles that missed

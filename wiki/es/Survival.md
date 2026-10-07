@@ -14,6 +14,9 @@ necesita potencia) y protección contra la **radiación**. La franja de constant
 | 🔋 Potencia · 🔧 Sistemas | el soporte vital se detiene sin potencia; las piezas averiadas necesitan kits de repuestos |
 | ⚠ Amenazas | misiles entrantes, saqueadores, una órbita que choca con el planeta |
 
+**Chocar con el suelo:** tocar un planeta o una luna a más de **10 m/s** respecto a su superficie es un choque:
+la nave se destruye y la misión termina. Más despacio, aterrizas (y puedes volver a despegar).
+
 Las **tormentas solares** se anuncian con una hora de antelación: pulsa **Z** para refugiarte tras tus tanques de
 agua y combustible, o quédate dentro del campo magnético terrestre. Los **micrometeoroides** desgastan las piezas y a
 veces abren brechas en el casco. El soporte vital con reciclaje (investigación) convierte el agua de nuevo en oxígeno.

@@ -2,7 +2,7 @@
 let SV=false,svd=45,shipKey='',plume=null,plTex=null;R.autoClear=false;
 const SS=new THREE.Scene(),SC=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,1e7);SC.up.set(0,0,1);
 const sLight=new THREE.DirectionalLight(0xffffff,1.8);SS.add(sLight,new THREE.AmbientLight(0x3a3550,1),new THREE.HemisphereLight(0x8fd8ff,0x2a0f3a,.6));
-const shipG=new THREE.Group();SS.add(shipG);const X1=new THREE.Vector3(1,0,0),tV=new THREE.Vector3(),tQ=new THREE.Quaternion(),DRC=['#ffae42','#5fb8ff','#b18cff','#7dffb0','#fff6c2','#ff5cf0','#ffffff','#7fd3ff','#ff8a3d','#ffe68a'];
+const shipG=new THREE.Group();SS.add(shipG);const X1=new THREE.Vector3(1,0,0),tV=new THREE.Vector3(),tQ=new THREE.Quaternion(),DRC=['#ffae42','#5fb8ff','#b18cff','#7dffb0','#fff6c2','#ff5cf0','#ffffff','#7fd3ff','#ff8a3d','#ffe68a','#7fa8ff','#ffd0a0','#fff1b0','#ff6a4a','#d6a6ff','#a0e8ff'];
 let CUST={name:'Pathfinder',hull:'#d9dcdf',acc:'#b8892e',shape:'modular',wings:2,art:false,panel:'classic',scenery:'realistic',vis:'real'};try{Object.assign(CUST,JSON.parse(localStorage.getItem('orbital-ship')||'{}'))}catch(e){}
 // realistic look (default): physically based materials, no outlines or glows, dark space; 'stylized' keeps the old look
 const REAL=()=>CUST.vis!=='stylized';
@@ -13,13 +13,24 @@ function glow(col,sz){const t=cnv(64,x=>{const g=x.createRadialGradient(32,32,0,
 function part(geo,mat,edge){const m=new THREE.Mesh(geo,mat);if(edge&&!REAL())m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo,25),new THREE.LineBasicMaterial({color:edge})));return m}
 const RHO={chem:360,xe:1600,h2:71,fus:169,am:86},TCOL={chem:'#eef2f7',xe:'#8fa7c9',h2:'#bfe9ff',fus:'#ffd84d',am:'#c77dff'};let shipR=10,fitR=0;
 // MODULAR HULL: the modules of your 🧱 Builder layout (0550-layout.js), nose (+x) to tail, at their real sizes in metres
-function buildSpine(H,dark,A){const M=(SH&&SH.lay?SH.lay:layMetrics((laySync(),s.lay.order))).mods,L=M.reduce((a,q)=>a+q.len,0)||4,top=L/2;
+const HTEX={};
+function hullTex(kind){if(HTEX[kind])return HTEX[kind];const c=document.createElement('canvas');c.width=512;c.height=256;const x=c.getContext&&c.getContext('2d');if(!x)return null;
+ if(kind==='panel'){x.fillStyle='#cfd2d6';x.fillRect(0,0,512,256);for(let i=0;i<1800;i++){const v=180+Math.random()*60|0;x.fillStyle=`rgba(${v},${v},${v+4},.08)`;x.fillRect(Math.random()*512,Math.random()*256,2+Math.random()*30,1+Math.random()*3)}
+  x.strokeStyle='rgba(60,64,70,.55)';x.lineWidth=2;for(let u=0;u<=512;u+=128){x.beginPath();x.moveTo(u,0);x.lineTo(u,256);x.stroke()}for(let v=0;v<=256;v+=64){x.beginPath();x.moveTo(0,v);x.lineTo(512,v);x.stroke()}
+  x.fillStyle='rgba(70,74,80,.6)';for(let u=0;u<512;u+=128)for(let v=0;v<256;v+=64)for(let t=0;t<4;t++){x.beginPath();x.arc(u+8+t*37,v+6,1.5,0,7);x.fill()}
+  x.fillStyle='rgba(40,40,40,.12)';for(let i=0;i<40;i++){x.fillRect(Math.random()*512,Math.random()*256,Math.random()*60,Math.random()*12)}}
+ else{const g=x.createLinearGradient(0,0,512,256);g.addColorStop(0,'#9c7420');g.addColorStop(.5,'#e3c262');g.addColorStop(1,'#a8801f');x.fillStyle=g;x.fillRect(0,0,512,256);
+  for(let i=0;i<900;i++){const a=Math.random()*Math.PI,l=6+Math.random()*28,x0=Math.random()*512,y0=Math.random()*256;x.strokeStyle=Math.random()<.5?'rgba(255,240,180,.35)':'rgba(70,45,5,.35)';x.lineWidth=1+Math.random()*1.5;x.beginPath();x.moveTo(x0,y0);x.lineTo(x0+Math.cos(a)*l,y0+Math.sin(a)*l);x.stroke()}}
+ const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;if(THREE.sRGBEncoding!==undefined&&false)t.encoding=THREE.sRGBEncoding;return HTEX[kind]=t}
+function texMat(base,kind,len,r){try{const t=hullTex(kind);if(!t||!REAL())return base;const m=base.clone(),tx=t.clone();tx.needsUpdate=true;tx.repeat.set(Math.max(1,len/3),Math.max(1,Math.round(2*Math.PI*r/6)));m.map=tx;m.needsUpdate=true;return m}catch(e){return base}}
+function buildSpine(H,dark,A){const LM=SH&&SH.lay?SH.lay:layMetrics((laySync(),s.lay.order),s.lay.rad),M=LM.mods,L=LM.L||4,top=L/2;
  const std=(c,r,m)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}),foil=std('#b8892e',.38,.85),white=std('#e6e8ea',.6,.08),glass=std('#0d1520',.06,.9),rad=std('#eef1f3',.55,.05),
   cyl=(r,len,mat,seg)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,seg||28),mat);m.rotation.z=Math.PI/2;return m},box=(x,y,z,mat)=>new THREE.Mesh(new THREE.BoxGeometry(x,y,z),mat);
- let maxR=1;for(const q of M){const g=new THREE.Group(),len=q.len,r=q.r;g.position.x=top-q.x;maxR=Math.max(maxR,r);
-  if(q.cat==='life'){g.add(cyl(r,len,H));for(let k=0;k<8;k++){const w=box(Math.min(.9,len*.4),.35,.5,glass);const a=k*Math.PI/4;w.position.set(len*.15,Math.cos(a)*(r+.01),Math.sin(a)*(r+.01));w.rotation.x=a;g.add(w)}
+ let maxR=1;for(const q of M){const g=new THREE.Group(),len=q.len,r=q.r;g.position.x=top-q.x;maxR=Math.max(maxR,r+(q.off||0));
+  if(q.radial){g.position.y=Math.sin(q.ang)*q.off;g.position.z=Math.cos(q.ang)*q.off;const st=new THREE.Mesh(new THREE.BoxGeometry(Math.min(1,len*.4),.18,.18),dark);st.scale.set(1,1,1);const sw=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,q.off,6),dark);sw.position.set(0,-Math.sin(q.ang)*q.off/2,-Math.cos(q.ang)*q.off/2);sw.rotation.x=Math.atan2(Math.cos(q.ang),Math.sin(q.ang))*0+(-q.ang+Math.PI/2);g.add(sw)}
+  if(q.cat==='life'){g.add(cyl(r,len,texMat(H,'panel',len,r)));for(let k=0;k<8;k++){const w=box(Math.min(.9,len*.4),.35,.5,glass);const a=k*Math.PI/4;w.position.set(len*.15,Math.cos(a)*(r+.01),Math.sin(a)*(r+.01));w.rotation.x=a;g.add(w)}
    const ring=new THREE.Mesh(new THREE.TorusGeometry(r+.02,.07,6,40),std(A,.5,.2));ring.rotation.y=Math.PI/2;ring.position.x=-len*.3;g.add(ring)}
-  else if(q.cat==='lab'){g.add(cyl(r,len,H));const st=cyl(r+.03,Math.min(.4,len*.2),std(A,.5,.2));g.add(st)}
+  else if(q.cat==='lab'){g.add(cyl(r,len,texMat(H,'panel',len,r)));const st=cyl(r+.03,Math.min(.4,len*.2),std(A,.5,.2));g.add(st)}
   else if(q.cat==='fab'){g.add(box(len,2*r*.9,2*r*.9,H));const b2=box(len*.9,.3,2*r,dark);b2.position.y=r*.9;g.add(b2)}
   else if(q.cat==='store'){g.add(cyl(.5,len,dark,10));for(let k=0;k<4;k++){const b=box(len*.92,r*.8,r*.8,dark);const a=k*Math.PI/2+Math.PI/4;b.position.set(0,Math.cos(a)*r*.62,Math.sin(a)*r*.62);g.add(b)}}
   else if(q.cat==='gen'){if(q.rad>0){g.add(cyl(r,len*.7,dark));const sh=new THREE.Mesh(new THREE.CylinderGeometry(r*1.7,r*.9,len*.3,28),std('#3f444b',.5,.7));sh.rotation.z=Math.PI/2;sh.position.x=(M.indexOf(q)>SH?.lay?.crew?1:-1)*len*.35;g.add(sh)}
@@ -29,10 +40,15 @@ function buildSpine(H,dark,A){const M=(SH&&SH.lay?SH.lay:layMetrics((laySync(),s
    else if(d.whip){const dk=cyl(r*1.25,.08,std('#cfd3d6',.7,.2));g.add(dk);g.add(cyl(.5,len,dark,10))}
    else g.add(cyl(r,len,d.ww?std('#7f97b0',.4,.3):std('#8f8a80',.7,.25)))}
   else if(q.cat==='tanks'){const F=Object.entries(s.fuel).filter(([f,m])=>m>.01).map(([f,m])=>[f,m/(RHO_F[f]||1000)]).concat(s.res.water>1?[['water',s.res.water/1000]]:[]),V=F.reduce((a,x)=>a+x[1],0)||1;let x0=len/2;
-   for(const [f,v] of F){const l=Math.max(.3,len*v/V),t=cyl(r,l,f==='chem'||f==='water'?white:f==='am'?std('#3a3550',.3,.8):foil);t.position.x=x0-l/2;g.add(t);const cap=new THREE.Mesh(new THREE.SphereGeometry(r,24,12),t.material);cap.scale.set(.25/r,1,1);cap.position.x=x0-l;g.add(cap);x0-=l}}
+   for(const [f,v] of F){const l=Math.max(.3,len*v/V),t=cyl(r,l,f==='chem'||f==='water'?texMat(white,'panel',l,r):f==='am'?std('#3a3550',.3,.8):texMat(foil,'foil',l,r));t.position.x=x0-l/2;g.add(t);const cap=new THREE.Mesh(new THREE.SphereGeometry(r,24,12),t.material);cap.scale.set(.25/r,1,1);cap.position.x=x0-l;g.add(cap);x0-=l}}
+  else if(q.cat==='weapon'){if(q.id==='rail'){[.35,-.35].forEach(o=>{const rl=box(len+1.5,.16,.16,dark);rl.position.set(.75,o,0);g.add(rl)});g.add(cyl(.55,1,dark,12))}
+   else{const base=new THREE.Mesh(new THREE.CylinderGeometry(.5,.6,.5,16),dark);g.add(base);const tur=new THREE.Mesh(new THREE.SphereGeometry(.45,16,10,0,Math.PI*2,0,Math.PI/2),std('#6b7280',.5,.6));tur.position.y=.25;g.add(tur);
+    const br=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,1.6,8),dark);br.rotation.z=Math.PI/2;br.position.set(.8,.4,0);g.add(br);if(q.radial){g.rotation.x=-(q.ang-Math.PI/2)}}}
+  else if(q.cat==='sensor'){g.add(cyl(.45,len,dark,12));const dish=new THREE.Mesh(new THREE.SphereGeometry(r*1.3,24,10,0,Math.PI*2,0,Math.PI*.32),std('#e4e6e8',.5,.15));dish.material.side=THREE.DoubleSide;dish.rotation.z=-Math.PI/2;dish.position.x=len*.3;g.add(dish)}
   else if(q.cat==='truss'){const s2=.7,m2=dark;[[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a,b])=>{const lg=box(len,.14,.14,m2);lg.position.set(0,a*s2,b*s2);g.add(lg)});
    const diag=Math.hypot(len,2*s2),ang=Math.atan2(2*s2,len);[[0,1],[0,-1],[1,0],[-1,0]].forEach(([a,b])=>{const d2=box(diag,.07,.07,m2);if(a){d2.position.z=a*s2;d2.rotation.z=ang}else{d2.position.y=b*s2;d2.rotation.y=ang}g.add(d2)})}
   else g.add(cyl(r,len,H));
+  {const p=q.k&&q.k[0]==='p'?layPart(q.k):null,n=p?(p.mk||1)-1:0;for(let b=0;b<n;b++){const t=new THREE.Mesh(new THREE.TorusGeometry((q.cat==='therm'||q.cat==='store'?.7:r)+.04,.05,6,32),std(A,.4,.6));t.rotation.y=Math.PI/2;t.position.x=len/2-.15-b*.2;g.add(t)}}
   shipG.add(g)}
  // the frame's central spine ties the modules together
  const sp=cyl(.25,L,dark,8);shipG.add(sp);
@@ -84,7 +100,7 @@ function buildShip(){while(shipG.children.length)shipG.remove(shipG.children[0])
   im.count=c;shipG.add(im);arrR=rOut+Rh}
  if(s.sailA>0){const Ls=Math.sqrt(s.sailA),sm=new THREE.Mesh(new THREE.BoxGeometry(.05,Ls,Ls),new THREE.MeshStandardMaterial({color:'#dfe6f2',metalness:1,roughness:.15,emissive:'#223',side:THREE.DoubleSide}));sm.position.x=nose+Ls*.35;shipG.add(sm);
   for(let k=0;k<2;k++){const bm=part(new THREE.BoxGeometry(.3,Ls*1.414,.3),dark);bm.rotation.x=Math.PI/4+k*Math.PI/2;bm.position.x=nose+Ls*.35;shipG.add(bm)}arrR=Math.max(arrR,Ls*.75)}
- buildTurrets(rad);ORB.emit('ship:build',{g:shipG,rad,part,H,dark,A});
+ if(sh!=='modular')buildTurrets(rad);ORB.emit('ship:build',{g:shipG,rad,part,H,dark,A});
  shipR=Math.max(10,arrR,ext,Math.abs(nz)+12*es);if(shipR>fitR*1.05||shipR<fitR*.6){svd=Math.max(svd,shipR*2.4);fitR=shipR}}
 function shipUpdate(){const key=[ORB.shipKey(),CUST.panel,WEP.map(w=>isU(w.id)?1:0).join(''),CUST.shape,CUST.vis,CUST.hull,CUST.acc,CUST.wings,di,Math.round(Math.log10(s.area)*20),Math.round(Math.log10(PW)*4),s.sailA,...['chem','xe','h2','fus','am'].map(f=>Math.round(Math.log10(s.fuel[f]+.01)*10))].join();if(key!==shipKey){shipKey=key;buildShip()}
  const g=gam(s),d=s.dom,dv=s.burn>0?dirVec():null,f=dv||[s.vx/g-d.vx,s.vy/g-d.vy,s.vz/g-d.vz],fl=Math.hypot(...f)||1;tV.set(f[0]/fl,f[1]/fl,f[2]/fl);tQ.setFromUnitVectors(X1,tV);shipG.quaternion.slerp(tQ,.08);turretTick();

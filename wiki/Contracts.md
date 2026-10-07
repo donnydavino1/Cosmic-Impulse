@@ -19,7 +19,7 @@ a time, picked to suit where you are; you can run up to three at once. New offer
 
 ## How you get paid (and why)
 
-Rewards follow [[The Laws of Stellar Impulse]], so nothing appears from nowhere:
+Rewards follow [[The Laws of Cosmic Impulse]], so nothing appears from nowhere:
 
 - **Research points** are knowledge, sent by radio. Instant.
 - **Energy** arrives by **power beam** from Earth: only what your battery has room for. A full battery wastes it,

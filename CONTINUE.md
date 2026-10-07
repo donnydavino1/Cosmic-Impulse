@@ -5,7 +5,7 @@
 > **§4 NOW**, keep the rules in **§2**, and before you finish, rewrite **§3–§5** and add a `CHANGELOG.md` entry
 > so the next session can continue. The developer may give no other instructions than “go”.
 
-## 1. What Stellar Impulse is
+## 1. What Cosmic Impulse is
 
 A physics-first spaceship game in the browser. A to-scale, N-body solar system with special relativity; you start
 in low Earth orbit with a small ship and grow it by collecting energy, mining, researching and building. Raiders fight
@@ -15,7 +15,7 @@ looks matter just as much: when they conflict, offer a toggle (see “Cinematic 
 Developer’s standing wishes (from the chat that set up this workflow):
 - **Depth in every direction**, especially: thousands of ways to customise the ship inside and out, with looks
   that change as the ship is upgraded; players able to make and share their own styles.
-- **Two builds, always**: `stellar-impulse.html` (desktop) and `stellar-impulse-mobile.html` (phone). Same game core, byte for
+- **Two builds, always**: `cosmic-impulse.html` (desktop) and `cosmic-impulse-mobile.html` (phone). Same game core, byte for
   byte; only the platform layer (controls/layout) differs. Every feature must be reachable on the phone
   (the ☰ menu lists every key action automatically; new panels need a phone check).
 - **Standard protocols**: everything another player or program can see is a documented, versioned format
@@ -43,7 +43,7 @@ Developer’s standing wishes (from the chat that set up this workflow):
    Files are concatenated in name order into ONE classic script, so all top-level names are shared globals.
    New feature → new numbered module (pick a number between neighbours, e.g. `2580-…`). Talk to other modules
    through `ORB.on/emit` hooks (see `0050-bus.js`) instead of editing them, where possible.
-2. **Build:** `node tools/build-game.mjs` → writes `stellar-impulse.html` + `stellar-impulse-mobile.html` and prints the
+2. **Build:** `node tools/build-game.mjs` → writes `cosmic-impulse.html` + `cosmic-impulse-mobile.html` and prints the
    code fingerprint. Never hand-edit those two outputs.
 3. **Test:** `npm test` (node; checks the build, that both outputs share the same core, that the script parses,
    plus the arena/kernel tests). If Python + Playwright are available, also run the browser smoke test:
@@ -65,7 +65,7 @@ Developer’s standing wishes (from the chat that set up this workflow):
 6. **Before finishing:** update §3 (state), §4 (now), §5 (next), `CHANGELOG.md`, and any doc whose facts you
    changed. Bump `package.json` version (minor for features).
 
-## 3. Current state (v0.12.0, official physics fingerprint `a4cdd96a769baf8b`)
+## 3. Current state (v0.22.0, official physics fingerprint: see `game/official-rules.json`)
 
 Working and tested in a headless browser:
 - Solar system, relativity, orbit/XYZ flight, autopilot, chemical start that can escape Earth.
@@ -79,16 +79,16 @@ Working and tested in a headless browser:
 - v0.8: wiki fully translated (21 pages × 3 languages, titles follow the language); `{}` patterns translate
   run-time notifications (combat, contracts, research, shelter, fabrication); GitHub Pages workflow (`website`).
 
-- v0.9: renamed to **Stellar Impulse** (formerly Orbital). Old `orbital*.html` files are redirects.
+- v0.9: renamed to **Cosmic Impulse** (formerly Orbital). Old `orbital*.html` files are redirects.
   Deliberately unchanged: `orbital-*` storage keys (saves), `orbital-` multiplayer peer prefix and `ORBITAL-INVITE`
   codes, RULES modules (fingerprint unchanged). One stale comment in `game/js/1750-contracts.js` still says
   "The Laws of Orbital": fix it the next time a rules release is made anyway (editing it changes the fingerprint).
-  Published artifacts keep their URLs (now titled Stellar Impulse).
+  Published artifacts keep their URLs (now titled Cosmic Impulse).
 
 - v0.10: mining drones and science probes (`1760-ops.js` RULES, `2590-ops-ui.js`, key 8), two contract types,
   wiki page *Drones and Probes*. Drones and probes have no 3D model yet (they are not drawn).
 
-- v0.11: name is **Stellar Impulse**; 🧱 Ship Builder (`0550-layout.js` RULES + `2595-builder-ui.js`, key 7) with
+- v0.11: name is **Cosmic Impulse**; 🧱 Ship Builder (`0550-layout.js` RULES + `2595-builder-ui.js`, key 7) with
   layout-driven performance; modular 3D hull (`buildSpine` in `1300-ship-model.js`); realistic look by default
   (`1950-realism.js`, `REAL()`); wiki with sections, cover → Vision and Philosophy, auto-links, backlinks, 30 pages.
   **The realistic look and the modular 3D hull have not been seen in a real WebGL renderer yet** (the sandbox has
@@ -97,20 +97,40 @@ Working and tested in a headless browser:
 - **v0.12:** everything translated (≈1,200 strings per language; `npm run i18n` reports 0 for both builds), builder saved
   designs, translated generated wiki pages.
 
+- **v0.13:** crash > 10 m/s = game over (`groundContact`, RULES); 8 radio channels; music on by default (starts on first input).
+
+- **v0.14:** cockpit styles (default realistic), sonar + 3D radar (default 3d), part upgrades Mk I–V (RULES), realistic Earth texture, overlay fixes, wiki 33 pages.
+
+- **v0.15:** radial mounts with even-spacing symmetry (`s.lay.rad`), sensor parts (Doppler dish, phased array, lidar) feeding `sensorTier()`.
+
+- **v0.16:** active/passive sensing (key 6, RULES), builder drag-and-drop + end view, Mk bands on the 3D ship.
+
+- **v0.17:** physical cockpit console (default; 🎛 button), Earth city lights. The console is HTML/SVG/CSS and was checked in screenshots at 1600×900 and 1280×720.
+
+- **v0.18:** Uranus, Neptune, Pluto, 11 moons, Proxima Centauri + b; real NEAs, belt giants, Kuiper objects, Sedna; Sun heat + sunshade/heat shield; Kuiper/Oort debris; orbit planner (F6, `apOrb`).
+
+- **v0.19:** builder rendered preview (canvas, verified in screenshots), part catalog with build-beside and mirrored pairs (`job.place`), recycle, Δv row; hull panel and foil textures in 3D (not seen in WebGL yet).
+
+- **v0.20:** weapons are layout modules (`w:<id>`; railgun spinal), spare engines' mass at the tail, engine use/scrap in the builder.
+
+- **v0.21:** 16 engines (Hall, arcjet, solar thermal, gas-core NTR, direct fusion drive, electric sail added); no trademarked names (keep it that way: generic engine names only).
+
+- **v0.22:** renamed to **Cosmic Impulse** (old file names redirect). The GitHub repo is still `Stellar-Impulse` unless the developer renames it; README links use that path.
+
 Not verified visually (no WebGL in the build sandbox): planets, debris, turrets, antenna/trim, hardpoint moves.
 The developer has not yet confirmed that GitHub Pages is switched on (Settings → Pages → Source: GitHub Actions).
 
 ## 4. NOW — do this next session (in order)
 
-1. **Check the new look with the developer's screenshots** (3rd-person and cockpit): tune `toneMappingExposure`,
-   sun intensity and materials in `1950-realism.js` / `buildSpine`; fix anything that renders wrong.
-2. **Deeper builder:** radial mounts (attach modules beside the spine, not only along it), symmetry, drag-and-drop
-   in the side view, named saved designs, and visible drones/probes (bay hatch, drones flying to the asteroid).
-3. **Keep translations at 0:** run `npm run i18n` after any change that adds text; add keys to both `game/i18n/*.json`.
-4. **Layout effects in combat:** hits strike the outer modules first (armour placement matters), damaged modules
-   show on the model.
-5. **More wiki depth:** a page per engine family and per part category (generated), a "First 10 hours" walkthrough,
-   and a Builder cookbook with real spacecraft comparisons.
+1. **Combat depth:** armour placement (hits strike outer modules first; damaged modules visible); passive sensing
+   for raiders too (they find a quiet ship later).
+2. **3D cockpit interior** (modelled frame and console instead of the SVG window frame), Earth night lights and
+   ocean glint, Sun glare; ask the developer for screenshots after each visual change.
+3. **Radar as hardware:** dish size, power and processing as parts with upgrades; active (precise, reveals you) vs
+   passive sensing (RULES; affects what others see).
+4. **Armour placement:** hits strike outer modules first; damaged modules visible on the model.
+5. **Wiki:** generated pages per engine family and part category; Builder cookbook with real spacecraft.
+6. Keep `npm run i18n` at 0 and update the wiki in all three languages with every change.
 
 ## 5. NEXT — backlog, roughly by value
 

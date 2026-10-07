@@ -14,8 +14,8 @@ def prep(name):
 errs = []
 with sync_playwright() as p:
     b = p.chromium.launch()
-    for name, ctx in [('stellar-impulse.html', dict(viewport={'width': 1280, 'height': 800})),
-                      ('stellar-impulse-mobile.html', dict(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True))]:
+    for name, ctx in [('cosmic-impulse.html', dict(viewport={'width': 1280, 'height': 800})),
+                      ('cosmic-impulse-mobile.html', dict(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True))]:
         pg = b.new_context(**ctx).new_page(); pg.on('pageerror', lambda e, n=name: errs.append(f'{n}: {e}'))
         pg.goto(prep(name)); time.sleep(2); ev = pg.evaluate
         ev("document.getElementById('help').classList.add('h')")

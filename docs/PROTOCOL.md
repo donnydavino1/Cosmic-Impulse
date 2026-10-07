@@ -1,4 +1,4 @@
-# Stellar Impulse protocols
+# Cosmic Impulse protocols
 
 Everything one ship (or program) can learn about another goes through a small set of **versioned, documented
 formats**. The physics decides the *truth*; your hardware decides *how much of it you receive*; your display decides

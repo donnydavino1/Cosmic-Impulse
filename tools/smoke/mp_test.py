@@ -22,7 +22,7 @@ with sync_playwright() as p:
     G = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True).new_page()
     for pg, n in [(H, 'host'), (G, 'guest')]:
         pg.on('pageerror', lambda e, n=n: errs.append(f'{n}: {e}'))
-    H.goto(prep('stellar-impulse.html')); G.goto(prep('stellar-impulse-mobile.html')); time.sleep(2)
+    H.goto(prep('cosmic-impulse.html')); G.goto(prep('cosmic-impulse-mobile.html')); time.sleep(2)
     for pg, n in [(H, 'Hosty'), (G, 'Guesty')]:
         pg.evaluate(f"document.getElementById('help').classList.add('h');MP.name='{n}'")
     G.evaluate("T+=3600*5")   # the guest starts at a different time: sync must fix it

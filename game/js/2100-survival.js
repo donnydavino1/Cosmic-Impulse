@@ -17,11 +17,18 @@ function survivalTick(dtg){if(!SH)recalc();if(!(dtg>0)||!s.crew.alive)return;rec
  if(MP.role!=='guest'&&!flare&&T>nextFlare-3600){flare={t0:nextFlare,t1:nextFlare+86400*(.4+Math.random()),peak:.2+Math.random()*1.8};mpSend({t:'flare',flare});alertCrit('☀⚠ Solar proton storm detected! It arrives in about an hour and lasts '+dur(flare.t1-flare.t0)+'. Take shelter ('+KN(BIND.shelter)+'), or stay inside Earth’s magnetic field. Game paused.')}
  if(flare&&T>flare.t1){flare=null;nextFlare=T+86400*(25+Math.random()*60);disc('flare1','Survived a solar proton storm',30,'Shielding mass matters most against these bursts of protons')}
  const R2=doseNow(),dose=R2.tot*dtg;c.dose+=dose;c.acute=c.acute*Math.exp(-dtg/(30*86400))+dose;
- const rs=sunDist(),belt=rs>2.1*AU&&rs<3.3*AU,nearRock=WT&&WT.kind==='ast'&&fireHeld&&astDist(WT.a)<2e4,rate=.04/86400*(1+s.area/2000)*(belt?5:1)*(nearRock?30:1),
+ const rs=sunDist(),belt=rs>2.1*AU&&rs<3.3*AU,kuiper=rs>30*AU&&rs<55*AU,oort=rs>2000*AU&&rs<1e5*AU,nearRock=WT&&WT.kind==='ast'&&fireHeld&&astDist(WT.a)<2e4,rate=.04/86400*(1+s.area/2000)*(belt?5:kuiper?8:oort?15:1)*(nearRock?30:1),
   nh=rate*dtg<1?(Math.random()<rate*dtg?1:0):Math.min(20,Math.round(rate*dtg));
  for(let k=0;k<nh;k++){if(SH.whip&&Math.random()<.9)continue;const u=Math.random();
+  // icy debris in the Kuiper belt and the Oort cloud arrives at kilometres per second: every hit gouges the hull
+  if(kuiper||oort){s.hull-=hullMax()*(.004+.01*Math.random())*(oort?2:1);if(!s.iceWarn||T-s.iceWarn>86400){s.iceWarn=T;alertCrit(oort?'☄ Oort cloud debris is hitting the hull. A Whipple shield stops 90 % of it.':'☄ Kuiper belt debris is hitting the hull. A Whipple shield stops 90 % of it.')}
+   if(s.hull<=0&&c.alive){c.alive=false;gameOver(oort?'debris in the Oort cloud':'debris in the Kuiper belt');return}}
   if(u<.15&&!s.leak){s.leak=1.4e-4;alertCrit('💥 A micrometeoroid breached the hull: oxygen is leaking (0.5 kg/hour). Patch it in 🛠 → 🏭 Fabricate.')}
   else if(u<.4)s.pcond=Math.max(.5,s.pcond-.003);else{const q=s.parts[Math.random()*s.parts.length|0];if(q)q.cond=Math.max(0,q.cond-.01-Math.random()*.05)}}
+ // close to the Sun, sunlight itself burns the hull unless a sunshade or heat shield takes it
+ {const fx=S0*(AU/rs)**2,lim=SH.hs?1.2e6:SH.shade?8e4:2.5e4;if(fx>lim){s.hull-=hullMax()*Math.min(.5,.02*(fx/lim-1))*h;
+  if(!s.hotWarn||T-s.hotWarn>3600){s.hotWarn=T;alertCrit('🔥 Sunlight here is '+f1(fx/1e3,0)+' kW/m²: more than your ship can take ('+f1(lim/1e3,0)+' kW/m²). The hull is burning. Back away from the Sun, or build a sunshade or a heat shield.')}
+  if(s.hull<=0&&c.alive){c.alive=false;gameOver('the heat of the Sun');return}}}
  const hotLo=Math.max(0,s.tLo-318)/10,hotHi=SH.radHiA?Math.max(0,s.tHi-SH.radHiT)/50:0,storm=R2.spe>1e-6?3:1;
  for(const q of s.parts){const d=PARTS[q.id];if(q.fail)continue;const wr=d.cat==='store'?.01:d.cat==='gen'||d.cat==='life'?.006:.002;q.cond=Math.max(0,q.cond-wr*dtg/2592000*(1+hotLo));
   if(Math.random()<h/(d.mtbf||MTBF[d.cat])*(1+4*(1-q.cond))*storm*(1+hotLo)){q.fail=true;alertCrit('🔧 '+d.n+' has FAILED. Repair it in 🛠 → 🔧 Ship (uses spare-parts kits).')}}
@@ -51,5 +58,13 @@ function alertsUpdate(R2){const A=[],L=lifeDays(),c=s.crew,dd=x=>x===Infinity?'�
  if(s.en<.05*SH.cap&&s.pFree<0)A.push({l:'warn',t:'Power deficit: battery nearly empty'});if(flare)A.push({l:T>=flare.t0?'crit':'warn',t:(T>=flare.t0?'SOLAR STORM: ':'Solar storm incoming: ')+f1(R2.tot*86400e3,0)+' mSv/day'+(s.shelter?' (sheltered)':'')});
  if(c.acute>.5)A.push({l:c.acute>1?'crit':'warn',t:'Radiation dose '+f1(c.acute,2)+' Sv (sickness above 1)'});if(c.hp<60)A.push({l:'crit',t:'Crew health '+Math.round(c.hp)+'%'});
  [['o2',L.o2,3],['food',L.food,5],['wat',L.wat,3]].forEach(([k,v,th])=>{if(v<th&&!warned[k]){warned[k]=1;alertCrit('⚠ Only '+dd(v)+' of '+(k==='o2'?'oxygen':k==='wat'?'water':'food')+' left. Order or make more in 🛠 → 🏭 Fabricate.')}if(v>th*2)warned[k]=0});ALERTS=A}
-function gameOver(why){if(MP.conn){mpSend({t:'chat',sys:1,text:MP.name+'’s crew was lost to '+why});setTimeout(()=>{s.crew.alive=true;respawn('Your crew was lost to '+why)},50);return}paused=true;$('gotxt').innerHTML='Your crew was lost to <b>'+why+'</b> after '+fT(T)+' of game time.<br><br>The ship made it '+fmtD(s.codex.rec.minR)+' from the Sun at its closest, mined '+f1(s.mined,0)+' kg, and researched '+Object.keys(s.tech).length+' technologies.';$('go').classList.remove('h')}
+// ground contact (RULES): the main loop calls this when the ship is at or below a world's surface. Touching down
+// slower than 10 m/s relative to the ground is a landing; anything faster is a crash that destroys the ship.
+const LAND_V=10;
+function groundContact(d){const g=gam(s),v=Math.hypot(s.vx/g-d.vx,s.vy/g-d.vy,s.vz/g-d.vz),r=Math.hypot(s.x-d.x,s.y-d.y,s.z-d.z)||1,k=d.R/r;
+ s.x=d.x+(s.x-d.x)*k;s.y=d.y+(s.y-d.y)*k;s.z=d.z+(s.z-d.z)*k;s.vx=d.vx*g;s.vy=d.vy*g;s.vz=d.vz*g;
+ if(v>LAND_V&&s.crew.alive){s.crew.alive=false;s.hull=0;try{if(typeof boom==='function')boom(s.x,s.y,s.z,1)}catch(e){}
+  gameOver('a crash into '+d.n+' at '+(v>=1000?f1(v/1e3,2)+' km/s':f1(v,0)+' m/s'));return'crash'}
+ s.msg='Landed on '+d.n;return'landed'}
+function gameOver(why){if(MP.conn){mpSend({t:'chat',sys:1,text:MP.name+'’s crew was lost to '+why});setTimeout(()=>{s.crew.alive=true;respawn('Your crew was lost to '+why)},50);return}paused=true;$('gotxt').innerHTML='<span>'+tr('Your crew was lost to {}.'.replace('{}',why))+'</span><br><br><span>'+tr('Game time: '+fT(T))+'</span><br><span>'+tr('Closest to the Sun: '+fmtD(s.codex.rec.minR))+'</span><br><span>'+tr('Mined: '+f1(s.mined,0)+' kg')+'</span><br><span>'+tr('Technologies researched: '+Object.keys(s.tech).length)+'</span>';$('go').classList.remove('h')}
 {const gb=$('gob');btn(gb,()=>'📂 Load autosave '+slotInfo('auto'),()=>loadGame('auto'),()=>!!slotInfo('auto'));['1','2','3'].forEach(k=>btn(gb,()=>'📂 Load slot '+k+' '+slotInfo(k),()=>loadGame(k),()=>!!slotInfo(k)));btn(gb,'🆕 New game',()=>location.reload())}

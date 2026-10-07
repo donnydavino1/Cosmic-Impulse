@@ -30,7 +30,7 @@ Operations window shows, for every world: the **Δv** the probe needs, the **xen
 
 ## Which laws
 
-| You see | Law (see [[The Laws of Stellar Impulse]]) |
+| You see | Law (see [[The Laws of Cosmic Impulse]]) |
 |---|---|
 | Drones and probes are built from materials, and the ship gets exactly that much heavier | 3, conservation of matter |
 | Drones recharge from your battery | 4, energy |

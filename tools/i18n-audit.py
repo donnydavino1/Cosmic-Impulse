@@ -10,9 +10,9 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 OUT = os.path.join(ROOT, 'tools', 'smoke', 'out'); os.makedirs(OUT, exist_ok=True)
 NUM = re.compile(r'(?<![A-Za-z#])[-+−]?[0-9][0-9.,]*(?:e[+-]?[0-9]+)?')
-KEEP = set('''Stellar Impulse ORB RULES RP AU NEO RTG ion VASIMR MPD JSON TLM GNU GPLv2 HUD AI Esc Tab Ctrl Shift Alt CoM Mk II III
+KEEP = set('''Cosmic Impulse ORB RULES RP AU NEO RTG ion VASIMR MPD JSON TLM GNU GPLv2 HUD AI Esc Tab Ctrl Shift Alt CoM Mk II III
  Kestrel Halcyon Tamsin Ophir Velka Corvo Nimbus Petra Aldra Brisa Cendre Dorrit Esk Fenwick Galt Hesper Ilsa Jory Kael Lumen Marrow Nyx Orrin
- Pell Quill Rook Sable Tarn Ulla Voss Wren Xan Yarrow Zell Ashby Brann Cove Dusk English Español Cinder Jackal Viper Magpie Hornet Shrike Wraith Talon Mantis'''.split())
+ Pell Quill Rook Sable Tarn Ulla Voss Wren Xan Yarrow Zell Ashby Brann Cove Dusk English Español Apophis Bennu Ryugu Eros Itokawa Didymos Ceres Vesta Psyche Eris Makemake Haumea Quaoar Gonggong Arrokoth Albion Sedna KBO Cinder Jackal Viper Magpie Hornet Shrike Wraith Talon Mantis'''.split())
 # whole texts that stay as they are: ship style names, file names, the rules fingerprint, the language picker
 KEEP_TEXT = {'Blue Lancer', 'Corsair', 'Ice Hauler', 'Nebula Runner', 'Solar Monk', 'Sunchaser (stock)', 'wiki.html', '○ Español', '● Español', '○ English', '● English'}
 # ---------- 2. message templates in the code (notify, alerts, discoveries, game over, status lines)
@@ -75,7 +75,7 @@ def templates():
     return sorted(out)
 TPL = templates()
 # ---------- 1 and 3. the game itself
-BUILD = 'stellar-impulse-mobile.html' if '--mobile' in sys.argv else 'stellar-impulse.html'
+BUILD = 'cosmic-impulse-mobile.html' if '--mobile' in sys.argv else 'cosmic-impulse.html'
 s = open(os.path.join(ROOT, BUILD), encoding='utf-8').read()
 s = re.sub(r'<script src="https://cdnjs[^"]*three[^"]*"></script>', '<script src="fake3.js"></script>', s)
 s = re.sub(r'<script src="https://cdn.jsdelivr.net/npm/peerjs[^"]*"></script>', '', s)
@@ -85,7 +85,7 @@ GRAB = """(()=>{const out=[],w=document.createTreeWalker(document.body,NodeFilte
 STEPS = [('guide', "openGuide()"), ('help', "document.getElementById('help').classList.remove('h')"), ('nav', "toggleNav()"),
          ('customize', "document.getElementById('cust').classList.remove('h')"), ('dash', "document.getElementById('wpal').classList.remove('h')"),
          ('multiplayer', "document.getElementById('mpw').classList.remove('h')"), ('contracts', "ctrToggle()"), ('ops', "opsToggle()"), ('builder', "bldToggle()"),
-         ('cockpit', "toggleFP();setTimeout(()=>0,0)"), ('cockpit2', "0"), ('chase', "toggleFP();toggleSV()"), ('map', "toggleSV()"), ('info', "det=true"), ('raid', "raidStart()")]
+         ('cockpit', "toggleFP();setTimeout(()=>0,0)"), ('cockpit2', "0"), ('chase', "toggleFP();toggleSV()"), ('map', "toggleSV()"), ('info', "det=true"), ('raid', "raidStart()"), ('game over', "s.crew.alive=false;gameOver('a crash into Earth at 7.70 km/s')")]
 res = {}
 with sync_playwright() as p:
     b = p.chromium.launch(); pg = b.new_page(viewport={'width': 1400, 'height': 1000}); errs = []

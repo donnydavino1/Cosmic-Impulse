@@ -2,8 +2,16 @@
 const G=6.6743e-11,AU=1.496e11,S0=1361,U=1e9;
 const D=[['Sun',-1,0,1.989e30,6.957e8,2.19e6,0xffcc66],['Mercury',0,5.791e10,3.301e23,2.4397e6,5.067e6,0xaaaaaa],['Venus',0,1.0821e11,4.8675e24,6.0518e6,2.0997e7,0xe6c27a],
 ['Earth',0,1.496e11,5.972e24,6.371e6,86164,0x3b7be0],['Moon',3,3.844e8,7.342e22,1.7374e6,2.3606e6,0xbbbbbb],['Mars',0,2.2794e11,6.417e23,3.3895e6,88642,0xc1440e],
-['Jupiter',0,7.7857e11,1.8982e27,6.9911e7,35730,0xd8b48a],['Saturn',0,1.4335e12,5.683e26,5.8232e7,38362,0xe3d3a0]];
-const B=D.map(d=>({n:d[0],p:d[1],a:d[2],m:d[3],GM:G*d[3],R:d[4],rot:d[5],c:d[6],x:0,y:0,z:0,vx:0,vy:0,vz:0,ax:0,ay:0,az:0}));
+['Jupiter',0,7.7857e11,1.8982e27,6.9911e7,35730,0xd8b48a],['Saturn',0,1.4335e12,5.683e26,5.8232e7,38362,0xe3d3a0],
+// outer planets, the dwarf planet Pluto, and the nearest star (Proxima Centauri, 4.25 light-years) with its planet
+['Uranus',0,2.8725e12,8.681e25,2.5362e7,62064,0x9fd8e0],['Neptune',0,4.4951e12,1.02413e26,2.4622e7,57996,0x4a72d8],['Pluto',0,5.9064e12,1.303e22,1.1883e6,551856,0xc9b29a],
+['Proxima Centauri',0,4.0175e16,2.428e29,1.07e8,7.17e6,0xff7a4a],
+// moons: Mars 5, Jupiter 6, Saturn 7, Neptune 9, Pluto 10, Proxima 11 (index of the parent body)
+['Phobos',5,9.376e6,1.0659e16,1.1e4,27554,0x8c7b6b],['Deimos',5,2.3463e7,1.4762e15,6.2e3,109075,0x9a8c7c],
+['Io',6,4.217e8,8.9319e22,1.8216e6,152854,0xe8d36a],['Europa',6,6.709e8,4.7998e22,1.5608e6,306822,0xd9c9a8],['Ganymede',6,1.0704e9,1.4819e23,2.6341e6,618153,0x9c8f80],['Callisto',6,1.8827e9,1.0759e23,2.4103e6,1441931,0x6e6458],
+['Enceladus',7,2.3802e8,1.08e20,2.521e5,118387,0xf2f6f8],['Rhea',7,5.2704e8,2.3065e21,7.638e5,390361,0xbdb8b0],['Titan',7,1.22187e9,1.3452e23,2.5747e6,1377648,0xd9a85a],
+['Triton',9,3.5476e8,2.14e22,1.3534e6,507773,0xcfc6c0],['Charon',10,1.9591e7,1.586e21,6.06e5,551856,0xa39a92],['Proxima b',11,7.5e9,6.4e24,7.2e6,9.7e5,0xb07a5a]];
+const B=D.map(d=>({n:d[0],p:d[1],a:d[2],m:d[3],GM:G*d[3],R:d[4],rot:d[5],c:d[6],star:d[0]==='Proxima Centauri',x:0,y:0,z:0,vx:0,vy:0,vz:0,ax:0,ay:0,az:0}));
 const N=B.length;
 B.forEach((b,i)=>{if(!i){b.soi=1e30;return}const P=B[b.p],ph=(i==3||i==4)?0:i*1.7,v=Math.sqrt(P.GM/b.a);
  b.x=P.x+b.a*Math.cos(ph);b.y=P.y+b.a*Math.sin(ph);b.vx=P.vx-v*Math.sin(ph);b.vy=P.vy+v*Math.cos(ph);b.soi=b.a*Math.pow(b.m/P.m,.4)});
@@ -21,14 +29,21 @@ let EFF=.3,PREDICTING=false;var SH=null;const ALL=[...B,s],K={},// Four real dri
 DR=[
  {id:'chem',ic:'🔥',n:'Chemical rocket',f:'chem',ve:4413,k:2,el:false,pw:1.2e8,al:2e-6,base:60,hf:.005,loop:'none',how:'Burns hydrogen with oxygen; the fuel holds the energy and carries its own heat away. Strong thrust but slow exhaust (4.4 km/s), so fuel runs out fast.'},
  {id:'ion',ic:'⚛',n:'Ion thruster',f:'xe',ve:29420,k:1.2,el:true,pw:5e4,al:2e-3,base:20,hf:.3,loop:'lo',how:'Electric: fires xenon ions at 29 km/s. Very fuel-efficient but gentle; 30% of its power becomes heat in the power electronics, so it needs radiators.'},
- {id:'vas',ic:'🌀',n:'VASIMR plasma engine',f:'h2',ve:5e4,k:1.2,el:true,pw:2e5,al:2.5e-3,base:100,hf:.35,loop:'lo',how:'Electric: radio waves heat hydrogen into plasma, a magnetic nozzle shapes it: 50 km/s exhaust from hydrogen you can make from water.'},
+ {id:'vas',ic:'🌀',n:'Helicon magnetoplasma engine',f:'h2',ve:5e4,k:1.2,el:true,pw:2e5,al:2.5e-3,base:100,hf:.35,loop:'lo',how:'Electric: radio waves heat hydrogen into plasma, a magnetic nozzle shapes it: 50 km/s exhaust from hydrogen you can make from water.'},
  {id:'ntr',ic:'☢',n:'Nuclear thermal rocket',f:'h2',ve:8800,k:2,el:false,pw:3e8,al:5e-6,base:500,hf:.01,loop:'hi',how:'A uranium reactor heats hydrogen to ~2,500 °C: 8.8 km/s with strong thrust. The propellant carries most of the heat away.'},
  {id:'sail',ic:'⛵',n:'Solar sail',f:null,ve:C,k:0,el:false,pw:0,al:0,base:0,hf:0,loop:'none',sail:true,how:'A 10,000 m² mirror pushed by sunlight. No fuel, no power, tiny thrust that can only point away from the Sun. Useless in shadow.'},
  {id:'fus',ic:'☀',n:'Magnetic-confinement fusion drive',f:'fus',ve:.05*C,k:2,el:false,pw:1e9,al:2e-5,base:2000,hf:.15,loop:'hi',how:'Steady D–D fusion plasma held by magnets and bled out of a magnetic nozzle at 5% of light speed. Reliable but heavy; 15% of its power ends up as heat (radiation from the plasma).'},
  {id:'am',ic:'✴',n:'Antimatter photon rocket',f:'am',ve:C,k:1,el:false,pw:1e12,al:1e-8,base:5000,hf:.05,loop:'hi',how:'Matter and antimatter annihilate into light, reflected out the back. Exhaust = light speed, the only way to 0.99c. Absorbed gamma rays heat the mirror.'},
  {id:'mpd',ic:'🧲',n:'MPD thruster',f:'h2',ve:4e4,k:1,el:true,pw:1e6,al:1e-3,base:200,hf:.5,loop:'hi',how:'Magnetoplasmadynamic: a huge current through hydrogen plasma pushes it out with its own magnetic field. Megawatt-class electric thrust, but only ~50% efficient: very hot electrodes.'},
  {id:'icf',ic:'💥',n:'Inertial-fusion pulse drive',f:'fus',ve:.03*C,k:2,el:false,pw:5e9,al:6e-6,base:3000,hf:.2,loop:'hi',how:'Lasers implode deuterium pellets hundreds of times a second inside a magnetic thrust chamber (like Project Daedalus). Lighter and more powerful than steady fusion, lower exhaust speed (3% of c), harder on the hardware.'},
- {id:'beam',ic:'🌟',n:'Beamed-core antimatter drive',f:'am',ve:.33*C,k:1.2,el:false,pw:1e11,al:5e-8,base:3000,hf:.4,loop:'hi',how:'Antiprotons annihilate on protons; the charged pions they make are steered out by a magnetic nozzle at a third of light speed. Much more thrust per watt than a photon rocket, lower top speed.'}];
+ {id:'beam',ic:'🌟',n:'Beamed-core antimatter drive',f:'am',ve:.33*C,k:1.2,el:false,pw:1e11,al:5e-8,base:3000,hf:.4,loop:'hi',how:'Antiprotons annihilate on protons; the charged pions they make are steered out by a magnetic nozzle at a third of light speed. Much more thrust per watt than a photon rocket, lower top speed.'},
+ // real and proposed designs (generic names)
+ {id:'hall',ic:'◎',n:'Hall-effect thruster',f:'xe',ve:19000,k:1.1,el:true,pw:2e4,al:1.5e-3,base:15,hf:.4,loop:'lo',how:'Electric: a ring-shaped magnetic field traps electrons that ionise xenon and accelerate it to 19 km/s. Flown on hundreds of satellites: more thrust per watt than a gridded ion engine, a little less fuel-efficient.'},
+ {id:'arc',ic:'⚡',n:'Arcjet',f:'h2',ve:12000,k:.7,el:true,pw:3e4,al:1e-3,base:20,hf:.6,loop:'lo',how:'Electrothermal: an electric arc heats hydrogen to several thousand degrees before the nozzle: 12 km/s exhaust, simple and robust, but only about 35% efficient.'},
+ {id:'solth',ic:'🔆',n:'Solar thermal rocket',f:'h2',ve:8000,k:2,el:false,pw:5e6,al:3e-4,base:1500,hf:.02,loop:'none',solarT:true,coll:5000,how:'A 5,000 m² concentrator focuses sunlight onto a hydrogen heat exchanger: 8 km/s, almost twice a chemical rocket, with no reactor. Its power follows the sunlight: strong near the Sun, weak far out, nothing in shadow.'},
+ {id:'gcnr',ic:'🔴',n:'Gas-core nuclear rocket',f:'h2',ve:30000,k:2,el:false,pw:5e9,al:1e-6,base:20000,hf:.03,loop:'hi',how:'Proposed: a ball of fissioning uranium gas, hotter than any solid could survive, heats hydrogen flowing around it. 30 km/s with huge thrust, but heavy, and some uranium escapes with the exhaust.'},
+ {id:'dfd',ic:'🌐',n:'Direct fusion drive',f:'fus',ve:98000,k:2,el:false,pw:1e7,al:1e-4,base:2000,hf:.25,loop:'hi',how:'Proposed: a compact fusion reactor (radio-frequency heated, in a magnetic mirror) whose exhaust is the thrust and which also makes electricity. About 98 km/s and megawatts: a fusion engine small enough for a spacecraft.'},
+ {id:'esail',ic:'🪁',n:'Electric sail',f:null,ve:C,k:0,el:true,pw:2e4,al:0,base:300,hf:.1,loop:'lo',sail:true,esail:true,F0:1,how:'Proposed: kilometres-long charged tethers repel the solar wind\'s protons. No propellant; an electron gun keeps the tethers charged (20 kW). Thrust is 1 N at Earth\'s distance and falls only as 1/distance, so it keeps working far out; it can only push away from the Sun.'}];
 DR.forEach(D=>{D.pw0=D.pw;D.ve0=D.ve;D.mk=1;D.cond=1;D.fail=false});
 // fuels: inside Earth's gravity zone you can order them from Earth (energy only); in deep space you make them yourself (mostly from asteroid water)
 const FUEL={chem:{n:'Rocket fuel',full:'liquid hydrogen + liquid oxygen',J:3e7,earthJ:1e8,make:{water:1},how:'made from water by electrolysis, then liquefied: 1 kg water → 1 kg fuel'},
@@ -59,7 +74,7 @@ function step(dt){TDT=dt;const h=dt/2; // inside a step, positions are already a
  const dv=dirVec(),g=gam(s);s.burn=0;s.engHeat=0;
  if(dv&&(s.en>0||!DR[di].el)&&s.prop>0){const De=DR[di],u=Math.hypot(s.vx,s.vy,s.vz),m=mass(),ux=u>0?s.vx/u:0,uy=u>0?s.vy/u:0,uz=u>0?s.vz/u:0,par=dv[0]*ux+dv[1]*uy+dv[2]*uz;
   if(!(par>0&&u/g>=MAXB*C*.999999)){ // forward thrust blocked at the speed cap
-   const F=De.sail?sailF(dv):De.k*PW/De.ve,md=De.sail?0:F/De.ve,lim=engLimits(De,F,m,dt/g),f=Math.min(THR,lim,s.prop/(md*dt/g)),a=f*F/m; // costs are per SHIP (proper) time
+   const F=De.sail?sailF(dv):De.k*PW/De.ve*(De.solarT?solTh(De):1),md=De.sail?0:F/De.ve,lim=engLimits(De,F,m,dt/g),f=Math.min(THR,lim,s.prop/(md*dt/g)),a=f*F/m; // costs are per SHIP (proper) time
    const qx=dv[0]-par*ux,qy=dv[1]-par*uy,qz=dv[2]-par*uz; // SR: parallel force unchanged, perpendicular force /gamma
    s.ax+=a*(par*ux+qx/g);s.ay+=a*(par*uy+qy/g);s.az+=a*(par*uz+qz/g);if(!PREDICTING){THV[0]+=a*(par*ux+qx/g)*dt;THV[1]+=a*(par*uy+qy/g)*dt;THV[2]+=a*(par*uz+qz/g)*dt}
    s.prop=Math.max(0,s.prop-f*md*dt/g);if(De.el)s.en-=f*PW*dt/g;s.burn=F>0?f:0;s.engHeat=F>0?f*PW*De.hf:0;if(!PREDICTING&&F>0)s.burnAcc+=f*dt}}
@@ -77,10 +92,12 @@ function elements(){const gs=gam(s),d=s.dom,mu=d.GM,rx=s.x-d.x,ry=s.y-d.y,rz=s.z
 let TDT=0,AP=null,apNote='',THR=1,XYZ=false,FP=false,STAB=true;
 function FPV(){const ce=Math.cos(el),f=[ce*Math.cos(az),ce*Math.sin(az),Math.sin(el)],r=[Math.sin(az),-Math.cos(az),0],u=[r[1]*f[2]-r[2]*f[1],r[2]*f[0]-r[0]*f[2],r[0]*f[1]-r[1]*f[0]];return{w:f,s:f.map(x=>-x),d:r,a:r.map(x=>-x),e:u,q:u.map(x=>-x)}}
 const AX={d:[1,0,0],a:[-1,0,0],w:[0,1,0],s:[0,-1,0],e:[0,0,1],q:[0,0,-1]}; // WASD/QE in fixed Sun-frame axes
-function thrustAcc(){const D=DR[di];if(D.sail){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return s.lit?2*S0*(AU/r)**2*s.sailA/C/mass():0}
- let a=D.k*PW/D.ve/mass();if(D.el&&s.en<PW*600){const inc=.7*S0*(AU*AU/((s.x-B[0].x)**2+(s.y-B[0].y)**2+(s.z-B[0].z)**2))*s.area*EFF;a*=Math.min(1,inc/PW)}return a}
+function thrustAcc(){const D=DR[di];if(D.esail){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return D.F0*(AU/r)/mass()}if(D.sail){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return s.lit?2*S0*(AU/r)**2*s.sailA/C/mass():0}
+ let a=D.k*PW/D.ve/mass()*(D.solarT?solTh(D):1);if(D.el&&s.en<PW*600){const inc=.7*S0*(AU*AU/((s.x-B[0].x)**2+(s.y-B[0].y)**2+(s.z-B[0].z)**2))*s.area*EFF;a*=Math.min(1,inc/PW)}return a}
 function gravAt(x,y,z){let X=0,Y=0,Z=0;for(const o of B){const dx=o.x-x,dy=o.y-y,dz=o.z-z,r2=dx*dx+dy*dy+dz*dz,f=o.GM/(r2*Math.sqrt(r2));X+=dx*f;Y+=dy*f;Z+=dz*f}return[X,Y,Z]}
-function sailF(dv){if(!s.sailA||!s.lit)return 0;const S=B[0],rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),c=(dv[0]*rx+dv[1]*ry+dv[2]*rz)/r;return c<=0?0:2*S0*(AU/r)**2*s.sailA/C*c*c}
+// solar thermal: the share of rated power the concentrator delivers right now
+function solTh(D){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return s.lit?Math.min(1,S0*(AU/r)**2*D.coll*.6/Math.max(1,PW)):0}
+function sailF(dv){const D=DR[di];if(D.esail){const S=B[0],rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),c=(dv[0]*rx+dv[1]*ry+dv[2]*rz)/r;return c<=0?0:D.F0*(AU/r)*c}if(!s.sailA||!s.lit)return 0;const S=B[0],rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),c=(dv[0]*rx+dv[1]*ry+dv[2]*rz)/r;return c<=0?0:2*S0*(AU/r)**2*s.sailA/C*c*c}
 // track a near-circular velocity around the Sun while drifting toward radius rT
 function radCtl(rT,end){const S=B[0],g=gam(s),rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),vx=s.vx/g-S.vx,vy=s.vy/g-S.vy,vz=s.vz/g-S.vz,
   ux=rx/r,uy=ry/r,uz=rz/r,hx=ry*vz-rz*vy,hy=rz*vx-rx*vz,hz=rx*vy-ry*vx,h=Math.hypot(hx,hy,hz),nx=hx/h,ny=hy/h,nz=hz/h,
@@ -101,7 +118,21 @@ function apAst(){const S=B[0],g=gam(s),A=AP.pl?plState(T+TDT):astState(AP.ast,T+
  if(d<2*dock&&vr<.5&&!AP.hold){AP.hold=true;apNote='✅ Arrived at '+AP.ast.n+': holding position '+(d/1e3).toFixed(1)+' km away, in mining range'}
  AP.stage=AP.hold?'holding position near '+AP.ast.n+' (mining range)':'stage 4: closing in on '+AP.ast.n+' · '+(d>1e9?(d/AU).toFixed(3)+' AU':Math.round(d/1e3).toLocaleString()+' km')+' · closing at '+(vr<1e3?vr.toFixed(0)+' m/s':(vr/1e3).toFixed(1)+' km/s');
  return{dir:[ax/al,ay/al,az/al]}}
-function apKeys(){THR=1;if(!AP)return null;const S=B[0];
+// orbit planner: steer onto a circular orbit of radius O.r around B[O.b]; eq = equatorial (geostationary), else keep the
+// current orbital plane (geosynchronous / custom). Tangential speed tracks the circular speed while a radial drift
+// carries the ship toward the target radius and a normal term pulls it into the plane. Uses the real engine and fuel.
+function apOrb(){const O=AP.orb,P=B[O.b],g=gam(s);if(s.dom!==P){AP.stage='waiting: this autopilot works around the body you are orbiting ('+P.n+')';THR=0;AP.dtcap=60;return{}}
+ const rx=s.x-P.x,ry=s.y-P.y,rz=s.z-P.z,r=Math.hypot(rx,ry,rz),vx=s.vx/g-P.vx,vy=s.vy/g-P.vy,vz=s.vz/g-P.vz;let n=O.n;
+ if(O.eq)n=[0,0,1];else if(!n){const hx=ry*vz-rz*vy,hy=rz*vx-rx*vz,hz=rx*vy-ry*vx,h=Math.hypot(hx,hy,hz)||1;n=O.n=[hx/h,hy/h,hz/h]}
+ const off=rx*n[0]+ry*n[1]+rz*n[2],px=rx-off*n[0],py=ry-off*n[1],pz=rz-off*n[2],pr=Math.hypot(px,py,pz)||1,ux=px/pr,uy=py/pr,uz=pz/pr,
+  tx=n[1]*uz-n[2]*uy,ty=n[2]*ux-n[0]*uz,tz=n[0]*uy-n[1]*ux,vc=Math.sqrt(P.GM/r),a=Math.max(1e-9,thrustAcc()),err=O.r-r,per=2*Math.PI*Math.sqrt(r*r*r/P.GM),
+  rate=Math.min(a*per/3,.08*vc)*Math.max(-1,Math.min(1,err/(.05*O.r))),nz=-off/Math.max(60,per/20),
+  dx=tx*vc+ux*rate+n[0]*nz-vx,dy=ty*vc+uy*rate+n[1]*nz-vy,dz=tz*vc+uz*rate+n[2]*nz-vz,dl=Math.hypot(dx,dy,dz);
+ if(Math.abs(err)<.003*O.r&&dl<.004*vc&&Math.abs(off)<.003*O.r){apNote='✅ '+AP.name+': circular orbit '+Math.round(r/1e3).toLocaleString()+' km from the centre of '+P.n+', one orbit every '+dur(per);AP=null;THR=0;return{}}
+ THR=Math.min(1,dl/(a*Math.max(20,per/200)));AP.dtcap=Math.max(1,Math.min(120,per/400));
+ AP.stage=Math.abs(err)>.01*O.r?(err>0?'raising':'lowering')+' the orbit toward '+Math.round(O.r/1e3).toLocaleString()+' km':Math.abs(off)>.01*O.r?'tilting into the equator':'rounding off the orbit';
+ return{dir:[dx/dl,dy/dl,dz/dl]}}
+function apKeys(){THR=1;if(!AP)return null;const S=B[0];if(AP.orb&&!AP.wait)return apOrb();
  if(AP.wait){if(s.jobs.includes(AP.wait)){AP.stage='waiting for fuel production: '+Math.round(100*(AP.wait.fr||0))+'% (ETA '+dur(jobETA(AP.wait,s.jobs.indexOf(AP.wait)))+')';THR=0;AP.dtcap=600;return{}}AP.wait=null;PRED=null}
  if(s.dom!==S){const oo=elements();if(oo.eps<1.25e5){AP.stage='stage 1: spiraling out to escape '+s.dom.n;AP.dtcap=600;return{w:1}}
   AP.stage='stage 2: coasting out of '+s.dom.n+"'s gravity (engine off, saving fuel)";THR=0;AP.dtcap=600;return{}}

@@ -4,7 +4,7 @@ const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(55,innerWidth/innerHe
 const light=new THREE.PointLight(0xffffff,1.8,0,0);sc.add(light,new THREE.AmbientLight(0x1a1a28));
 {const p=[];for(let i=0;i<900;i++){const u=Math.random()*2-1,t=Math.random()*6.283,q=Math.sqrt(1-u*u);p.push(4e5*q*Math.cos(t),4e5*q*Math.sin(t),4e5*u)}
  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));sc.add(new THREE.Points(g,new THREE.PointsMaterial({size:1.5,sizeAttenuation:false,color:0x8890b0})))}
-const meshes=B.map(b=>{const m=new THREE.Mesh(new THREE.SphereGeometry(b.R/U,32,16),b.p<0?new THREE.MeshBasicMaterial({color:b.c}):new THREE.MeshLambertMaterial({color:b.c}));sc.add(m);return m});
+const meshes=B.map(b=>{const m=new THREE.Mesh(new THREE.SphereGeometry(b.R/U,32,16),(b.p<0||b.star)?new THREE.MeshBasicMaterial({color:b.c}):new THREE.MeshLambertMaterial({color:b.c}));sc.add(m);return m});
 const rings=B.map((b,i)=>{if(!i)return null;const p=[];for(let k=0;k<=256;k++){const t=k/256*6.2832;p.push(b.a/U*Math.cos(t),b.a/U*Math.sin(t),0)}
  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));const l=new THREE.Line(g,new THREE.LineBasicMaterial({color:0x2c3558}));sc.add(l);return l});
 const mp=new Float32Array((N+1)*3),mc=new Float32Array((N+1)*3),mg=new THREE.BufferGeometry();
@@ -38,11 +38,22 @@ $('shopbtn').onclick=toggleShop;$('shopclose').onclick=toggleShop;
 btn($('tc'),()=>'⏪ Slower  ('+KN(BIND.slower)+')',acts['Warp −']);btn($('tc'),()=>'⏯ Pause  ('+KN(BIND.pause)+')',()=>togglePause());btn($('tc'),()=>'⏩ Faster  ('+KN(BIND.faster)+')',acts['Warp +']);btn($('tc'),'Reset ×300',()=>{if(!mpReq('reset')&&!(MP.lock&&MP.conn)){wi=3;paused=false}});
 {const r=document.createElement('span');r.id='rate';$('tc').appendChild(r)}
 const RES=['water','carbon','silicates','iron','nickel','platinum'],RN={water:'water ice',carbon:'carbon',silicates:'silicates',iron:'iron',nickel:'nickel',platinum:'platinum metals'};
-const COMP={C:{water:.15,carbon:.05,silicates:.7,iron:.08,nickel:.015,platinum:2e-5},S:{water:.01,carbon:.005,silicates:.75,iron:.18,nickel:.04,platinum:2e-5},M:{water:0,carbon:.002,silicates:.1,iron:.8,nickel:.09,platinum:1e-4}};
-const TYN={C:'carbon-rich: water, carbon',S:'stony: silicates, iron',M:'metallic: iron, nickel, platinum'};
+const COMP={C:{water:.15,carbon:.05,silicates:.7,iron:.08,nickel:.015,platinum:2e-5},S:{water:.01,carbon:.005,silicates:.75,iron:.18,nickel:.04,platinum:2e-5},M:{water:0,carbon:.002,silicates:.1,iron:.8,nickel:.09,platinum:1e-4},I:{water:.55,carbon:.1,silicates:.3,iron:.04,nickel:.008,platinum:1e-6}};
+const TYN={C:'carbon-rich: water, carbon',S:'stony: silicates, iron',M:'metallic: iron, nickel, platinum',I:'icy: water ice, carbon'};
 const AST=[];{let sd=12345;const rnd=()=>(sd=sd*16807%2147483647)/2147483647,TY=['C','S','M'];
  ['Kestrel','Halcyon','Tamsin','Ophir','Velka','Corvo','Nimbus','Petra'].forEach((n,k)=>AST.push({n,t:TY[k%3],neo:true,a:AU*(1+(rnd()-.5)*.006),e:.005+rnd()*.02,i:rnd()*.01,W:0,w:0,M0:(k%2?1:-1)*(.6+k*.35)*Math.PI/180,r:30+rnd()*250}));
  ['Aldra','Brisa','Cendre','Dorrit','Esk','Fenwick','Galt','Hesper','Ilsa','Jory','Kael','Lumen','Marrow','Nyx','Orrin','Pell','Quill','Rook','Sable','Tarn','Ulla','Voss','Wren','Xan','Yarrow','Zell','Ashby','Brann','Cove','Dusk'].forEach(n=>AST.push({n,t:TY[(rnd()*3)|0],neo:false,a:AU*(2.2+rnd()),e:.02+rnd()*.12,i:rnd()*.12,W:rnd()*6.283,w:rnd()*6.283,M0:rnd()*6.283,r:200+rnd()*2300}));
+const d2r=Math.PI/180,real=(n,t,aAU,e,iD,WD,wD,r,zone)=>AST.push({n,t,neo:zone==='neo',zone,a:AU*aAU,e,i:iD*d2r,W:WD*d2r,w:wD*d2r,M0:rnd()*6.283,r,real:true});
+ // near-Earth asteroids visited by real spacecraft (orbit sizes, shapes and tilts from JPL; positions along the orbit are illustrative)
+ real('Apophis','S',.9224,.1912,3.34,204.4,126.4,170,'neo');real('Bennu','C',1.126,.2037,6.03,2.06,66.2,245,'neo');real('Ryugu','C',1.1896,.1902,5.88,251.6,211.4,450,'neo');
+ real('Eros','S',1.458,.2228,10.83,304.3,178.8,8400,'neo');real('Itokawa','S',1.324,.2801,1.62,69.1,162.8,165,'neo');real('Didymos','S',1.6444,.3839,3.41,73.2,319.3,390,'neo');
+ // the main belt's giants
+ real('Ceres','C',2.767,.0785,10.59,80.3,73.6,469700,'belt');real('Vesta','S',2.362,.0887,7.14,103.8,150.7,262700,'belt');real('Psyche','M',2.924,.134,3.1,150,229,113000,'belt');
+ // the Kuiper belt and beyond: icy worlds
+ real('Eris','I',67.86,.4361,44.04,35.95,151.6,1163000,'kuiper');real('Makemake','I',45.43,.161,28.98,79.6,294.8,715000,'kuiper');real('Haumea','I',43.18,.195,28.2,122.2,239,780000,'kuiper');
+ real('Quaoar','I',43.7,.04,7.99,188.8,147.5,555000,'kuiper');real('Gonggong','I',67.5,.5,30.6,336.8,207.7,615000,'kuiper');real('Arrokoth','I',44.58,.042,2.45,158.9,174.4,18000,'kuiper');
+ real('Albion','I',44.2,.07,2.2,359.5,6.9,60000,'kuiper');real('Sedna','I',506,.8496,11.93,144.4,311.3,500000,'oort');
+ for(let k=1;k<=12;k++)AST.push({n:'KBO '+(1990+k*2)+' '+'ABCDEFGHJKLM'[k-1]+'Q'+(10+k*7),t:'I',zone:'kuiper',neo:false,a:AU*(39.5+rnd()*8.5),e:.02+rnd()*.15,i:rnd()*.3,W:rnd()*6.283,w:rnd()*6.283,M0:rnd()*6.283,r:20000+rnd()*120000});
  AST.forEach((a,k)=>{a.id=k;a.mined=0})}
 // asteroids follow exact Kepler orbits around the Sun (their own gravity is negligible)
 function astState(a,t=T){const S=B[0],n=Math.sqrt(S.GM/(a.a*a.a*a.a)),M=a.M0+n*t;let E2=M;for(let k=0;k<6;k++)E2-=(E2-a.e*Math.sin(E2)-M)/(1-a.e*Math.cos(E2));

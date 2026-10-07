@@ -6,7 +6,7 @@ Desktop and phone builds can play together.
 
 ## Play together in 1 minute (room code)
 
-1. Both players open the same game version (the same link, or `stellar-impulse.html` / `stellar-impulse-mobile.html` from the same zip).
+1. Both players open the same game version (the same link, or `cosmic-impulse.html` / `cosmic-impulse-mobile.html` from the same zip).
 2. Both press **P** (phone: ☰ → 🌐 Multiplayer & music → Multiplayer) and type a pilot name.
 3. **Host:** press **🏠 Host a game**. A 6-letter room code appears (for example `K7QH2M`). Tell it to your friend.
 4. **Guest:** type the code into *Friend's room code* and press **🔗 Join**.
@@ -32,7 +32,7 @@ Two windows on one computer can connect this way too, which is the easiest way t
 Run a PeerJS server (`npm i -g peer` then `peerjs --port 9000`) and open the game with:
 
 ```
-stellar-impulse.html?peerhost=192.168.1.20&peerport=9000&peerpath=/&peersecure=0
+cosmic-impulse.html?peerhost=192.168.1.20&peerport=9000&peerpath=/&peersecure=0
 ```
 
 Both players must use the same parameters. `peersecure=0` is for plain `http`/`ws`; leave it out for `https`.

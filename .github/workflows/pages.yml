@@ -1,7 +1,7 @@
 # Publishes the playable game, the phone build and the wiki as a website on every push to main:
 #   https://<user>.github.io/<repo>/              start page (Play · Phone · Wiki)
-#   https://<user>.github.io/<repo>/stellar-impulse.html  desktop game
-#   https://<user>.github.io/<repo>/stellar-impulse-mobile.html
+#   https://<user>.github.io/<repo>/cosmic-impulse.html  desktop game
+#   https://<user>.github.io/<repo>/cosmic-impulse-mobile.html
 #   https://<user>.github.io/<repo>/wiki.html      wiki (add #es/Home or #zh/Home for a language)
 # One-time setup: repo Settings → Pages → Source: "GitHub Actions".
 name: website

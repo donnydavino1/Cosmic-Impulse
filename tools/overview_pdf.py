@@ -1,4 +1,4 @@
-"""Builds docs/Stellar-Impulse-Overview.pdf: the game explained without code.
+"""Builds docs/Cosmic-Impulse-Overview.pdf: the game explained without code.
 
 Ship abilities and battle results are pulled from the game itself (tools/export-facts.mjs), so the
 document always matches what the physics actually computes.  Usage:  python3 tools/overview_pdf.py
@@ -88,7 +88,7 @@ def callout(text, color=COLD):
 
 # ------------------------------------------------------------------ cover
 story.append(Spacer(1, 1.4 * inch))
-P('Stellar Impulse', 'title')
+P('Cosmic Impulse', 'title')
 story.append(Spacer(1, 6))
 heat = Table([['', '', '']], colWidths=[1.1 * inch, 0.8 * inch, 0.5 * inch], rowHeights=[6])
 heat.setStyle(TableStyle([('BACKGROUND', (0, 0), (0, 0), COLD), ('BACKGROUND', (1, 0), (1, 0), WARM), ('BACKGROUND', (2, 0), (2, 0), HOT)]))
@@ -106,8 +106,8 @@ P(f'Version: first playable foundation (rule set {facts["ruleset"]}, fingerprint
 story.append(PageBreak())
 
 # ------------------------------------------------------------------ 1
-H1('1. What Stellar Impulse is')
-P('Stellar Impulse is a spaceship game where the physics is real and the creativity is yours. You design a ship, '
+H1('1. What Cosmic Impulse is')
+P('Cosmic Impulse is a spaceship game where the physics is real and the creativity is yours. You design a ship, '
   'decide how it looks, works and feels, and fly it in a solar system built to scale. Everyone plays by the same '
   'rules of physics, so the only way to get stronger is the way real engineers do it: collect energy and '
   'resources, and make smarter tradeoffs.', 'lead')
@@ -123,7 +123,7 @@ bullets([
 callout('<b>The one-sentence version:</b> energy is the currency, physics is the referee, and your imagination decides what to build with them.')
 
 H2('Free and open, for real')
-P('Stellar Impulse is 100% free to play. Real money cannot buy ships, weapons, resources, upgrades or any competitive advantage. '
+P('Cosmic Impulse is 100% free to play. Real money cannot buy ships, weapons, resources, upgrades or any competitive advantage. '
   'The code is open source under the GNU GPLv2, so anyone can read it, improve it, and host their own version.')
 
 # ------------------------------------------------------------------ 2
@@ -148,7 +148,7 @@ P('Players never type in their ship’s statistics. A design is a recipe (a ship
 
 # ------------------------------------------------------------------ 3
 H1('3. Freedom in layers: easy to start, no ceiling')
-P('Stellar Impulse should be fun for someone who knows no physics, and endlessly deep for someone who loves it. The answer is '
+P('Cosmic Impulse should be fun for someone who knows no physics, and endlessly deep for someone who loves it. The answer is '
   'four layers of design. Every layer produces a real design that runs on the same physics, so nobody is playing a '
   '“simplified” game.', 'lead')
 table([
@@ -186,7 +186,7 @@ table([['Slider', 'You gain', 'You give up']] + [
 
 # ------------------------------------------------------------------ 4
 H1('4. Ship battles')
-P('Space combat in Stellar Impulse is realistic and readable. Battles are decided by distance, heat and timing, not hit points.', 'lead')
+P('Space combat in Cosmic Impulse is realistic and readable. Battles are decided by distance, heat and timing, not hit points.', 'lead')
 H2('Heat is the heart of every fight')
 P('Engines, lasers and railguns all turn part of their energy into waste heat. In space there is no air to carry it away: '
   'a ship can only shed heat by glowing it off its radiators. Big radiators cool you quickly, but they are large, fragile '
@@ -295,7 +295,7 @@ def decorate(canvas, doc):
     if doc.page > 1:
         canvas.setFont('Sans', 8.5)
         canvas.setFillColor(MUTED)
-        canvas.drawString(inch, 0.6 * inch, 'Stellar Impulse: the game, explained without code')
+        canvas.drawString(inch, 0.6 * inch, 'Cosmic Impulse: the game, explained without code')
         canvas.drawRightString(letter[0] - inch, 0.6 * inch, str(doc.page))
         canvas.setStrokeColor(WARM)
         canvas.setLineWidth(0.6)
@@ -303,9 +303,9 @@ def decorate(canvas, doc):
     canvas.restoreState()
 
 
-out = ROOT / 'docs' / 'Stellar-Impulse-Overview.pdf'
+out = ROOT / 'docs' / 'Cosmic-Impulse-Overview.pdf'
 doc = SimpleDocTemplate(str(out), pagesize=letter, leftMargin=inch, rightMargin=inch, topMargin=0.9 * inch, bottomMargin=0.9 * inch,
-                        title='Stellar Impulse: the game, explained without code', author='Stellar Impulse contributors',
-                        subject='Non-technical overview of the Stellar Impulse game')
+                        title='Cosmic Impulse: the game, explained without code', author='Cosmic Impulse contributors',
+                        subject='Non-technical overview of the Cosmic Impulse game')
 doc.build(story, onFirstPage=decorate, onLaterPages=decorate)
 print(f'wrote {out.relative_to(ROOT)}')

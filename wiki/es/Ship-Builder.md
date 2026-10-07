@@ -21,7 +21,7 @@ proa y los tanques justo detrás.
 
 ## Qué cambia la distribución
 
-| Valor | Depende de | Por qué ([[Las leyes de Stellar Impulse|The Laws of Stellar Impulse]]) |
+| Valor | Depende de | Por qué ([[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]]) |
 |---|---|---|
 | **Giro de 180°** | cuánta masa está lejos del centro de masa | Ley 2: dos propulsores de 220 N deben hacer girar tu momento de inercia |
 | **Reapuntar el cañón de riel** | medio giro de 180° | el cañón está fijo a lo largo de la nave: debe apuntar toda la nave ([[Combate|Combat]]) |
@@ -36,6 +36,42 @@ El constructor compara **Ahora** con tu **Borrador** y colorea cada cambio en ve
 Prepara el borrador y pulsa **🔧 Reacondicionar con esta distribución**. Es un trabajo para tu fabricador
 ([[Nave e ingeniería|Ship and Engineering]]): mover módulos cuesta 20 kJ por cada kilo movido, y cada armazón nuevo
 necesita 100 kg de hierro. Quitar un armazón devuelve la mitad de su hierro.
+
+## Montar módulos junto al eje
+
+Selecciona un módulo y pulsa **⤴ Montar junto al módulo de delante** para fijarlo al costado de ese módulo (su
+*anfitrión*) en vez de ponerlo en el eje. Los módulos montados no añaden longitud, así que la nave se **acorta**:
+gira más rápido y aguanta más empuje. Varios módulos en el mismo anfitrión se reparten por igual a su alrededor:
+**2 = pareja en espejo, 3 = triángulo, 4 = cruz** (simetría). Usa **◀ / ▶** para pasarlo a otro anfitrión, o
+**⤵ Volver al eje**.
+
+Dónde montas cada cosa importa:
+- **Tanques montados alrededor de la cabina**: el mejor refugio de tormentas (rodean a la tripulación).
+- **Radiadores**: junto al reactor que los calienta.
+- Un **reactor** montado junto a la tripulación está cerca de ella: su dosis sube. Déjalo al final del eje.
+
+**Arrastrar y soltar:** en la vista lateral, arrastra un módulo a lo largo de la línea para reordenarlo, o por encima
+o por debajo para montarlo junto al módulo más cercano. La pequeña **vista frontal** de la derecha mira a lo largo de
+la nave al anillo de módulos montados del módulo seleccionado. Los módulos mejorados muestran una franja de color por
+marca en la nave 3D.
+
+## Construir y reciclar desde el constructor
+
+La sección **🧩 Añadir una pieza** lista cada pieza por categoría, con su masa, materiales, energía y la investigación que
+necesita. **🏭 Construir** la pone en cola para tu fabricador (se une a la popa de la nave). Con un módulo seleccionado
+también puedes **⤴ Construir junto a** él, o **⤴⤴ Construir una pareja en espejo junto a** él: las piezas terminadas se
+montan alrededor de ese módulo automáticamente. **♻ Reciclar esta pieza** devuelve la mitad de sus materiales.
+
+Bajo la vista lateral, una **vista previa renderizada** muestra el borrador como una nave iluminada en 3D: paneles del
+casco, tanques de lámina dorada, armazones, alas de radiadores, la antena, la tobera del motor y una franja de color por
+marca de mejora. La tabla también muestra el **Δv** que tu motor actual obtiene de su combustible con la masa del borrador.
+
+## Las armas y los motores también son módulos
+
+Cada arma que has construido es un módulo. Las **torretas** (láser de minería, láser de pulsos, haz de partículas,
+misiles) se montan junto a un módulo como cualquier otro; el **cañón de riel** es un arma larga que va a lo largo del eje,
+porque toda la nave debe girar para apuntarlo. Los **motores** están en la popa: el que usas y los demás que tengas
+(añaden masa allí y retrasan tu centro de masa). La fila **🚀 Motores en la popa** te deja cambiar de motor o desguazarlo.
 
 ## Diseños guardados
 
