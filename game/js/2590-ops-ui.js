@@ -16,6 +16,9 @@ function opsDraw(force){if(OPSW.classList.contains('h'))return;const now=perform
   h+=`<p><button data-op="d1">Build 1 drone</button> <button data-op="d3">Build 3 drones</button> <small>${opsCost(OPS.droneMat,OPS.droneJ)} <span>each</span></small></p>`;
   h+=`<p><button data-op="deploy" ${!o.drones||st||ad>OPS.droneRange?'disabled':''}>Deploy drones</button> <small>${a?`→ ${a.n} (${a.t}) · ${fmtD(ad)}`:''}${ad>OPS.droneRange?' · <span>get within 50 km of an asteroid first</span>':''}</small></p>`;
   h+='<p class="opsn">Each drone carries 50 kg per trip and digs 18 kg per hour; ore arrives in proportion to what the asteroid is made of. Stay within 30 km while they work: beyond 100 km they cannot catch up.</p>'}
+ if(s.tech.t_robo){const dmg=s.parts.filter(q=>q.cond<1||q.fail).sort((a,b)=>a.cond-b.cond)[0];
+  h+=`<h4>🔧 REPAIR DRONES</h4><p><span>Docked:</span> <b>${o.rep||0}</b> · <span>Spare-parts kits:</span> <b>${f1(s.res.spares,1)}</b> · ${dmg?`<span>working on</span> ${PARTS[dmg.id].n} (${Math.round(dmg.cond*100)} %)`:'<span>everything is in good condition</span>'}</p>
+  <p><button data-op="r1">Build 1 repair drone</button> <small>${opsCost(REP.mat,REP.J)}</small></p><p class="opsn">Each repair drone fixes the most damaged part by 10 % of its condition per hour, using spare-parts kits. Parts above 60 % work again.</p>`}
  h+='<h4>🛰 SCIENCE PROBES</h4>';
  if(!s.tech.t_probe)h+='<p class="opsn"><span>Needs research:</span> <b>Deep-space probes</b> <span>(🛠 → 🔬 Research).</span></p>';
  else{h+=`<p><span>In storage:</span> <b>${o.probes}</b> · <span>Xenon in your tank:</span> <b>${f1(s.fuel.xe,1)} kg</b> · <button data-op="p1">Build 1 probe</button> <small>${opsCost(OPS.probeMat,OPS.probeJ)}</small></p>`;
@@ -29,6 +32,7 @@ function opsDraw(force){if(OPSW.classList.contains('h'))return;const now=perform
 $('opsb').addEventListener('click',e=>{const x=e.target.closest('button');if(!x||x.disabled)return;
  if(x.dataset.op){const op=x.dataset.op;
    if(op==='d1'||op==='d3'){if(!droneBuild(op==='d1'?1:3))notify('⚠ Missing materials: '+opsCost(OPS.droneMat,OPS.droneJ))}
+   else if(op==='r1'){if(!rdroneBuild(1))notify('⚠ Missing materials: '+opsCost(REP.mat,REP.J))}
    else if(op==='p1'){if(!probeBuild(1))notify('⚠ Missing materials: '+opsCost(OPS.probeMat,OPS.probeJ))}
    else if(op==='deploy'){const r=droneDeploy();if(r==='ok'){const f=s.ops.fleet;notify(`⛏ ${f.n} mining drones are on their way to ${AST[f.ast].n}.`)}else if(r==='far')notify('⚠ Get within 50 km of an asteroid first (🧭 NAVIGATE → Asteroids).')}
    else if(op==='recall'){droneRecall();notify('⛏ Mining drones recalled: they bring back what they have dug.')}}

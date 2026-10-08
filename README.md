@@ -64,6 +64,7 @@ technology, build better parts, mine asteroids, and fly anywhere in the solar sy
 | **V** | Switch camera: behind your ship → cockpit → map of your orbit |
 | **B** | 🛠 Engineering: build parts, research, buy fuel |
 | **N** | 🧭 Navigation and autopilot |
+| **F7** | 🧪 Part designer: invent your own parts |
 | **F6** | 🛰 Orbit planner: geostationary, geosynchronous or any circular orbit |
 | **7** | 🧱 Ship Builder: arrange, build and upgrade your ship's modules |
 | **8** | 🛸 Operations: mining drones and science probes |
@@ -100,7 +101,9 @@ The full list of controls is in the wiki:
 - **Keep your crew alive.** They need oxygen, water, food, a cool cabin, and shelter from solar storms.
 - **Mine and explore.** Send mining drones to asteroids and science probes to other planets.
 - **Fight.** Battle raider drones, or another player. Lasers get weaker with distance; missiles can be shot down.
-- **Play together.** One player hosts and shares a short room code; the other joins.
+- **Play together.** One player hosts and shares a short room code; the other joins. Or run a **shared universe**
+  server (`node server/universe.mjs`) where everyone flies in one persistent solar system.
+- **Invent parts.** The 🧪 part designer builds radiators, batteries, reactors and armour of any size from real physics.
 - **Make it yours.** Fly with a physical cockpit of switches and gauges (or realistic, military and retro panels),
   a 3D or rotating sonar radar, and your own ship's look.
 
@@ -170,6 +173,7 @@ Everything a developer needs is in these files:
 | [`docs/MODDING.md`](docs/MODDING.md) | Styles, cockpit styles, radar screens, new modules, and translations |
 | [`docs/FAIR-PLAY.md`](docs/FAIR-PLAY.md) | Which code is shared rules and which you can freely change |
 | [`docs/MULTIPLAYER.md`](docs/MULTIPLAYER.md) | Hosting and joining games |
+| [`docs/UNIVERSE.md`](docs/UNIVERSE.md) | Running a shared universe server |
 | [`docs/PROTOCOL.md`](docs/PROTOCOL.md) | Data formats other programs can rely on |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed in each version |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Read before changing the rules |

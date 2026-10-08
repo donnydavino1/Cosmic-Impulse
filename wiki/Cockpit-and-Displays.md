@@ -52,6 +52,12 @@ The 📡 Sensors widget can draw your contacts in different ways (🎨 Customize
 
 Better sensors make the sonar beam turn faster and see farther ([[Sensors and Radar]]).
 
+## Virtual reality (experimental)
+
+With a VR headset and a browser that supports WebXR, a **🥽 Enter VR** button appears in the cockpit view: the 3D scene
+renders in the headset and follows your head, while the keyboard keeps flying the ship. The 2D panels stay on the
+desktop screen. In the realistic look, planets also have surface relief and Earth's oceans glint in the sunlight.
+
 ## Make your own
 
 Cockpit styles and radar displays are plain code: add a style with `ORB.cockpit.register(name, {frame, label})`

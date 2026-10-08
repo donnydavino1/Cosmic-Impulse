@@ -15,6 +15,12 @@ níquel, silicatos y carbono). Acércate a menos de 50 km de un asteroide y puls
 Los drones tienen muy poco delta-v. Quédate a menos de 30 km mientras trabajan: si te alejas más de 100 km no pueden
 alcanzarte y se pierden.
 
+## 🔧 Drones de reparación
+
+Los drones de reparación (también *Autonomous robotics*) recorren el casco y arreglan la pieza más dañada un 10 % de su
+estado por hora cada uno, usando kits de repuestos (un kit restaura una pieza entera). Una pieza averiada vuelve a
+funcionar por encima del 60 %. Fabrícalos en 🛸 Operaciones.
+
 ## 🛰 Sondas científicas
 
 Investiga **Deep-space probes** (requiere *Onboard laboratory*) y fabrica sondas (90 kg cada una). La tabla de la

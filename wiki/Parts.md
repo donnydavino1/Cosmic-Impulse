@@ -56,6 +56,7 @@ Every part has mass, is built from materials plus energy, and many need research
 | **Water-wall tanks** | 200 kg | 200 kg iron | 1×10^9 J | Water-wall habitat | Tanks around the cabin hold your water supply: every 300 kg adds 1 g/cm², up to 20. |
 | **Active magnetic shield** | 4,000 kg | 1500 kg nickel, 1500 kg iron, 40 kg platinum | 5×10^11 J | Active magnetic shielding | Superconducting coils deflect charged particles (−90% flare dose, −50% cosmic rays) for 1 MW. |
 | **Whipple micrometeoroid shield** | 300 kg | 250 kg iron, 50 kg carbon | 1×10^9 J | — | Thin bumper layers vaporise dust grains before they reach the hull: −90% impact damage. |
+| **Ceramic-composite armour panels** | 900 kg | 450 kg iron, 350 kg silicates, 100 kg carbon | 2×10^10 J | High-strength alloys | Layered ceramic and metal panels: a hit that strikes them loses 60 % of its energy. Mount them beside the modules you want to protect: each covers 20 % of its host. |
 | **Multi-layer sunshade** | 150 kg | 60 kg carbon, 30 kg iron, 20 kg silicates | 3×10^9 J | Carbon composites | Layers of reflective film keep 95 % of the Sun's heat off the ship. Survives sunlight up to 80 kW/m² (about 0.13 AU from the Sun). |
 | **Carbon-carbon heat shield** | 700 kg | 600 kg carbon, 80 kg silicates, 40 kg iron | 4×10^10 J | Carbon composites | A thick carbon-foam shield like the Parker Solar Probe's: blocks 99.5 % of the heat and survives 1.2 MW/m² (about 0.034 AU, 7 solar radii). |
 

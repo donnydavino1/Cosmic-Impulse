@@ -26,11 +26,18 @@ const OPS_FACT={Earth:'Seen from orbit, Earth’s blue atmosphere is a layer onl
  Uranus:'Uranus rolls around the Sun on its side: its axis is tilted 98°, so each pole gets 42 years of daylight.',
  Neptune:'Neptune has the fastest winds in the Solar System, over 2,000 km/h, and its moon Triton orbits backwards.',
  Pluto:'Pluto’s bright “heart”, Sputnik Planitia, is a basin of frozen nitrogen that slowly churns like a lava lamp.'};
-const opsNew=()=>({drones:0,fleet:null,probes:0,flights:[],sci:{},haul:0,lt:null});
+const opsNew=()=>({drones:0,fleet:null,probes:0,flights:[],sci:{},haul:0,lt:null,rep:0});
 if(!s.ops)s.ops=opsNew();
 const opsMul=(m,n)=>Object.fromEntries(Object.entries(m).map(([k,v])=>[k,v*n]));
-function opsMass(){const o=s.ops;return o?o.drones*OPS.droneM+o.probes*OPS.probeDry:0}
-ORB.on('job:done',j=>{if(j.type==='drone')s.ops.drones+=j.n;if(j.type==='probe')s.ops.probes+=j.n});
+function opsMass(){const o=s.ops;return o?o.drones*OPS.droneM+o.probes*OPS.probeDry+(o.rep||0)*REP.m:0}
+ORB.on('job:done',j=>{if(j.type==='drone')s.ops.drones+=j.n;if(j.type==='probe')s.ops.probes+=j.n;if(j.type==='rdrone')s.ops.rep=(s.ops.rep||0)+j.n});
+// ---------- repair drones: crawl over the hull and fix the most damaged part, 10 % of its condition per hour each,
+// using spare-parts kits (one kit restores a whole part); a part above 60 % works again
+const REP={m:30,mat:{iron:20,nickel:5,silicates:5},J:3e9,rate:.1/3600};
+function rdroneBuild(n){if(!s.tech.t_robo)return null;return queueJob({type:'rdrone',n,mat:opsMul(REP.mat,n),name:'Build '+n+' repair drone'+(n>1?'s':''),J:REP.J*n})}
+function repTick(dt){const o=s.ops,n=o.rep||0;if(!n||dt<=0)return;let work=n*REP.rate*dt;
+ for(let guard=0;guard<20&&work>1e-6&&s.res.spares>1e-6;guard++){const p=s.parts.filter(q=>q.cond<1||q.fail).sort((a,b)=>a.cond-b.cond)[0];if(!p)return;
+  const fix=Math.min(work,1-p.cond,s.res.spares);p.cond+=fix;s.res.spares-=fix;work-=fix;if(p.fail&&p.cond>=.6){p.fail=false;notify('🔧 Repair drones fixed the '+PARTS[p.id].n+'.');recalc()}}}
 // ---------- drones
 function droneBuild(n){if(!s.tech.t_robo)return null;return queueJob({type:'drone',n,mat:opsMul(OPS.droneMat,n),name:'Build '+n+' mining drone'+(n>1?'s':''),J:OPS.droneJ*n})}
 function droneTarget(){if(WT&&WT.kind==='ast')return WT.a;let b=null,bd=Infinity;for(const a of AST){const d=astDist(a);if(d<bd){bd=d;b=a}}return b}
@@ -80,5 +87,5 @@ function probeTick(){const o=s.ops;for(const f of o.flights.slice()){
    notify(`🛰 Probe reached ${f.to}. Its data is coming back at the speed of light: ${dur(f.dl)}.`)}
   if(f.rx!=null&&T>=f.rx){o.flights.splice(o.flights.indexOf(f),1);const first=!o.sci[f.to],rp=OPS.SCI[f.to]*(first?1:.3);s.rp+=rp;o.sci[f.to]=(o.sci[f.to]||0)+1;
    notify(`📡 Data from the ${f.to} probe received: +${Math.round(rp)} research points.`);disc('pr_'+f.to,'Probe data from '+f.to,0,OPS_FACT[f.to]||'')}}}
-function opsTick(){const o=s.ops;if(!o||!s.crew.alive)return;if(o.lt==null||T<o.lt){o.lt=T;return}o.lt=T;droneTick();probeTick()}
+function opsTick(){const o=s.ops;if(!o||!s.crew.alive)return;if(o.lt==null||T<o.lt){o.lt=T;return}const dt=T-o.lt;o.lt=T;droneTick();probeTick();repTick(dt)}
 ORB.on('ui',()=>{try{opsTick()}catch(e){console.warn('ops',e)}});

@@ -6,7 +6,7 @@
 // Add a language: create game/i18n/<code>.json and add it to LANGS below. Coverage: python3 tools/i18n-audit.py.
 const LANGS={en:'English',es:'Español',zh:'中文'};
 const I18N_DATA=/*@I18N_DATA*/{};
-const I18_WORDS=new Set(['Moon','Venus','Mars','Mercury','Jupiter','Saturn','Earth','Sun','Destroy','Mine','Deliver','Railgun','Missile','Xenon','Arcjet','ARCJET','Uranus','Neptune','Pluto','Phobos','Deimos','Io','Europa','Ganymede','Callisto','Enceladus','Rhea','Titan','Triton','Charon','Apophis','Bennu','Ryugu','Eros','Itokawa','Didymos','Psyche','Ceres','Vesta','Eris','Makemake','Haumea','Arrokoth','Sedna','Quaoar','Gonggong','Albion','Deuterium','Supercapacitors','Battery','Engines','Weapons','Research','Survival']);
+const I18_WORDS=new Set(['Moon','Venus','Mars','Mercury','Jupiter','Saturn','Earth','Sun','Destroy','Mine','Deliver','Railgun','Missile','Xenon','Arcjet','ARCJET','drones','drone','interceptor','interceptors','gunship','gunships','INTERCEPTOR','GUNSHIP','Uranus','Neptune','Pluto','Phobos','Deimos','Io','Europa','Ganymede','Callisto','Enceladus','Rhea','Titan','Triton','Charon','Apophis','Bennu','Ryugu','Eros','Itokawa','Didymos','Psyche','Ceres','Vesta','Eris','Makemake','Haumea','Arrokoth','Sedna','Quaoar','Gonggong','Albion','Deuterium','Supercapacitors','Battery','Engines','Weapons','Research','Survival']);
 let LANG='en';try{const q=new URLSearchParams(location.search).get('lang'),sv=localStorage.getItem('orbital-lang'),nav=(navigator.language||'en').slice(0,2);LANG=LANGS[q]?q:LANGS[sv]?sv:LANGS[nav]?nav:'en'}catch(e){}
 let I18=null,I18RX=null;const I18C=new Map();
 function i18nPrep(){I18=LANG!=='en'&&I18N_DATA[LANG]||null;I18RX=null;I18C.clear();if(!I18)return;

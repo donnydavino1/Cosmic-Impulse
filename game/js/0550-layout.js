@@ -63,3 +63,19 @@ function layRefit(order,rad){laySync();rad=rad||{};const cur=s.lay.order,newT=or
 ORB.on('job:done',j=>{if(j.type!=='part'||!j.place)return;const p=s.parts.slice().reverse().find(q=>q.id===j.id);if(!p)return;if(!p.uid)p.uid=++UID;
  const L=s.lay;if(L.order.includes(j.place)){L.order=L.order.filter(k=>k!=='p'+p.uid);L.rad=L.rad||{};L.rad['p'+p.uid]=j.place}});
 ORB.on('job:done',j=>{if(j.type!=='refit')return;const L=s.lay;L.order=j.order.map(k=>k.startsWith('tnew')?'t'+(++L.tid):k);L.rad=Object.assign({},j.rad||{});if(j.gone)s.res.iron+=j.gone*LAY.trussM*.5;laySync()});
+
+// ===== WHERE HITS LAND (RULES): weapon hits strike the outside of the ship, so layout and armour placement matter ====
+// Every module is a target in proportion to its outer area (radiators count their panels). Modules mounted beside a
+// host shield it: each covers 20 % of the host (down to 35 % exposed). A hit that strikes armour loses 60 % of its
+// energy (shielding parts 30 %); a hit on anything else damages that module (condition, then failure), punctures
+// tanks (kinetic hits lose propellant) or hurts the crew (cabin).
+const ARM={cover:.2,minExp:.35,shield:.3};
+function layExposure(m){m=m||SH.lay;if(!m)return[];const cnt={};for(const q of m.radial)cnt[q.host]=(cnt[q.host]||0)+1;
+ return m.mods.map(q=>{let w=2*Math.PI*q.r*q.len*(q.cat==='truss'?.25:1)+(q.cat==='therm'?((PARTS[q.id]||{}).A||60):0);if(!q.radial)w*=Math.max(ARM.minExp,1-ARM.cover*(cnt[q.k]||0));return{q,w}})}
+function hitModule(E,kind){const m=SH&&SH.lay;if(!m||!m.mods.length)return null;const ex=layExposure(m),tot=ex.reduce((a,e)=>a+e.w,0);let r=Math.random()*tot,e=ex[ex.length-1];
+ for(const x of ex){r-=x.w;if(r<=0){e=x;break}}
+ const q=e.q,p=q.k&&q.k[0]==='p'?layPart(q.k):null,d=p?PARTS[p.id]:null,ab=d&&d.armor?d.armor:d&&d.cat==='shield'&&d.ad?ARM.shield:0,out={q,ab,cond:null,leak:0,crew:0};
+ if(p&&!ab){p.cond=Math.max(0,p.cond-Math.min(.5,E/2e8));out.cond=p.cond;if(p.cond<.25)p.fail=true}
+ if(q.cat==='tanks'&&kind==='kinetic'){for(const f in s.fuel){const l=s.fuel[f]*.03;s.fuel[f]-=l;out.leak+=l}}
+ if(q.cat==='life'){const dmg=Math.min(8,E/2.5e7);s.crew.hp=Math.max(0,s.crew.hp-dmg);out.crew=dmg}
+ return out}

@@ -79,10 +79,10 @@ function trip(rT){const S=B[0],vc=r=>Math.sqrt(S.GM/r);let dv=Math.abs(vc(rT)-vc
 const TGT=[['Venus distance',.723],['Mercury distance',.387],['Close to the Sun',.2],['Very close to the Sun',.1],['Back to Earth distance',1],['Mars distance',1.524]];
 {const nb=$('navbody');let g=grp(nb,'CHOOSE A DESTINATION (distance from the Sun)');
  btn(g,()=>'☀ AS CLOSE TO THE SUN AS MY RESOURCES ALLOW  ('+KN(BIND.sun)+'): picks the best engine, buys fuel, flies',()=>{$('nav').classList.add('h');goSun()});
- TGT.forEach(([n,a])=>btn(g,()=>{const t=trip(a*AU);return `${n} · ${a} AU  ·  needs ~${f1(t.dv/1e3,1)} km/s, ${f1(t.need,0)} kg propellant (incl. 40% margin)`},()=>{AP={r:a*AU,name:n+' ('+a+' AU)',stage:''};apNote='';$('nav').classList.add('h')}));
+ TGT.forEach(([n,a])=>btn(g,()=>{const t=trip(a*AU);return `${n} · ${a} AU  ·  needs ~${f1(t.dv/1e3,1)} km/s, ${f1(t.need,0)} kg propellant (incl. 40% margin)`},()=>{$('nav').classList.add('h');apAsk(planDist(a,n+' ('+a+' AU)'),()=>{AP={r:a*AU,name:n+' ('+a+' AU)',stage:''};apNote=''})}));
  g=grp(nb,'ASTEROIDS: the autopilot matches their orbit and parks 1.5 km away, in mining range');
- AST.filter(a=>a.neo).forEach(a=>btn(g,()=>`${a.n} · ${a.t}-type (${TYN[a.t]}) · ${f1(a.r*2,0)} m wide · ${fmtD(astDist(a))} away`,()=>{$('nav').classList.add('h');flyAst(a)}));
- btn(g,()=>{const a=nearBelt();return `Nearest main-belt asteroid: ${a.n} · ${a.t}-type · ${f1(a.r*2,0)} m wide · ${fmtD(astDist(a))} away`},()=>{$('nav').classList.add('h');flyAst(nearBelt())});
+ AST.filter(a=>a.neo).forEach(a=>btn(g,()=>`${a.n} · ${a.t}-type (${TYN[a.t]}) · ${f1(a.r*2,0)} m wide · ${fmtD(astDist(a))} away`,()=>{$('nav').classList.add('h');flyAstAsk(a)}));
+ btn(g,()=>{const a=nearBelt();return `Nearest main-belt asteroid: ${a.n} · ${a.t}-type · ${f1(a.r*2,0)} m wide · ${fmtD(astDist(a))} away`},()=>{$('nav').classList.add('h');flyAstAsk(nearBelt())});
  g=grp(nb,'PREPARE AND CONTROL');
  btn(g,()=>{if(!AP)return'⛽ Buy fuel for the trip (choose a destination first)';const x=tripExtra();return x>0?`⛽ Buy the fuel this trip needs: ~${f1(x,0)} kg ${DR[di].f?FUEL[DR[di].f].n.toLowerCase():''} · ${costTxt(DR[di].f,x)}`:'⛽ Fuel looks sufficient for this trip ✓ (check the projection)'},()=>{if(AP){const jb=buyFu(DR[di].f,Math.ceil(tripExtra()));if(jb)AP.wait=jb;PRED=null;PJ=null}},()=>AP&&tripExtra()>0&&canMake(DR[di].f,tripExtra()));
  btn(g,()=>{const d=stockDays();return inEarth()?`🫁 Stock up supplies for ${f1(d,0)} days (trip + 30%): ${stockTxt(d)}`:'🫁 Stock up: Earth orders only inside Earth’s gravity zone (make oxygen from water in 🏭 Fabricate)'},()=>stockUp(),()=>inEarth()&&!!stockTxt(stockDays()));
@@ -188,7 +188,7 @@ function drawOrbit(o,fp){if(!(o.eps<0)||!(o.ec<.9999)){eline.visible=false;retur
   ep[k*3]=(d.x-fp.x+P[0]*X+Q[0]*Y)/U;ep[k*3+1]=(d.y-fp.y+P[1]*X+Q[1]*Y)/U;ep[k*3+2]=(d.z-fp.z+P[2]*X+Q[2]*Y)/U}eg.attributes.position.needsUpdate=true}
 // loop
 let last=performance.now(),fc=0;const v3=new THREE.Vector3();
-function frame(now){requestAnimationFrame(frame);let rem=MP.role==='guest'&&MP.conn?guestRem(now):Math.min((now-last)/1000,.1)*(paused?0:WARP[wi]),n=0;last=now;const T0f=T;
+function frame(now){if(!(typeof XRS!=='undefined'&&XRS.on))requestAnimationFrame(frame);let rem=typeof UNI!=='undefined'&&UNI.on?uniRem(now):MP.role==='guest'&&MP.conn?guestRem(now):Math.min((now-last)/1000,.1)*(paused?0:WARP[wi]),n=0;last=now;const T0f=T;
  while(rem>1e-9&&n++<5000){const dt=Math.min(rem,.02*ctl(),600,apDt());step(dt);rem-=dt;T+=dt}
  worldTick(T-T0f,now);survivalTick(T-T0f);ctl();{const d=s.dom,r=Math.hypot(s.x-d.x,s.y-d.y,s.z-d.z);if(r<d.R)groundContact(d);else s.msg=''}
  if(FP||SV)fi=0;if(STAB&&(FP||SV||fi==0))stabApply();else stabCapture();const fp=FOC[fi];

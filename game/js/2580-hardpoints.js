@@ -5,7 +5,7 @@
 if(!CUST.mounts||typeof CUST.mounts!=='object')CUST.mounts={};
 let HP_LIST=[],HP_SEL=null;
 ORB.keyParts.push(()=>JSON.stringify(CUST.mounts));
-ORB.keyParts.push(()=>s.parts.map(p=>p.mk||1).join('')+JSON.stringify(s.lay&&s.lay.rad||{}));
+ORB.keyParts.push(()=>s.parts.map(p=>(p.mk||1)+''+(p.cond<.6?Math.round(p.cond*4):'')).join('')+JSON.stringify(s.lay&&s.lay.rad||{}));
 ORB.on('ship:build',({g})=>{HP_LIST=[];for(const o of g.children){const n=o.userData&&o.userData.mount;if(!n)continue;HP_LIST.push(n);const m=CUST.mounts[n];if(!m)continue;
  const p=m.p||[0,0,0];o.position.x+=p[0]||0;o.position.y+=p[1]||0;o.position.z+=p[2]||0;if(m.r)o.rotation.x+=m.r*Math.PI/180;if(m.s>0){o.scale.multiplyScalar?o.scale.multiplyScalar(m.s):o.scale.set(m.s,m.s,m.s)}}
  if(HP_SEL&&!HP_LIST.includes(HP_SEL))HP_SEL=null});

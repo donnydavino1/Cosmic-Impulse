@@ -34,23 +34,32 @@ function dmgPop(o,E,kill){const now=performance.now();CB.hm={t0:now,o,kill};o.pd
 function cbBoom(x,y,z,size){const sp=[];for(let k=0;k<16;k++){const a=Math.random()*6.283,r=.3+Math.random()*.7;sp.push([Math.cos(a)*r,Math.sin(a)*r,Math.random()])}
  CB.booms.push({x:x-s.x,y:y-s.y,z:z-s.z,t0:performance.now(),px:Math.max(14,size*.7),sp});if(size>=20)sfx('boom')}
 // ----- taking damage from raiders (the same rules as a hit from another player)
-function takeHit(E,kind,src){if(!s.crew.alive)return;const now=performance.now();s.hull-=E;CB.hurt=now;sfx('hurt');
+function takeHit(E,kind,src){if(!s.crew.alive)return;const now=performance.now();const Hm=typeof hitModule==='function'?hitModule(E,kind):null;if(Hm&&Hm.ab)E*=1-Hm.ab;s.hull-=E;
+ if(Hm&&(!CB.hitNote||now-CB.hitNote>3500)){CB.hitNote=now;const nm=Hm.q.n,msg=(Hm.ab?'🛡 The '+nm+' took the hit: '+Math.round(Hm.ab*100)+' % absorbed.':Hm.leak?'⛽ A tank was punctured: '+f1(Hm.leak,0)+' kg of propellant lost.':Hm.crew?'🩸 The crew cabin was hit: crew health −'+f1(Hm.crew,1)+' %.':Hm.cond!=null?'💥 Hit on the '+nm+': condition '+Math.round(Hm.cond*100)+' %'+(Hm.cond<.25?' (failed)':'')+'.':'💥 Hit on the '+nm+'.');notify(msg)}CB.hurt=now;sfx('hurt');
  boom(s.x+(Math.random()-.5)*20,s.y+(Math.random()-.5)*20,s.z+(Math.random()-.5)*20,kind==='kinetic'?40:12);
- if(Math.random()<E/2e8){const q=s.parts[Math.random()*s.parts.length|0];if(q)q.cond=Math.max(0,q.cond-.1)}if(kind==='kinetic'&&Math.random()<.3&&!s.leak)s.leak=1.4e-4;
+ if(!Hm&&Math.random()<E/2e8){const q=s.parts[Math.random()*s.parts.length|0];if(q)q.cond=Math.max(0,q.cond-.1)}if(kind==='kinetic'&&Math.random()<.3&&!s.leak)s.leak=1.4e-4;
  const hp=s.hull/hullMax();if(hp<.3&&!CB.lowNote&&s.hull>0){CB.lowNote=true;sfx('alarm');notify('🚨 Hull at '+Math.round(hp*100)+'%! Raiders give up if you get more than 400 km away: burn hard away from them, or finish them fast.')}
  if(s.hull<=0){raidEnd('lost');destroyed(src&&src.raider?'raider '+src.name:'raiders')}}
 // ----- raider waves
+// raider classes: later waves mix in faster, tougher and longer-ranged ships
+const RCLS={drone:{n:'drone',hp:1,acc:12,st:[6e3,1.2e4],dmg:1,cd:[5,11],range:6e4,r:5},
+ interceptor:{n:'interceptor',hp:.6,acc:25,st:[2e3,4e3],dmg:.55,cd:[3,5],range:3e4,r:4},
+ gunship:{n:'gunship',hp:2.6,acc:6,st:[1.2e4,1.8e4],dmg:3.2,cd:[10,14],range:6e4,r:9,kin:true,mis:1},
+ missile:{n:'missile boat',hp:1.3,acc:8,st:[6e4,8e4],dmg:.4,cd:[8,12],range:6e4,r:7,mis:4,mcd:[12,20]}};
+function raidPool(w){return['drone','drone'].concat(w>=2?['interceptor']:[],w>=3?['gunship']:[],w>=4?['missile']:[])}
 function raidStart(){initAudio();if(MP.conn){notify('⚔ Raider waves are single-player for now: disconnect from multiplayer to fight them.');return}
  if(!s.crew.alive)return;if(CB.on){notify('⚔ Wave '+CB.wave+' is already attacking!');return}
  const w=s.raid.wave,n=Math.min(2+w,7),g=gam(s);CB.on=true;CB.wave=w;CB.raiders=[];CB.lowNote=false;CB.timeNote=false;
  for(let k=0;k<n;k++){const th=Math.random()*6.283,ph=(Math.random()-.5)*1.4,d=2.5e4+Math.random()*2e4,ax=[Math.random()-.5,Math.random()-.5,Math.random()-.5],al=Math.hypot(...ax)||1;
-  const o={kind:'drone',raider:true,name:RNAMES[(k+w*5)%RNAMES.length],hp:1.5e7*(1+.25*(w-1)),alive:true,r:5,
+  const pool=raidPool(w),cls=k===0?'drone':pool[(k*7+w*3)%pool.length],C=RCLS[cls];
+  const o={kind:'drone',raider:true,cls,name:RNAMES[(k+w*5)%RNAMES.length],hp:1.5e7*(1+.25*(w-1))*C.hp,alive:true,r:C.r,
    x:s.x+d*Math.cos(ph)*Math.cos(th),y:s.y+d*Math.cos(ph)*Math.sin(th),z:s.z+d*Math.sin(ph),vx:s.vx/g,vy:s.vy/g,vz:s.vz/g,ax:0,ay:0,az:0,GM:0,age:0,
-   acc:12,stand:6e3+Math.random()*6e3,range:6e4,dmg:1.2e6*(1+.2*(w-1)),cd:5+Math.random()*6,mis:w>=4?2:w>=2?1:0,mcd:8+Math.random()*20,axis:ax.map(x=>x/al),spin:Math.random()<.5?1:-1,burn:0};
+   acc:C.acc,stand:C.st[0]+Math.random()*(C.st[1]-C.st[0]),range:C.range,dmg:1.2e6*(1+.2*(w-1))*C.dmg,cd:C.cd[0]+Math.random()*(C.cd[1]-C.cd[0]),mis:(C.mis||0)+(w>=4?2:w>=2?1:0)-(cls==='interceptor'?1:0),mcd:C.mcd?C.mcd[0]+Math.random()*(C.mcd[1]-C.mcd[0]):8+Math.random()*20,axis:ax.map(x=>x/al),spin:Math.random()<.5?1:-1,burn:0};
   o.hpMax=o.hp;OBJS.push(o);ALL.push(o);CB.raiders.push(o)}
+ {const cnt={};for(const o of CB.raiders)cnt[o.cls]=(cnt[o.cls]||0)+1;CB.mix=Object.entries(cnt).map(([c,k])=>k+' '+RCLS[c].n+(k>1?'s':'')).join(', ')}
  CB.prevWi=null;if(wi>1){CB.prevWi=wi;wi=1}paused=false;if(!FP&&!SV)fi=0;
  autoT();CB.deploy=performance.now();sfx('warn');CB.banner={t0:performance.now(),txt:'WAVE '+w+' INBOUND'};
- notify(`⚔ WAVE ${w}: ${n} raider drones closing in from 25–45 km${w>=2?', armed with missiles':''}. Time is slowed to ×10. Fire with 1 mining laser · 2 pulse laser · 3 particle beam · 4 railgun · 5 missiles (${s.ammo.missile} left); ${KN(BIND.target)} switches target. Lasers lose power with distance, so they hit hardest inside 50 km. If the raiders win, you lose your ship.`)}
+ notify(`⚔ WAVE ${w}: ${n} raider drones closing in from 25–45 km${w>=2?', armed with missiles':''}. Time is slowed to ×10. Fire with 1 mining laser · 2 pulse laser · 3 particle beam · 4 railgun · 5 missiles (${s.ammo.missile} left); ${KN(BIND.target)} switches target. Lasers lose power with distance, so they hit hardest inside 50 km. If the raiders win, you lose your ship.`);if(CB.mix&&w>=2)setTimeout(()=>notify('⚔ Wave '+w+': '+CB.mix+'.'),1200)}
 function launchEnemyMissile(o){const px=s.x-o.x,py=s.y-o.y,pz=s.z-o.z,d=Math.hypot(px,py,pz)||1,u=[px/d,py/d,pz/d];
  const m={kind:'missile',hostile:true,alive:true,hp:3e5,hpMax:3e5,dry:16,fuel:2.5,acc:20,wh:6e6,tgt:{kind:'me'},r:.4,from:o.name,
   x:o.x+u[0]*12,y:o.y+u[1]*12,z:o.z+u[2]*12,vx:o.vx+u[0]*60,vy:o.vy+u[1]*60,vz:o.vz+u[2]*60,ax:0,ay:0,az:0,GM:0,age:0};
@@ -60,17 +69,29 @@ function raidTick(dtg,now){
  if(!CB.on){const hm=hullMax();if(s.hull<hm&&s.res.spares>0&&s.crew.alive&&dtg>0){const rep=Math.min(hm-s.hull,hm*.02/3600*dtg);s.hull+=rep;s.res.spares=Math.max(0,s.res.spares-rep/(hm*.25))}return}
  if(!MP.conn&&wi>1){wi=1;if(!CB.timeNote){CB.timeNote=true;notify('⏱ Time is held at ×10 while raiders are attacking.')}}
  const g=gam(s),sv=[s.vx/g,s.vy/g,s.vz/g];let alive=0,far=0;
- for(const o of CB.raiders){if(!o.alive)continue;alive++;const px=o.x-s.x,py=o.y-s.y,pz=o.z-s.z,d=Math.hypot(px,py,pz)||1;if(d>4e5)far++;
+ // Raiders find you by your emissions: active radar, a running engine or a recent shot give you away at any range;
+ // a quiet ship is only seen within 25 km. Without contact they fly to where they last saw you and circle there.
+ const loud=!s.passive||s.burn>0||T-lastShotT<60;let seen=0;
+ for(const o of CB.raiders){if(!o.alive)continue;const d0=Math.hypot(o.x-s.x,o.y-s.y,o.z-s.z);if(loud||d0<2.5e4){o.kx=s.x;o.ky=s.y;o.kz=s.z;o.lost=0;seen++}else if(o.kx===undefined){o.kx=s.x;o.ky=s.y;o.kz=s.z}}
+ if(!seen&&!CB.lostNote){CB.lostNote=true;notify('🫥 The raiders have lost track of you. Stay quiet (passive radar, engine off, no shots) and they search where they last saw you.')}
+ if(seen&&CB.lostNote){CB.lostNote=false;notify('👁 The raiders have found you again.')}
+ for(const o of CB.raiders){if(!o.alive)continue;alive++;const has=loud||Math.hypot(o.x-s.x,o.y-s.y,o.z-s.z)<2.5e4,px=o.x-(has?s.x:o.kx),py=o.y-(has?s.y:o.ky),pz=o.z-(has?s.z:o.kz),d=Math.hypot(px,py,pz)||1,dr=Math.hypot(o.x-s.x,o.y-s.y,o.z-s.z);if(dr>4e5)far++;
   if(dtg>0){const ux=px/d,uy=py/d,uz=pz/d,vrx=o.vx-sv[0],vry=o.vy-sv[1],vrz=o.vz-sv[2],
-    vt=d>o.stand?-Math.min(700,Math.sqrt(2*o.acc*.6*(d-o.stand))):Math.min(60,(o.stand-d)*.05), // close in, braking in time; back off if too close
-    tx=o.axis[1]*uz-o.axis[2]*uy,ty=o.axis[2]*ux-o.axis[0]*uz,tz=o.axis[0]*uy-o.axis[1]*ux,tl=Math.hypot(tx,ty,tz)||1,vc=o.spin*90/tl, // circle you at ~90 m/s
-    dx=ux*vt+tx*vc-vrx,dy=uy*vt+ty*vc-vry,dz=uz*vt+tz*vc-vrz,dl=Math.hypot(dx,dy,dz)||1,dv=Math.min(dl,o.acc*dtg);
+    tx=o.axis[1]*uz-o.axis[2]*uy,ty=o.axis[2]*ux-o.axis[0]*uz,tz=o.axis[0]*uy-o.axis[1]*ux,tl=Math.hypot(tx,ty,tz)||1;
+   // tactics by class: drones circle; gunships hold range and withdraw when badly hurt; missile boats keep their
+   // distance and back away if you close in; interceptors make fast attack runs past you and come round again
+   let vt=d>o.stand?-Math.min(700,Math.sqrt(2*o.acc*.6*(d-o.stand))):Math.min(60,(o.stand-d)*.05),vc=o.spin*90/tl,wx=0,wy=0,wz=0;
+   if(o.cls==='missile'){vt=d<o.stand*.8?650:d>o.stand*1.25?-350:0;vc=o.spin*30/tl}
+   else if(o.cls==='gunship'&&o.hp<.35*o.hpMax){vt=500;vc=0;if(!o.flee){o.flee=true;notify('🏳 Gunship '+o.name+' is badly hurt and withdrawing.')}}
+   else if(o.cls==='interceptor'){if(!o.ph)o.ph='in';if(o.ph==='in'){vt=-1100;vc=o.spin*160/tl;if(d<1500)o.ph='out'}
+    else{const vl=Math.hypot(vrx,vry,vrz)||1;vt=0;vc=0;wx=vrx/vl*1100;wy=vry/vl*1100;wz=vrz/vl*1100;if(d>9000)o.ph='in'}}
+   const dx=ux*vt+tx*vc+wx-vrx,dy=uy*vt+ty*vc+wy-vry,dz=uz*vt+tz*vc+wz-vrz,dl=Math.hypot(dx,dy,dz)||1,dv=Math.min(dl,o.acc*dtg);
    o.vx+=dx/dl*dv;o.vy+=dy/dl*dv;o.vz+=dz/dl*dv;o.burn=dv/(o.acc*dtg)}
-  o.cd-=dtg;if(o.cd<=0&&d<o.range&&s.crew.alive){o.cd=6+Math.random()*5;sfx('elaser');
+  o.cd-=dtg;if(has&&o.cd<=0&&dr<o.range&&s.crew.alive){o.cd=6+Math.random()*5;sfx('elaser');
    // a quiet ship (passive sensing, engine off) is hard to lock onto
-   const quiet=s.passive&&!(s.burn>0);if(Math.random()<(.85-.45*d/o.range)*(quiet?.55:1)){CB.beams.push({o,hit:true,until:now+170});takeHit(o.dmg*fall(d,2.5e4),'laser',o);if(!CB.on)return}
+   const quiet=s.passive&&!(s.burn>0),kin=RCLS[o.cls||'drone'].kin;if(Math.random()<((kin?.75:.85)-(kin?.5:.45)*dr/o.range)*(quiet?.55:1)){CB.beams.push({o,hit:true,until:now+170});takeHit(kin?o.dmg:o.dmg*fall(dr,2.5e4),kin?'kinetic':'laser',o);if(!CB.on)return}
    else CB.beams.push({o,hit:false,off:[(Math.random()-.5)*600,(Math.random()-.5)*600,(Math.random()-.5)*600],until:now+170})}
-  o.mcd-=dtg;if(o.mis>0&&o.mcd<=0&&d>8e3&&d<1.5e5){o.mis--;o.mcd=25+Math.random()*20;launchEnemyMissile(o)}}
+  o.mcd-=dtg;if(has&&o.mis>0&&o.mcd<=0&&dr>8e3&&dr<1.5e5){o.mis--;o.mcd=25+Math.random()*20;launchEnemyMissile(o)}}
  for(const m of OBJS.slice())if(m.hostile&&m.fuel<=0&&Math.hypot(m.x-s.x,m.y-s.y,m.z-s.z)>2e5)rmObj(m); // spent missiles that missed
  if(alive===0)raidEnd('won');else if(far===alive)raidEnd('escaped')}
 function raidEnd(why){if(!CB.on)return;CB.on=false;const w=CB.wave;
@@ -94,8 +115,18 @@ function turretTick(){if(!TUR.length)return;const now=performance.now();shipG.up
  for(const t of TUR){const want=t.i===WI&&(CB.on||fireHeld||now-CB.deploy<15000)?1:.12;t.ext+=(want-t.ext)*.12;t.piv.scale.set(1,1,Math.max(.05,t.ext));
   if(tp&&t.ext>.3){TV2.set(tp[0],tp[1],tp[2]);t.piv.lookAt(TV2)}
   const fl=t.i===WI&&(now-CB.muzzle<120||CB.firing);t.mz.material.opacity=fl?.7+.3*Math.random():0}}
-function mkRaider(){const g2=new THREE.Group(),M=new THREE.MeshStandardMaterial({color:'#2a1418',emissive:'#ff2233',emissiveIntensity:.35,metalness:.6,roughness:.4,flatShading:true}),
- b=new THREE.Mesh(new THREE.ConeGeometry(2.2,9,5),M);b.rotation.x=Math.PI/2;g2.add(b);[1,-1].forEach(sg=>{const f=new THREE.Mesh(new THREE.BoxGeometry(5,.3,4),M);f.position.set(sg*2.6,0,-2.2);g2.add(f)});g2.add(glow('#ff3344',16));return g2}
+// raider models, one per class: dark metal hulls with a red running light (softer in the realistic look)
+function mkRaider(o){const cls=(o&&o.cls)||'drone',real=typeof REAL==='function'&&REAL(),g2=new THREE.Group(),
+ M=new THREE.MeshStandardMaterial({color:'#2a1418',emissive:'#ff2233',emissiveIntensity:real?.12:.35,metalness:.65,roughness:.4,flatShading:!real}),
+ D=new THREE.MeshStandardMaterial({color:'#24272c',metalness:.75,roughness:.45}),add=(geo,mat,x,y,z,rx,ry,rz)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x||0,y||0,z||0);m.rotation.set(rx||0,ry||0,rz||0);g2.add(m);return m};
+ if(cls==='interceptor'){add(new THREE.ConeGeometry(1.1,11,6),M,0,0,0,Math.PI/2);[1,-1].forEach(sg=>add(new THREE.BoxGeometry(6,.18,2.6),D,sg*2.4,0,-3,0,sg*.45,0));add(new THREE.BoxGeometry(.2,2.4,2.4),D,0,1.1,-3.6);g2.add(glow('#ff3344',real?6:10))}
+ else if(cls==='gunship'){add(new THREE.BoxGeometry(5,3.6,12),D);add(new THREE.BoxGeometry(5.6,1,8),M,0,2.2,-1);[1,-1].forEach(sg=>{const b=add(new THREE.CylinderGeometry(.28,.28,9,8),D,sg*1.4,-.6,8,Math.PI/2);add(new THREE.BoxGeometry(1.2,1.2,3),M,sg*1.4,-.6,3.2)});
+  [1,-1].forEach(sg=>add(new THREE.CylinderGeometry(1.1,1.5,2,10),D,sg*1.6,0,-7,Math.PI/2));g2.add(glow('#ff3344',real?8:16))}
+ else if(cls==='missile'){add(new THREE.CylinderGeometry(1.8,1.8,12,12),D,0,0,0,Math.PI/2);add(new THREE.ConeGeometry(1.8,3,12),M,0,0,7.5,Math.PI/2);
+  [1,-1].forEach(sg=>{for(let k=0;k<4;k++)add(new THREE.CylinderGeometry(.35,.35,4,8),M,sg*2.3,(k-1.5)*.8,1,Math.PI/2)});
+  const dish=add(new THREE.SphereGeometry(1.6,16,8,0,Math.PI*2,0,Math.PI/3),D,0,2.6,-2,-.6);dish.material=dish.material.clone();dish.material.side=THREE.DoubleSide;g2.add(glow('#ff3344',real?7:12))}
+ else{add(new THREE.ConeGeometry(2.2,9,5),M,0,0,0,Math.PI/2);[1,-1].forEach(sg=>add(new THREE.BoxGeometry(5,.3,4),M,sg*2.6,0,-2.2));g2.add(glow('#ff3344',real?8:16))}
+ return g2}
 // ----- 2D effects layer drawn over the 3D view: beams, tracers, explosions, markers, target brackets, damage feedback
 const cfx=document.createElement('canvas');cfx.id='cfx';cfx.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;touch-action:none';R.domElement.after(cfx);
 const CX=cfx.getContext&&cfx.getContext('2d'),PV=new THREE.Vector3();let cfxW=innerWidth,cfxH=innerHeight;
@@ -130,7 +161,7 @@ function cfxDraw(CL,now){if(!CX)return;const dpr=Math.min(devicePixelRatio||1,2)
  for(const o of OBJS){if(!o.alive||!(o.kind==='drone'||o.hostile))continue;const d=Math.hypot(o.x-s.x,o.y-s.y,o.z-s.z);if(d>2e6)continue;
   const p=scr(o.x,o.y,o.z,CL),col=o.raider||o.hostile?'#ff4a4a':'#ffb347';let lab;
   if(o.kind==='missile'){const cv=-((o.x-s.x)*(o.vx-s.vx/g)+(o.y-s.y)*(o.vy-s.vy/g)+(o.z-s.z)*(o.vz-s.vz/g))/(d||1);lab='⚠ MISSILE '+fmtD(d)+(cv>1?' · impact in '+dur(d/cv):'')}
-  else lab=(o.raider?o.name.toUpperCase():'DRONE')+' · '+fmtD(d);
+  else lab=o.pilot?'👤 '+o.name+' · '+fmtD(d):(o.raider?o.name.toUpperCase()+(o.cls&&o.cls!=='drone'?' · '+tr(RCLS[o.cls].n).toUpperCase():''):'DRONE')+' · '+fmtD(d);
   if(!p.on){edgeArrow(c,p,col,lab,W,H);continue}
   c.strokeStyle=col;c.lineWidth=2;c.beginPath();if(o.kind==='missile'){c.moveTo(p.x,p.y-8);c.lineTo(p.x+7,p.y+6);c.lineTo(p.x-7,p.y+6)}else{c.moveTo(p.x,p.y-9);c.lineTo(p.x+9,p.y);c.lineTo(p.x,p.y+9);c.lineTo(p.x-9,p.y)}c.closePath();c.stroke();
   c.fillStyle=col;c.fillText(lab,p.x+13,p.y-3);

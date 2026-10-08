@@ -65,7 +65,7 @@ Developer’s standing wishes (from the chat that set up this workflow):
 6. **Before finishing:** update §3 (state), §4 (now), §5 (next), `CHANGELOG.md`, and any doc whose facts you
    changed. Bump `package.json` version (minor for features).
 
-## 3. Current state (v0.22.0, official physics fingerprint: see `game/official-rules.json`)
+## 3. Current state (v0.29.0, official physics fingerprint: see `game/official-rules.json`)
 
 Working and tested in a headless browser:
 - Solar system, relativity, orbit/XYZ flight, autopilot, chemical start that can escape Earth.
@@ -117,13 +117,26 @@ Working and tested in a headless browser:
 
 - **v0.22:** renamed to **Cosmic Impulse** (old file names redirect). README links use the repository name `Cosmic-Impulse` (website https://donnydavino1.github.io/Cosmic-Impulse/). README hero image: `docs/images/cosmic-impulse-hero.jpg`, rendered by `python3 tools/render_hero.py 1600 660 --bg` (without `--bg`: transparent `cosmic-impulse-ship.png`).
 
+- **v0.23:** hits land by exposure (`hitModule`), armour panels, damage visible; README hero image.
+
+- **v0.24:** raiders search for a quiet ship (contact by emissions or < 25 km); repair drones.
+
+- **v0.25:** raider classes (`RCLS` in `1800-combat.js`: drone, interceptor, gunship, missile boat).
+
+- **v0.26:** per-class raider models (`mkRaider(o)`), radar class markers, `cls` in ORB-TLM from level 3.
+
+- **v0.27:** raider tactics per class (attack runs, kiting, withdrawal) in `raidTick`.
+
+- **v0.28:** trip check before autopilot (`apAsk`), navigator search (all languages).
+
+- **v0.29:** shared universe server + client (ORB-UNI/1), part designer (RULES), planet relief/ocean glint, experimental WebXR (not tested on a headset).
+
 Not verified visually (no WebGL in the build sandbox): planets, debris, turrets, antenna/trim, hardpoint moves.
 The developer has not yet confirmed that GitHub Pages is switched on (Settings → Pages → Source: GitHub Actions).
 
 ## 4. NOW — do this next session (in order)
 
-1. **Combat depth:** armour placement (hits strike outer modules first; damaged modules visible); passive sensing
-   for raiders too (they find a quiet ship later).
+1. **Raider AI into RULES** (it decides outcomes) and multiplayer stealth parity; raider formations and a boss wave every fifth wave.
 2. **3D cockpit interior** (modelled frame and console instead of the SVG window frame), Earth night lights and
    ocean glint, Sun glare; ask the developer for screenshots after each visual change.
 3. **Radar as hardware:** dish size, power and processing as parts with upgrades; active (precise, reveals you) vs

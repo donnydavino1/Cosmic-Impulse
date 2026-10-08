@@ -72,6 +72,13 @@ module like any other; the **railgun** is a long spinal weapon that lies along t
 turn to aim it. **Engines** sit at the tail: the one in use and any others you own (they add mass there, which moves your
 centre of mass back). The **🚀 Engines at the tail** row lets you switch engine or scrap one.
 
+## Designing your own parts
+
+**🧪 Design a new part** (or **F7**) opens the part designer: choose a radiator, battery, reactor or armour, pick its type
+and drag its size. The designer works out its mass, materials, build energy, research needed and performance from the
+same physics for every player (it reproduces the stock parts exactly at their sizes). A saved design appears in
+**Add a part** and is built, mounted, upgraded and repaired like any other part.
+
 ## Saved designs
 
 **💾 Save this draft** stores a layout under a name. A design remembers the *kinds* of modules in order (crew cabin,

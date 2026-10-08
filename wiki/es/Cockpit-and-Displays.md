@@ -49,6 +49,12 @@ de distribución. Ver [[Personalización|Customization]].
 
 Mejores sensores hacen girar el sónar más rápido y ver más lejos ([[Sensores y radar|Sensors and Radar]]).
 
+## Realidad virtual (experimental)
+
+Con un visor de RV y un navegador compatible con WebXR, aparece un botón **🥽 Entrar en RV** en la vista de cabina: la
+escena 3D se muestra en el visor y sigue tu cabeza, y el teclado sigue pilotando. En el aspecto realista, los planetas
+tienen relieve y los océanos de la Tierra brillan al sol.
+
 ## Crea los tuyos
 
 Estilos de cabina y radares son código: `ORB.cockpit.register(nombre, {frame, label})` más CSS, y

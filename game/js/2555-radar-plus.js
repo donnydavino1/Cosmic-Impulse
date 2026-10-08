@@ -5,7 +5,7 @@
 // '3d': contacts at their real height above or below your plane, with range rings, height stems and motion
 // trails; drag the display to turn it. Register your own designs with ORB.radar.register (docs/MODDING.md).
 const SONAR={};
-radarReg('sonar',(x,W,H,L,o)=>{const cx=W/2,cy=H/2,R=Math.min(W,H)/2-8,now=performance.now()/1000,per=Math.max(1.5,6/(1+.5*o.tier)),a=(now/per*2*Math.PI)%(2*Math.PI);
+radarReg('sonar',(x,W,H,L,o)=>{if(Math.min(W,H)<40)return;const cx=W/2,cy=H/2,R=Math.min(W,H)/2-8,now=performance.now()/1000,per=Math.max(1.5,6/(1+.5*o.tier)),a=(now/per*2*Math.PI)%(2*Math.PI);
  const st=SONAR[x.canvas.id||'w']=SONAR[x.canvas.id||'w']||{last:a,blips:new Map()};
  // phosphor screen, bezel and range rings
  const bg=x.createRadialGradient(cx,cy,0,cx,cy,R);bg.addColorStop(0,'rgba(6,40,18,.95)');bg.addColorStop(1,'rgba(2,14,6,.95)');x.fillStyle=bg;x.beginPath();x.arc(cx,cy,R,0,7);x.fill();

@@ -19,5 +19,10 @@ In orbit you are always falling; you just move sideways fast enough to keep miss
 - **Relativity:** near light speed your ship clock (proper time) runs slow compared to the rest of the universe.
   Both clocks are shown. Reaching 0.99c is a late-game goal.
 
+**Finding things:** the 🧭 NAVIGATE window has a search box: type part of a name (in any of the three languages)
+to find planets, moons, Proxima Centauri, asteroids or another player's ship, then *Look* at it, *Fly here*, or fly to
+its distance from the Sun. **Before a trip** the autopilot estimates the propellant and days it needs; if your fuel,
+oxygen, water or food falls short, it tells you what is missing and asks whether to fly anyway or cancel.
+
 Engines range from chemical rockets (big thrust, little efficiency) through ion and nuclear to fusion and antimatter
 (enormous efficiency, need research and fuel). See [[Ship and Engineering]].

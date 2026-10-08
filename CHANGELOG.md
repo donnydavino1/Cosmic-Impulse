@@ -1,5 +1,72 @@
 # Changelog
 
+## 0.29.0 — the shared universe, the part designer, VR
+- **Shared universe** (`server/universe.mjs`, no dependencies; client `2850-universe.js`; `npm run universe`): one
+  persistent solar system for everyone. One clock at the server's rate, every pilot's ship (3D and sensor contacts),
+  shared asteroid mining, chat, rules fingerprints shared, world saved every 30 s and on shutdown. Protocol ORB-UNI/1
+  in `docs/UNIVERSE.md`. Tested with a real server and two clients; `tests/universe.test.mjs` runs it in `npm test`.
+- **Part designer** (F7, or 🧪 in the Ship Builder; RULES `0570-designer.js`): invent radiators (low-temperature,
+  heat-pipe, droplet; optional carbon fins), batteries (Li-ion, solid-state, flywheel, supercapacitor), fission
+  reactors (Stirling, Brayton) and ceramic armour of any size. Mass, materials (always summing to the mass), build
+  energy, research and performance come from shared formulas that reproduce the stock parts exactly. Saved designs
+  are real parts: build, mount, upgrade, repair; saved with the game. New official physics fingerprint.
+- **Graphics:** in the realistic look, planets get surface relief (bump mapping) and Earth's oceans a sun glint
+  (specular map). **Experimental VR:** a 🥽 Enter VR button in the cockpit when the browser supports WebXR.
+- Wiki: Multiplayer (shared universe), Ship Builder (designer), Cockpit and Displays (VR) in all three languages.
+
+## 0.28.0 — trip check and navigator search
+- **Trip check** (`2650-trip-check.js`): before any autopilot trip (distances, asteroids, search results, orbit
+  planner) the game estimates the propellant (or Δv) and days needed and compares them with your propellant, oxygen,
+  water and food. If anything falls short, a window lists what is missing and asks: *Fly anyway* or *Cancel*.
+- **Navigator search:** a search box in 🧭 NAVIGATE finds planets, moons, stars, asteroids (including the Kuiper belt)
+  and another player's ship by name, in English, Español or 中文 (accents optional). Results: *Look*, *Fly here*,
+  *Fly to its distance from the Sun*, *Rendezvous*.
+- Wiki: Flying and Orbits in all three languages.
+
+## 0.27.0 — raider tactics
+- **Each raider class fights its own way:** interceptors make fast attack runs (in at 1.1 km/s, past you, out to
+  about 9 km, and back); gunships hold their 12–18 km range and withdraw when below 35 % hull (with a message);
+  missile boats back away to keep 60–80 km between you; drones keep circling. Simulated: interceptors swing between
+  4 and 35 km, missile boats settle near 89 km, gunships hold 13 km.
+- Wiki: Combat in all three languages.
+
+## 0.26.0 — raiders you can tell apart
+- **A 3D model per raider class:** interceptors are slim darts with swept wings, gunships are boxy armoured hulls with
+  twin barrels, missile boats carry rows of missile tubes and a radar dish; drones keep their cone-and-fins shape.
+  Running lights are softer in the realistic look.
+- **Radar markers per class:** interceptor triangle, gunship square, missile-boat dotted diamond. The class is part of
+  the ORB-TLM contact (`cls`) from sensor level 3 (worked out from mass and size), so better sensors tell you more.
+- Fix: the sonar radar no longer errors in very small widgets.
+- Wiki: Combat in all three languages; `docs/PROTOCOL.md` documents `cls`. New official physics fingerprint.
+
+## 0.25.0 — raider classes
+- Waves now mix four kinds of raider: **drones** (as before), **interceptors** (wave 2+: fast, fragile, close to
+  2–4 km, rapid weak lasers), **gunships** (wave 3+: slow, 2.6× tougher, kinetic slugs from 12–18 km that don't fade
+  with distance and can puncture tanks) and **missile boats** (wave 4+: stay 60–80 km out and launch missiles).
+  A message lists each wave's mix; target labels and sensor contacts name the class.
+- Wiki: Combat (raider classes) in all three languages.
+
+## 0.24.0 — hide and repair
+- **Raiders must find you:** active radar, a running engine or a shot in the last minute reveals you at any range; a
+  quiet ship is only seen within 25 km. Without contact, raiders fly to where they last saw you and circle there,
+  and they can't fire. Messages tell you when they lose and regain you.
+- **Repair drones** (RULES, `1760-ops.js`; built in 🛸 Operations, needs *Autonomous robotics*): each fixes the most
+  damaged part by 10 % of its condition per hour using spare-parts kits; failed parts work again above 60 %.
+- Wiki: Combat (hiding) and Drones and Probes (repair drones) in all three languages. New official physics fingerprint.
+
+## 0.23.0 — where hits land
+- **Hits strike the outside of the ship** (RULES, `hitModule()` in `0550-layout.js`): each module is a target in
+  proportion to its outer area (radiators count their panels); modules mounted beside a host cover 20 % of it each.
+  A hit damages the module it strikes (condition, failure below 25 %), kinetic hits on the tanks spill 3 % of the
+  propellant, and hits on the crew cabin hurt the crew. Messages say what was hit.
+- **Ceramic-composite armour panels** (new part, needs *High-strength alloys*): absorb 60 % of a hit that strikes them;
+  other shielding parts absorb 30 %. Mount them around what you want to protect.
+- **Ship Builder:** the selected module shows its share of hits and its condition; damaged modules are drawn darker
+  (side view and 3D modular hull).
+- **README:** a ray-traced hero image (ship above Earth, `tools/render_hero.py --bg`), links to the
+  `Cosmic-Impulse` website address.
+- Wiki: Combat (where hits land, armour) in all three languages. New official physics fingerprint.
+
 ## 0.22.0 — the game is now Cosmic Impulse
 - Renamed from Stellar Impulse to **Cosmic Impulse** (to stay clear of the 2011 game *Stellar Impact*): titles, the
   start page, the in-game guide, the wiki in all three languages (including the pages *The Laws of Cosmic Impulse* and

@@ -73,6 +73,13 @@ misiles) se montan junto a un módulo como cualquier otro; el **cañón de riel*
 porque toda la nave debe girar para apuntarlo. Los **motores** están en la popa: el que usas y los demás que tengas
 (añaden masa allí y retrasan tu centro de masa). La fila **🚀 Motores en la popa** te deja cambiar de motor o desguazarlo.
 
+## Diseñar tus propias piezas
+
+**🧪 Diseñar una pieza nueva** (o **F7**) abre el diseñador: elige radiador, batería, reactor o blindaje, su tipo y arrastra
+su tamaño. El diseñador calcula su masa, materiales, energía de fabricación, investigación necesaria y rendimiento con la
+misma física para todos (reproduce exactamente las piezas de serie a sus tamaños). Un diseño guardado aparece en
+**Añadir una pieza** y se construye, monta, mejora y repara como cualquier otra.
+
 ## Diseños guardados
 
 **💾 Guardar este borrador** guarda una distribución con un nombre. Un diseño recuerda los *tipos* de módulos en

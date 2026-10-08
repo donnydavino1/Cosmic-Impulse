@@ -45,6 +45,10 @@
 
 更好的传感器让声呐转得更快、看得更远（[[传感器与雷达|Sensors and Radar]]）。
 
+## 虚拟现实（实验性）
+
+如果你有 VR 头显和支持 WebXR 的浏览器，驾驶舱视图中会出现 **🥽 进入 VR** 按钮：3D 场景在头显中显示并跟随你的头部，键盘仍可驾驶飞船。在写实外观下，行星表面有起伏，地球海洋会反射阳光。
+
 ## 自己动手
 
 驾驶舱风格和雷达都是代码：`ORB.cockpit.register(名称, {frame, label})` 加 CSS，以及 `ORB.radar.register(名称, 绘制函数)`。见 `docs/MODDING.md` 和[[打造你自己的 Cosmic Impulse|Build Your Own Cosmic Impulse]]。

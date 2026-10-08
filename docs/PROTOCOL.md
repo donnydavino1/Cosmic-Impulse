@@ -150,3 +150,9 @@ The host owns the shared clock. Messages today:
 Each receiver builds the other player's ORB-TLM contact from `ship` messages through its *own* sensors, so better
 sensors see more of an opponent. Planned for a relay server: attach `ledger` hashes to `ship` messages and reject
 changes in element mass or energy that no allowed process explains.
+
+
+### ORB-TLM: ship class
+
+From sensor level 3 (phased array), raider contacts also carry `cls`: `drone`, `interceptor`, `gunship` or
+`missile` (missile boat), worked out from the contact's mass and size.

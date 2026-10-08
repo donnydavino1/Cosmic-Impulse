@@ -16,6 +16,12 @@ silicates and carbon). Fly within 50 km of an asteroid and press **Deploy drones
 Drones have very little Δv. Stay within 30 km while they work: if you fly more than 100 km away they can't catch up,
 and they are lost.
 
+## 🔧 Repair drones
+
+Repair drones (also *Autonomous robotics*) crawl over the hull and fix the most damaged part by 10 % of its condition per
+hour each, using spare-parts kits (one kit restores a whole part). A failed part works again above 60 %. Build them in
+🛸 Operations; they make the damage from [[Combat]] something you recover from while flying.
+
 ## 🛰 Science probes
 
 Research **Deep-space probes** (needs *Onboard laboratory*), then build probes (90 kg each). The table in the

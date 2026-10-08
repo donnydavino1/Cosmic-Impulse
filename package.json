@@ -1,6 +1,6 @@
 {
   "name": "cosmic-impulse",
-  "version": "0.22.0",
+  "version": "0.29.0",
   "description": "Open-source, physics-first spaceship engineering and battle game.",
   "type": "module",
   "license": "GPL-2.0-only",
@@ -10,6 +10,7 @@
     "wiki": "node tools/build-wiki.mjs",
     "game": "node tools/build-game.mjs",
     "rules": "node tools/rules-doc.mjs",
-    "i18n": "python3 tools/i18n-audit.py --check && python3 tools/i18n-audit.py --mobile --check"
+    "i18n": "python3 tools/i18n-audit.py --check && python3 tools/i18n-audit.py --mobile --check",
+    "universe": "node server/universe.mjs"
   }
 }

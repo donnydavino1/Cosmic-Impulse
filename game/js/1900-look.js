@@ -55,7 +55,9 @@ function vividPlanets(){const aniso=R.capabilities&&R.capabilities.getMaxAnisotr
   // paint textures a little later, one body at a time, so the game starts instantly
   setTimeout(()=>{try{const big=b.n==='Earth',hr=big&&typeof REAL==='function'&&REAL(),cv=eqTex(hr?2048:big?1024:512,hr?1024:big?512:256,hr&&PAINT.EarthReal?PAINT.EarthReal:PAINT[b.n]||PAINT_GEN(b));if(!cv)return;
    if(b.n==='Moon'||b.n==='Mercury')craters(cv,b.n==='Moon'?260:340,'rgba(60,60,64,.35)','rgba(235,235,240,.35)',i);
-   const tx=new THREE.CanvasTexture(cv);tx.anisotropy=aniso;m.material=(b.p<0||b.star)?new THREE.MeshBasicMaterial({map:tx}):new THREE.MeshLambertMaterial({map:tx});
+   const tx=new THREE.CanvasTexture(cv);tx.anisotropy=aniso;m.material=(b.p<0||b.star)?new THREE.MeshBasicMaterial({map:tx}):(typeof REAL==='function'&&REAL()&&THREE.MeshPhongMaterial)?new THREE.MeshPhongMaterial({map:tx,bumpMap:tx,bumpScale:b.R/U*(b.n==='Earth'?.004:.02),shininess:b.n==='Earth'?22:4,specular:new THREE.Color(b.n==='Earth'?0x2a2a2a:0x080808)}):new THREE.MeshLambertMaterial({map:tx});
+   if(b.n==='Earth'&&m.material.isMeshPhongMaterial){try{const W3=cv.width,H3=cv.height,sp=cv.getContext('2d').getImageData(0,0,W3,H3),sc2=document.createElement('canvas');sc2.width=W3;sc2.height=H3;const d3=sp.data;
+     for(let k=0;k<d3.length;k+=4){const ocean=d3[k+2]>d3[k+1]+18&&d3[k+2]>d3[k];const v=ocean?255:12;d3[k]=d3[k+1]=d3[k+2]=v}sc2.getContext('2d').putImageData(sp,0,0);m.material.specularMap=new THREE.CanvasTexture(sc2);m.material.needsUpdate=true}catch(e){}}
    if(b.n==='Earth'&&hr){try{const W2=cv.width,H2=cv.height,src=cv.getContext('2d').getImageData(0,0,W2,H2).data,nc=document.createElement('canvas');nc.width=W2;nc.height=H2;const nx=nc.getContext('2d'),im=nx.createImageData(W2,H2),d=im.data;
      for(let j=0;j<H2;j++){const lat=Math.abs(.5-j/H2)*2;if(lat>.8)continue;for(let i=0;i<W2;i++){const k=(j*W2+i)*4,land=src[k+2]<src[k+1]+25&&src[k]>20;if(!land)continue;
       const n=vNoise(i/W2*60,j/H2*30,0,77),m=vNoise(i/W2*400,j/H2*200,0,78);if(n*m>.42*(1+lat)){const v=Math.min(255,(n*m-.4)*900);d[k]=v;d[k+1]=v*.78;d[k+2]=v*.45;d[k+3]=255}}}

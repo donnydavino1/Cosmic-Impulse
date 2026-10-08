@@ -49,6 +49,7 @@ function buildSpine(H,dark,A){const LM=SH&&SH.lay?SH.lay:layMetrics((laySync(),s
    const diag=Math.hypot(len,2*s2),ang=Math.atan2(2*s2,len);[[0,1],[0,-1],[1,0],[-1,0]].forEach(([a,b])=>{const d2=box(diag,.07,.07,m2);if(a){d2.position.z=a*s2;d2.rotation.z=ang}else{d2.position.y=b*s2;d2.rotation.y=ang}g.add(d2)})}
   else g.add(cyl(r,len,H));
   {const p=q.k&&q.k[0]==='p'?layPart(q.k):null,n=p?(p.mk||1)-1:0;for(let b=0;b<n;b++){const t=new THREE.Mesh(new THREE.TorusGeometry((q.cat==='therm'||q.cat==='store'?.7:r)+.04,.05,6,32),std(A,.4,.6));t.rotation.y=Math.PI/2;t.position.x=len/2-.15-b*.2;g.add(t)}}
+  {const p=q.k&&q.k[0]==='p'?layPart(q.k):null;if(p&&p.cond<.6)g.traverse(o=>{if(o.material&&o.material.color){o.material=o.material.clone();o.material.color.multiplyScalar(.45+.5*p.cond);if('roughness'in o.material)o.material.roughness=Math.min(1,(o.material.roughness||.5)+.3)}})}
   shipG.add(g)}
  // the frame's central spine ties the modules together
  const sp=cyl(.25,L,dark,8);shipG.add(sp);

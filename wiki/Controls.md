@@ -47,6 +47,7 @@ in-game guide (C).*
 | **9** | 📋 Contracts board (missions and rewards) |
 | **8** | 🛸 Operations: mining drones and science probes |
 | **7** | 🧱 Ship builder: module layout and performance |
+| **F7** | 🧪 Part designer: invent your own radiators, batteries, reactors and armour |
 | **F6** | 🛰 Orbit planner: geostationary, geosynchronous or any circular orbit |
 | **6** | 📡 Active / passive radar |
 | **F8** | 🌐 Language: English / Español / 中文 |

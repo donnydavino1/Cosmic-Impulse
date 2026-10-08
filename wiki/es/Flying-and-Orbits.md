@@ -19,5 +19,10 @@ En órbita siempre estás cayendo; simplemente te mueves de lado tan rápido que
 - **Relatividad:** cerca de la velocidad de la luz, el reloj de tu nave (tiempo propio) va más lento que el resto del
   universo. Se muestran ambos relojes. Llegar a 0,99c es un objetivo de final de partida.
 
+**Encontrar cosas:** la ventana 🧭 NAVEGAR tiene un buscador: escribe parte de un nombre (en cualquiera de los tres
+idiomas) para encontrar planetas, lunas, Próxima Centauri, asteroides o la nave de otro jugador, y luego *Mirar*,
+*Volar aquí* o volar a su distancia del Sol. **Antes de un viaje** el piloto automático estima el propelente y los días
+que necesita; si te falta combustible, oxígeno, agua o comida, te dice qué falta y te pregunta si volar o cancelar.
+
 Los motores van desde cohetes químicos (mucho empuje, poca eficiencia) pasando por iónicos y nucleares hasta fusión
 y antimateria (eficiencia enorme, necesitan investigación y combustible). Ver [[Ingeniería|Ship and Engineering]].
