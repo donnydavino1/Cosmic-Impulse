@@ -1,0 +1,4 @@
+/* ===== 3D FLIGHT DECK (js/2666-flightdeck.js): body.ck-deck.ck3d — the deck's screens replace the floating widgets ===== */
+body.ck-deck.ck3d:not(.deckw) .wdg,body.ck-deck.ck3d:not(.deckw) #vitals{display:none!important}
+#deckbtn{position:absolute;right:12px;top:132px;z-index:7;padding:6px 12px;border-radius:6px;border:1px solid #2a6f86;background:linear-gradient(180deg,#123341,#0a1a22);color:#bdf2ff;font:600 12px ui-sans-serif,system-ui,sans-serif;cursor:pointer;box-shadow:0 0 8px rgba(55,212,255,.25),0 2px 0 #000}
+#deckbtn.on{border-color:#37d4ff;box-shadow:0 0 12px rgba(55,212,255,.55),0 2px 0 #000}
