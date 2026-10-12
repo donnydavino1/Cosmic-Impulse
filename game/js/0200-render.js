@@ -20,13 +20,15 @@ const AXC=['#ff6ec7','#ffe14d','#4dd2ff'],AXV=[[1,0,0],[0,1,0],[0,0,1]],axL=AXC.
 function setA(l,ox,oy,oz,d,len){const a=l.geometry.attributes.position.array;a[0]=ox;a[1]=oy;a[2]=oz;a[3]=ox+d[0]*len;a[4]=oy+d[1]*len;a[5]=oz+d[2]*len;l.geometry.attributes.position.needsUpdate=true}
 const labs=ALL.map(b=>{const d=document.createElement('div');d.className='l';d.textContent=b.n;$('lb').appendChild(d);return d});function $(i){return document.getElementById(i)}
 // camera / focus
-const FOC=[s,...B];let fi=0,dist=.02,az=.6,el=.4,WARP=[1,10,60,300,3e3,3e4,3e5,3e6,3e7],wi=3,paused=false,T=0;
+const FOC=[s,...B];let fi=0,dist=.02,az=.6,el=.4,WARP=[1,10,60,300,3e3,3e4,3e5,3e6,3e7,3e8,3e9,3e10],wi=3,paused=false,T=0;
 const setFocus=i=>{fi=i%FOC.length;const f=FOC[fi];dist=fi?Math.max(f.R*5/U,1e-3):.02};
 R.domElement.addEventListener('pointermove',e=>{if(e.buttons){const k=FP?.003:.006;az-=e.movementX*k;el=Math.max(-1.5,Math.min(1.5,el+(FP?-1:1)*e.movementY*k));stabCapture()}});
 R.domElement.addEventListener('wheel',e=>{e.preventDefault();zoom(Math.exp(e.deltaY*.001))},{passive:false});
 const zoom=f=>{if(SV){svd=Math.max(6,Math.min(800,svd*f));return}if(FP){cam.fov=Math.max(3,Math.min(100,cam.fov*f));cam.updateProjectionMatrix()}else dist=Math.max(fi==0?3e-8:1e-6,Math.min(6e3,dist*f))};
 // UI
-const acts={'Warp −':()=>{if(!mpReq('slower'))wi=Math.max(0,wi-1)},'Warp +':()=>{if(!mpReq('faster')&&!(MP.lock&&MP.conn))wi=Math.min(WARP.length-1,wi+1)}};
+// time speeds above 1 s = 1 year (×3e7) are for deep space only: more than 2,000 AU from every star
+const WARP_DEEP=8,deepSpace=()=>{for(const b of B)if((b===B[0]||b.star)&&Math.hypot(s.x-b.x,s.y-b.y,s.z-b.z)<2e3*AU)return false;return true};
+const acts={'Warp −':()=>{if(!mpReq('slower'))wi=Math.max(0,wi-1)},'Warp +':()=>{if(!mpReq('faster')&&!(MP.lock&&MP.conn)){if(wi>=WARP_DEEP&&!deepSpace()){notify('⏩ Faster time speeds (up to 1 s = 950 years) only work in deep space, more than 2,000 AU from any star.');return}wi=Math.min(WARP.length-1,wi+1)}}};
 const regs=[],P1=5e6,PR=2e6;let det=false;
 function grp(p,t){const d=document.createElement('div');d.className='sec';d.innerHTML='<h4>'+t+'</h4>';p.appendChild(d);return d}
 function btn(p,label,fn,en){const b=document.createElement('button');if(fn)b.onclick=fn;p.appendChild(b);regs.push({b,label:typeof label=='function'?label:()=>label,en});return b}
@@ -61,6 +63,6 @@ function astState(a,t=T){const S=B[0],n=Math.sqrt(S.GM/(a.a*a.a*a.a)),M=a.M0+n*t
   cw=Math.cos(a.w),sw=Math.sin(a.w),cW=Math.cos(a.W),sW=Math.sin(a.W),ci=Math.cos(a.i),si=Math.sin(a.i),
   R3=(x,y)=>[(cW*cw-sW*sw*ci)*x+(-cW*sw-sW*cw*ci)*y,(sW*cw+cW*sw*ci)*x+(-sW*sw+cW*cw*ci)*y,sw*si*x+cw*si*y],p=R3(xp,yp),v=R3(vxp,vyp);
  return{x:S.x+p[0],y:S.y+p[1],z:S.z+p[2],vx:S.vx+v[0],vy:S.vy+v[1],vz:S.vz+v[2],r:a.r}}
-const astDist=a=>{const A=astState(a);return Math.hypot(A.x-s.x,A.y-s.y,A.z-s.z)},fmtD=d=>d>1e9?(d/AU).toFixed(3)+' AU':d>1e4?Math.round(d/1e3).toLocaleString()+' km':Math.round(d)+' m';
+const astDist=a=>{const A=astState(a);return Math.hypot(A.x-s.x,A.y-s.y,A.z-s.z)},fmtD=d=>d>9.4607e14?(d/9.4607e15<1e3?(d/9.4607e15).toFixed(3):Math.round(d/9.4607e15).toLocaleString())+' ly':d>1e9?(d/AU).toFixed(3)+' AU':d>1e4?Math.round(d/1e3).toLocaleString()+' km':Math.round(d)+' m';
 const nearBelt=()=>AST.filter(a=>!a.neo).reduce((b,a)=>astDist(a)<astDist(b)?a:b);
 

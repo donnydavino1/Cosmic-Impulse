@@ -14,7 +14,7 @@ function finishJob(j){let msg='🏭 Finished: '+j.name;
  else if(j.type==='eng'||j.type==='weap'){UNL[j.id]=1;if(j.id==='missile')s.ammo.missile+=2;s.codex.built[j.id]=1}
  else if(j.type==='missile')s.ammo.missile+=j.n;else if(j.type==='repair'||j.type==='service'){const t=findRef(j.ref);if(t){t.fail=false;t.cond=j.type==='service'?1:Math.max(t.cond,.6)}}
  else if(j.type==='upgrade'){const D=DR.find(x=>x.id===j.id);D.mk++;D.ve=D.ve0*(1+.12*(D.mk-1));D.hf*=.7}else if(j.type==='resize'){const i=DR.findIndex(x=>x.id===j.id);if(i===di)PW=j.pw;DR[i].pw=j.pw}
- else if(j.type==='patch')s.leak=0;else if(j.type==='hull')s.hull=hullMax();ORB.emit('job:done',j);recalc();notify(msg)}
+ else if(j.type==='recruit'){s.crew.list.push(j.who);msg='👩‍🚀 '+j.who.n+' has arrived from Earth and joined the crew.'}else if(j.type==='patch')s.leak=0;else if(j.type==='hull')s.hull=hullMax();ORB.emit('job:done',j);recalc();notify(msg)}
 const findRef=r=>r.startsWith('e:')?DR.find(D=>D.id===r.slice(2)):s.parts.find(p=>'p:'+p.uid===r);
 const kitsFor=r=>{const t=findRef(r);if(!t)return 1;const m=r.startsWith('e:')?engMass(t,t===DR[di]?PW:t.pw):PARTS[t.id].m;return Math.max(1,Math.min(30,Math.round(m/400)))};
 function repairJob(r,service){const t=findRef(r);if(!t)return;const k=service?Math.max(1,Math.ceil(kitsFor(r)*(1-t.cond))):kitsFor(r);if(s.res.spares<k){notify('⚠ Needs '+k+' spare-parts kits (you have '+s.res.spares+'). Make kits in 🏭 Fabricate.');return}

@@ -6,7 +6,7 @@ const COMPO={ // mass fraction of each element in each inventory item / fuel
  iron:{Fe:1},nickel:{Ni:1},carbon:{C:1},platinum:{Pt:1},oxygen:{O:1},
  water:{H:.1119,O:.8881},silicates:{Si:.4674,O:.5326},                      // H2O, SiO2
  food:{C:.444,H:.062,O:.494},                                               // dried food ≈ (C6H10O5)n
- spares:{Fe:.7,Ni:.1,C:.2},
+ spares:{Fe:.7,Ni:.1,C:.2},patch:{Fe:.62,C:.25,Si:.13},
  chem:{H:.1429,O:.8571},                                                    // LH2/LOX burned at oxidiser:fuel 6:1
  xe:{Xe:1},h2:{H:1},fus:{H:.4,He:.6},                                       // deuterium + helium-3, 1:1 by atoms
  am:{'anti-H':1}};
@@ -28,7 +28,7 @@ function shipState(){const g=gam(s),o=elements();return{v:'ORB-STATE/1',t:T,tau:
  dominant:o.d.n,altitude:o.r-o.d.R,engine:{id:DR[di].id,power:PW,burn:s.burn},hull:s.hull,hullMax:hullMax(),sensor:SENSOR_TIERS[sensorTier()].n,
  rules:RULES,code:typeof ORB_FP!=='undefined'?ORB_FP:'?'}}
 ORB.api={version:'ORB-API/1',
- state:shipState,ledger,contacts:()=>tlmContacts(),sensor:()=>({tier:sensorTier(),...SENSOR_TIERS[sensorTier()]}),
+ state:shipState,ledger,contacts:()=>tlmContacts(),sensor:()=>({tier:sensorTier(),...sensorSpec(sensorTier())}),
  on:(ev,fn)=>ORB.on(ev,fn),
  radar:{register:radarReg,list:()=>Object.keys(RADARS),use:n=>{if(RADARS[n]){RADAR_DESIGN=n;try{localStorage.setItem('orbital-radar',n)}catch(e){}}}},
  style:{get:()=>JSON.parse(JSON.stringify(CUST)),set:o=>styleApply(o)}};

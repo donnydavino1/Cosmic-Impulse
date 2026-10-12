@@ -58,6 +58,7 @@ Research points (RP) come from your crew and labs over time. Each technology may
 |---|---|---|---|
 | **Regenerative life support** | 80 RP | — | Recycle water, make oxygen from water. |
 | **Bioregenerative greenhouse** | 250 RP | Regenerative life support | Grow food and oxygen. |
+| **Crew hibernation** | 800 RP | Bioregenerative greenhouse, Research station | Suspended-animation pods (speculative): a sleeping crew uses no supplies, does not age and is shielded, and the ship powers down so nothing wears out. The only way to survive an intergalactic trip. |
 
 ## Shielding
 

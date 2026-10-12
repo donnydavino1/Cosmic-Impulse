@@ -18,9 +18,9 @@ const CKS={
  neo:{label:'Neo glass: translucent panels, glowing edges',frame:null},
  classic:{label:'Classic: plain flat panels',frame:null}};
 const CK0=document.getElementById('canopy')?document.getElementById('canopy').innerHTML:'';
-let CK_STYLE='physical';try{CK_STYLE=localStorage.getItem('orbital-cockpit')||(localStorage.getItem('orbital-retro')==='1'?'classic':'physical')}catch(e){}
-function ckUse(n){if(!CKS[n])return false;if(n==='physical')document.body.classList.add('ck-real');CK_STYLE=n;try{localStorage.setItem('orbital-cockpit',n)}catch(e){}
- for(const k in CKS)document.body.classList.toggle('ck-'+k,k===n||(n==='physical'&&k==='real'));document.body.classList.toggle('retro',n==='classic');
+let CK_STYLE='deck';try{CK_STYLE=localStorage.getItem('orbital-cockpit')||(localStorage.getItem('orbital-retro')==='1'?'classic':'deck')}catch(e){}
+function ckUse(n){if(!CKS[n])n=CKS.deck?'deck':'real';if(n==='physical'||n==='deck')document.body.classList.add('ck-real');CK_STYLE=n;try{localStorage.setItem('orbital-cockpit',n)}catch(e){}
+ for(const k in CKS)document.body.classList.toggle('ck-'+k,k===n||((n==='physical'||n==='deck')&&k==='real'));document.body.classList.toggle('retro',n==='classic');
  const cv=document.getElementById('canopy');if(cv)cv.innerHTML=CKS[n].frame||CK0;return true}
 setTimeout(()=>ckUse(CK_STYLE),0);
 ORB.cockpit={use:ckUse,list:()=>Object.keys(CKS),register:(n,o)=>{CKS[n]=Object.assign({label:n,frame:null},o);return true},get:()=>CK_STYLE};

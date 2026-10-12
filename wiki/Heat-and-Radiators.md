@@ -56,3 +56,24 @@ Both are parts in 🛠 → 🏭 Fabricate (needs *Carbon composites*), and modul
 - Lasers and the railgun turn energy into heat too ([[Combat]]).
 - In the [[Ship Builder]], radiators are modules with fins; place them near the heat source or wherever you like:
   the loops are plumbed through the frame.
+
+## The 🌡 Thermal view (F2)
+
+Open it with **F2**, the **🌡 HEAT** button in the top bar, a click on the **SYSTEMS** screen of the 3D flight deck, or 🛠 Engineering → Ship → 🌡 Thermal. It shows:
+
+- a **heat map** of your ship: each module coloured by its loop's temperature (blue cold, green comfortable, yellow at
+  the 45 °C crew limit, red hot, white-hot at 1,200 K), radiator fins, and the engine bell glowing while it burns;
+- each loop's **heat in**, what its radiators **can shed**, where its temperature **settles**, and how long until it
+  goes over the limit;
+- **where the heat comes from** right now (systems and crew, sunlight on the hull, weapons, fabrication, reactors,
+  the engine);
+- a **radiator calculator**: pick an engine, a throttle and the highest cabin temperature you want, and it tells you
+  the radiator area each loop needs and **how many of each radiator** to add, with a **🏭 Build N** button.
+
+**Worked example:** the magnetic-confinement fusion drive (1 GW) turns 15 % of its power into heat: **150 MW** for the
+high loop. A low-temperature radiator sheds about 60 kW, so it would take 2,500 of them; a heat-pipe radiator sheds
+about 7 MW at 1,164 K, so **22** do the job (6.6 t), or 7 liquid-droplet radiators (2.8 t). Without any high-loop
+radiators the drive is held to about 0.005 % thrust, and the game tells you why.
+
+The starter ship's hull has 50 m² of body-mounted radiators (both faces), enough for its systems in full sunlight
+at Earth's distance.

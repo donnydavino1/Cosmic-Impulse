@@ -26,3 +26,11 @@ oxygen, water or food falls short, it tells you what is missing and asks whether
 
 Engines range from chemical rockets (big thrust, little efficiency) through ion and nuclear to fusion and antimatter
 (enormous efficiency, need research and fuel). See [[Ship and Engineering]].
+
+## Interstellar cruise
+
+Beyond the planets, the 🧭 NAVIGATE search also finds **Proxima Centauri** (☀) and its planet **Proxima b**. The star's
+**🚀 Interstellar cruise** button hands the ship to a relativistic autopilot: it climbs out of the Sun's gravity, speeds
+up until the propellant left is just enough to stop (never past 0.99 c), coasts, and brakes in time to stop at the star.
+Once you are 2,000 AU from every star, faster **deep-space time speeds** (up to 1 s = 950 years) unlock, so the trip
+takes minutes of real time instead of days. See [[Relativity]] for the trip times and [[Survival]] for crew hibernation.

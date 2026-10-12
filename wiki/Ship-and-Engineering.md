@@ -19,3 +19,8 @@ silicates, platinum, water…), which you mine from asteroids or order from Eart
 The **Design Analyzer** explains what is limiting your ship (power, heat, structure, fuel) and why.
 
 **Orders** take time to complete (fabrication draws power), unless *Instant orders* is on in 🧪 Testing.
+
+**How many per click:** at the top of 🛠 Engineering (and in 🧱 Builder → Add a part) type how many you want, or
+pick 1, 5, 10, 50 or 100: every Build, Get, Make and Order button then does that many at once (it stops if materials
+run out and tells you how many it queued). Each engine's fuel also has an **Exact amount** box: type the kilograms
+and press Enter.

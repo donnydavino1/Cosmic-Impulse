@@ -14,7 +14,7 @@ KEEP = set('''Cosmic Impulse ORB RULES RP AU NEO RTG ion VASIMR MPD JSON TLM GNU
  Kestrel Halcyon Tamsin Ophir Velka Corvo Nimbus Petra Aldra Brisa Cendre Dorrit Esk Fenwick Galt Hesper Ilsa Jory Kael Lumen Marrow Nyx Orrin
  Pell Quill Rook Sable Tarn Ulla Voss Wren Xan Yarrow Zell Ashby Brann Cove Dusk English Español Apophis Bennu Ryugu Eros Itokawa Didymos Ceres Vesta Psyche Eris Makemake Haumea Quaoar Gonggong Arrokoth Albion Sedna KBO Cinder Jackal Viper Magpie Hornet Shrike Wraith Talon Mantis'''.split())
 # whole texts that stay as they are: ship style names, file names, the rules fingerprint, the language picker
-KEEP_TEXT = {'Blue Lancer', 'Corsair', 'Ice Hauler', 'Nebula Runner', 'Solar Monk', 'Sunchaser (stock)', 'wiki.html', '○ Español', '● Español', '○ English', '● English'}
+KEEP_TEXT = {'Blue Lancer', 'Ada Reyes', 'Kenji Sato', 'Corsair', 'Ice Hauler', 'Nebula Runner', 'Solar Monk', 'Sunchaser (stock)', 'wiki.html', '○ Español', '● Español', '○ English', '● English'}
 # ---------- 2. message templates in the code (notify, alerts, discoveries, game over, status lines)
 def scan(src, i, stop):  # read a JS expression from i until a top-level character in stop; returns (text, end)
     d, q, out = 0, None, ''
@@ -85,7 +85,13 @@ GRAB = """(()=>{const out=[],w=document.createTreeWalker(document.body,NodeFilte
 STEPS = [('guide', "openGuide()"), ('help', "document.getElementById('help').classList.remove('h')"), ('nav', "toggleNav()"),
          ('customize', "document.getElementById('cust').classList.remove('h')"), ('dash', "document.getElementById('wpal').classList.remove('h')"),
          ('multiplayer', "document.getElementById('mpw').classList.remove('h')"), ('contracts', "ctrToggle()"), ('ops', "opsToggle()"), ('builder', "bldToggle()"),
-         ('cockpit', "toggleFP();setTimeout(()=>0,0)"), ('cockpit2', "0"), ('chase', "toggleFP();toggleSV()"), ('map', "toggleSV()"), ('info', "det=true"), ('raid', "raidStart()"), ('game over', "s.crew.alive=false;gameOver('a crash into Earth at 7.70 km/s')")]
+         ('cockpit', "toggleFP();setTimeout(()=>0,0)"), ('cockpit2', "0"), ('chase', "toggleFP();toggleSV()"), ('map', "toggleSV()"), ('info', "det=true"), ('raid', "raidStart()"), ('thermal', "thermToggle();TH.at=0;thermDraw()"), ('thermal-fusion', "TH.eng=DR.findIndex(d=>d.id==='fus');TH.thr=60;TH.at=0;thermDraw()"), ('thermal-ion', "TH.eng=DR.findIndex(d=>d.id==='ion');TH.at=0;thermDraw();thermToggle()"),
+         ('crew', "s.leak=1.4e-4;crewToggle()"), ('crew2', "crAt=0;crewDraw();crewToggle();s.leak=0"),
+         ('designer', "desToggle()"), ('des-frame', "DSP.kind='frame';desType('al');desDraw()"), ('des-liner', "DSP.kind='liner';desType('pe');desDraw()"), ('des-sensor', "DSP.kind='sensor';desType('pa');desDraw()"), ('des-lab', "DSP.kind='lab';desType('station');desDraw()"), ('des-fab', "DSP.kind='fab';desType('orb');desDraw();desToggle()"),
+         ('safety', "s.res.oxygen=1;safeToggle(false)"), ('safety2', "s.res.oxygen=600;safeToggle(true)"),
+         ('deck', "window.__deckT=[];const c=document.createElement('canvas');c.width=640;c.height=340;const x=c.getContext('2d');x.fillText=t=>{t=String(t);if(!/[0-9]/.test(t))__deckT.push(t)};WT=null;for(const S of DECK.screens)S.draw(x,640,340);ALERTS=[{l:'crit',t:'Hull breach: losing oxygen'}];for(const S of DECK.screens)S.draw(x,640,340);ALERTS=[]"),
+         ('interstellar', "window.confirm=m=>{for(const l of m.split('\\n'))if(!/[0-9]/.test(l))__deckT.push(l.replace(/^⚠ /,''));return false};toggleNav();istGo(B.findIndex(b=>b.star))"),
+         ('game over', "s.crew.alive=false;gameOver('a crash into Earth at 7.70 km/s')")]
 res = {}
 with sync_playwright() as p:
     b = p.chromium.launch(); pg = b.new_page(viewport={'width': 1400, 'height': 1000}); errs = []
@@ -103,6 +109,8 @@ with sync_playwright() as p:
         try: ev(js)
         except Exception: pass
         time.sleep(.6); grab()
+    for t in ev("window.__deckT||[]"):
+        if len(re.findall(r'[A-Za-z]{3,}', t)): seen.add(t.strip())
     if BUILD.endswith('mobile.html'):
         ev("document.getElementById('mmenu').click()"); time.sleep(.5); grab()
         for i in range(ev("document.querySelectorAll('#mdlist button, #mdlist [data-c]').length")):

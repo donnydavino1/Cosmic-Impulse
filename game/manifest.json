@@ -14,6 +14,7 @@
     "1750-contracts.js",
     "1760-ops.js",
     "2100-survival.js",
+    "2105-crew.js",
     "2550-sensors.js",
     "2560-api.js",
     "2800-multiplayer.js"

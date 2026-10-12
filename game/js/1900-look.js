@@ -61,7 +61,7 @@ function vividPlanets(){const aniso=R.capabilities&&R.capabilities.getMaxAnisotr
    if(b.n==='Earth'&&hr){try{const W2=cv.width,H2=cv.height,src=cv.getContext('2d').getImageData(0,0,W2,H2).data,nc=document.createElement('canvas');nc.width=W2;nc.height=H2;const nx=nc.getContext('2d'),im=nx.createImageData(W2,H2),d=im.data;
      for(let j=0;j<H2;j++){const lat=Math.abs(.5-j/H2)*2;if(lat>.8)continue;for(let i=0;i<W2;i++){const k=(j*W2+i)*4,land=src[k+2]<src[k+1]+25&&src[k]>20;if(!land)continue;
       const n=vNoise(i/W2*60,j/H2*30,0,77),m=vNoise(i/W2*400,j/H2*200,0,78);if(n*m>.42*(1+lat)){const v=Math.min(255,(n*m-.4)*900);d[k]=v;d[k+1]=v*.78;d[k+2]=v*.45;d[k+3]=255}}}
-     nx.putImageData(im,0,0);const lt=new THREE.CanvasTexture(nc);m.material.emissiveMap=lt;m.material.emissive=new THREE.Color(0xffd6a0);m.material.emissiveIntensity=.5;m.material.needsUpdate=true}catch(e){console.warn('city lights',e)}}
+     nx.putImageData(im,0,0);const lt=new THREE.CanvasTexture(nc);m.material.emissiveMap=lt;m.material.emissive=new THREE.Color(0xffd6a0);m.material.emissiveIntensity=.5;m.material.userData.night=.5;m.material.needsUpdate=true}catch(e){console.warn('city lights',e)}}
    if(b.n==='Earth'){const cc=eqTex(1024,512,(x,y,z)=>{const n=fbm(x*3+fbm(x*2,y*2,z*2,3,21),y*3,z*5,6,22),a=sstep(.5,.72,n);return[255,255,255,a*235]},true);
     if(cc){const ct=new THREE.CanvasTexture(cc);ct.anisotropy=aniso;const cg=new THREE.SphereGeometry(b.R/U*1.004,96,48);cg.rotateX(Math.PI/2);
      X.clouds=new THREE.Mesh(cg,new THREE.MeshLambertMaterial({map:ct,transparent:true,depthWrite:false}));m.add(X.clouds)}}

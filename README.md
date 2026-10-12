@@ -90,7 +90,8 @@ The full list of controls is in the wiki:
 ## What you can do
 
 - **Fly with real physics.** Orbits work like they do for real spacecraft. Push forward and you go *up*.
-  Get close to the speed of light and your ship's clock slows down.
+  Get close to the speed of light and your ship's clock slows down (gravity slows it a little too). Exactly how gravity
+  and relativity are computed: [Relativity (wiki)](https://donnydavino1.github.io/Cosmic-Impulse/wiki.html#en/Relativity).
 - **Design your ship.** In the 🧱 Ship Builder, the order of your modules changes how fast you turn, how hard you
   can thrust, and how much radiation reaches your crew. Mount modules beside the spine in symmetric rings, and
   upgrade every part from Mk I to Mk V.
@@ -102,9 +103,12 @@ The full list of controls is in the wiki:
 - **Mine and explore.** Send mining drones to asteroids and science probes to other planets.
 - **Fight.** Battle raider drones, or another player. Lasers get weaker with distance; missiles can be shot down.
 - **Play together.** One player hosts and shares a short room code; the other joins. Or run a **shared universe**
-  server (`node server/universe.mjs`) where everyone flies in one persistent solar system.
-- **Invent parts.** The 🧪 part designer builds radiators, batteries, reactors and armour of any size from real physics.
-- **Make it yours.** Fly with a physical cockpit of switches and gauges (or realistic, military and retro panels),
+  server (`node server/universe.mjs`) where everyone flies in one persistent solar system, builds 🛰 outposts that
+  stay for everyone, trades supplies, and sees each other's real ships.
+- **Invent parts.** The 🧪 part designer builds radiators, batteries, reactors, armour, frames, radiation liners,
+  sensors, labs and fabricators of any size from real physics.
+- **Make it yours.** Fly with a physical cockpit of switches and gauges inside a 3D cockpit frame lit by the real Sun
+  (or realistic, military and retro panels),
   a 3D or rotating sonar radar, and your own ship's look.
 
 ---

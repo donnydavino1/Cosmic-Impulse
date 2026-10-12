@@ -23,7 +23,8 @@ function hullTex(kind){if(HTEX[kind])return HTEX[kind];const c=document.createEl
   for(let i=0;i<900;i++){const a=Math.random()*Math.PI,l=6+Math.random()*28,x0=Math.random()*512,y0=Math.random()*256;x.strokeStyle=Math.random()<.5?'rgba(255,240,180,.35)':'rgba(70,45,5,.35)';x.lineWidth=1+Math.random()*1.5;x.beginPath();x.moveTo(x0,y0);x.lineTo(x0+Math.cos(a)*l,y0+Math.sin(a)*l);x.stroke()}}
  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;if(THREE.sRGBEncoding!==undefined&&false)t.encoding=THREE.sRGBEncoding;return HTEX[kind]=t}
 function texMat(base,kind,len,r){try{const t=hullTex(kind);if(!t||!REAL())return base;const m=base.clone(),tx=t.clone();tx.needsUpdate=true;tx.repeat.set(Math.max(1,len/3),Math.max(1,Math.round(2*Math.PI*r/6)));m.map=tx;m.needsUpdate=true;return m}catch(e){return base}}
-function buildSpine(H,dark,A){const LM=SH&&SH.lay?SH.lay:layMetrics((laySync(),s.lay.order),s.lay.rad),M=LM.mods,L=LM.L||4,top=L/2;
+// LMo/grp/remote: build another pilot's ship from the compact layout they send (shipLay below) into its own group
+function buildSpine(H,dark,A,LMo,grp,remote){const LM=LMo||(SH&&SH.lay?SH.lay:layMetrics((laySync(),s.lay.order),s.lay.rad)),G0=grp||shipG,M=LM.mods,L=LM.L||4,top=L/2;
  const std=(c,r,m)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}),foil=std('#b8892e',.38,.85),white=std('#e6e8ea',.6,.08),glass=std('#0d1520',.06,.9),rad=std('#eef1f3',.55,.05),
   cyl=(r,len,mat,seg)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,seg||28),mat);m.rotation.z=Math.PI/2;return m},box=(x,y,z,mat)=>new THREE.Mesh(new THREE.BoxGeometry(x,y,z),mat);
  let maxR=1;for(const q of M){const g=new THREE.Group(),len=q.len,r=q.r;g.position.x=top-q.x;maxR=Math.max(maxR,r+(q.off||0));
@@ -33,12 +34,13 @@ function buildSpine(H,dark,A){const LM=SH&&SH.lay?SH.lay:layMetrics((laySync(),s
   else if(q.cat==='lab'){g.add(cyl(r,len,texMat(H,'panel',len,r)));const st=cyl(r+.03,Math.min(.4,len*.2),std(A,.5,.2));g.add(st)}
   else if(q.cat==='fab'){g.add(box(len,2*r*.9,2*r*.9,H));const b2=box(len*.9,.3,2*r,dark);b2.position.y=r*.9;g.add(b2)}
   else if(q.cat==='store'){g.add(cyl(.5,len,dark,10));for(let k=0;k<4;k++){const b=box(len*.92,r*.8,r*.8,dark);const a=k*Math.PI/2+Math.PI/4;b.position.set(0,Math.cos(a)*r*.62,Math.sin(a)*r*.62);g.add(b)}}
-  else if(q.cat==='gen'){if(q.rad>0){g.add(cyl(r,len*.7,dark));const sh=new THREE.Mesh(new THREE.CylinderGeometry(r*1.7,r*.9,len*.3,28),std('#3f444b',.5,.7));sh.rotation.z=Math.PI/2;sh.position.x=(M.indexOf(q)>SH?.lay?.crew?1:-1)*len*.35;g.add(sh)}
+  else if(q.cat==='gen'){if(q.rad>0){g.add(cyl(r,len*.7,dark));const sh=new THREE.Mesh(new THREE.CylinderGeometry(r*1.7,r*.9,len*.3,28),std('#3f444b',.5,.7));sh.rotation.z=Math.PI/2;sh.position.x=(M.indexOf(q)>(LM.crew??SH?.lay?.crew)?1:-1)*len*.35;g.add(sh)}
    else{g.add(cyl(.35,len,dark,12));for(let k=0;k<8;k++){const fn=box(len*.9,.04,.7,dark);const a=k*Math.PI/4;fn.position.set(0,Math.cos(a)*.6,Math.sin(a)*.6);fn.rotation.x=a;g.add(fn)}}}
-  else if(q.cat==='therm'){g.add(cyl(.5,len,dark,12));const A1=(PARTS[q.id]||{}).A||60,w=Math.min(4,len*1.6),hgt=A1/2/w;[1,-1].forEach(sg=>{const p=box(w,hgt,.06,rad);p.position.y=sg*(hgt/2+.6);g.add(p);const pipe=box(.12,hgt,.12,dark);pipe.position.y=sg*(hgt/2+.6);g.add(pipe)})}
-  else if(q.cat==='shield'){const d=PARTS[q.id]||{};if(d.mag){g.add(cyl(.6,len,dark,12));[-.3,.3].forEach(o=>{const t=new THREE.Mesh(new THREE.TorusGeometry(r*1.3,.18,10,40),std('#b87333',.35,.9));t.rotation.y=Math.PI/2;t.position.x=o*len;g.add(t)})}
+  else if(q.cat==='therm'){g.add(cyl(.5,len,dark,12));const A1=q.A||(PARTS[q.id]||{}).A||60,w=Math.min(4,len*1.6),hgt=A1/2/w;[1,-1].forEach(sg=>{const p=box(w,hgt,.06,rad);p.position.y=sg*(hgt/2+.6);g.add(p);const pipe=box(.12,hgt,.12,dark);pipe.position.y=sg*(hgt/2+.6);g.add(pipe)})}
+  else if(q.cat==='shield'){const d=q.f||PARTS[q.id]||{};if(d.mag){g.add(cyl(.6,len,dark,12));[-.3,.3].forEach(o=>{const t=new THREE.Mesh(new THREE.TorusGeometry(r*1.3,.18,10,40),std('#b87333',.35,.9));t.rotation.y=Math.PI/2;t.position.x=o*len;g.add(t)})}
    else if(d.whip){const dk=cyl(r*1.25,.08,std('#cfd3d6',.7,.2));g.add(dk);g.add(cyl(.5,len,dark,10))}
    else g.add(cyl(r,len,d.ww?std('#7f97b0',.4,.3):std('#8f8a80',.7,.25)))}
+  else if(q.cat==='tanks'&&remote)g.add(cyl(r,len,texMat(white,'panel',len,r)));
   else if(q.cat==='tanks'){const F=Object.entries(s.fuel).filter(([f,m])=>m>.01).map(([f,m])=>[f,m/(RHO_F[f]||1000)]).concat(s.res.water>1?[['water',s.res.water/1000]]:[]),V=F.reduce((a,x)=>a+x[1],0)||1;let x0=len/2;
    for(const [f,v] of F){const l=Math.max(.3,len*v/V),t=cyl(r,l,f==='chem'||f==='water'?texMat(white,'panel',l,r):f==='am'?std('#3a3550',.3,.8):texMat(foil,'foil',l,r));t.position.x=x0-l/2;g.add(t);const cap=new THREE.Mesh(new THREE.SphereGeometry(r,24,12),t.material);cap.scale.set(.25/r,1,1);cap.position.x=x0-l;g.add(cap);x0-=l}}
   else if(q.cat==='weapon'){if(q.id==='rail'){[.35,-.35].forEach(o=>{const rl=box(len+1.5,.16,.16,dark);rl.position.set(.75,o,0);g.add(rl)});g.add(cyl(.55,1,dark,12))}
@@ -48,11 +50,11 @@ function buildSpine(H,dark,A){const LM=SH&&SH.lay?SH.lay:layMetrics((laySync(),s
   else if(q.cat==='truss'){const s2=.7,m2=dark;[[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a,b])=>{const lg=box(len,.14,.14,m2);lg.position.set(0,a*s2,b*s2);g.add(lg)});
    const diag=Math.hypot(len,2*s2),ang=Math.atan2(2*s2,len);[[0,1],[0,-1],[1,0],[-1,0]].forEach(([a,b])=>{const d2=box(diag,.07,.07,m2);if(a){d2.position.z=a*s2;d2.rotation.z=ang}else{d2.position.y=b*s2;d2.rotation.y=ang}g.add(d2)})}
   else g.add(cyl(r,len,H));
-  {const p=q.k&&q.k[0]==='p'?layPart(q.k):null,n=p?(p.mk||1)-1:0;for(let b=0;b<n;b++){const t=new THREE.Mesh(new THREE.TorusGeometry((q.cat==='therm'||q.cat==='store'?.7:r)+.04,.05,6,32),std(A,.4,.6));t.rotation.y=Math.PI/2;t.position.x=len/2-.15-b*.2;g.add(t)}}
-  {const p=q.k&&q.k[0]==='p'?layPart(q.k):null;if(p&&p.cond<.6)g.traverse(o=>{if(o.material&&o.material.color){o.material=o.material.clone();o.material.color.multiplyScalar(.45+.5*p.cond);if('roughness'in o.material)o.material.roughness=Math.min(1,(o.material.roughness||.5)+.3)}})}
-  shipG.add(g)}
+  {const p=!remote&&q.k&&q.k[0]==='p'?layPart(q.k):null,n=remote?(q.mk||1)-1:p?(p.mk||1)-1:0;for(let b=0;b<n;b++){const t=new THREE.Mesh(new THREE.TorusGeometry((q.cat==='therm'||q.cat==='store'?.7:r)+.04,.05,6,32),std(A,.4,.6));t.rotation.y=Math.PI/2;t.position.x=len/2-.15-b*.2;g.add(t)}}
+  {const p=!remote&&q.k&&q.k[0]==='p'?layPart(q.k):null;if(p&&p.cond<.6)g.traverse(o=>{if(o.material&&o.material.color){o.material=o.material.clone();o.material.color.multiplyScalar(.45+.5*p.cond);if('roughness'in o.material)o.material.roughness=Math.min(1,(o.material.roughness||.5)+.3)}})}
+  G0.add(g)}
  // the frame's central spine ties the modules together
- const sp=cyl(.25,L,dark,8);shipG.add(sp);
+ const sp=cyl(.25,L,dark,8);G0.add(sp);
  return{rad:maxR,nose:top,tail:top}}
 function buildShip(){while(shipG.children.length)shipG.remove(shipG.children[0]);
  const A=CUST.acc,H=new THREE.MeshStandardMaterial(REAL()?{color:CUST.hull,roughness:.55,metalness:.15}:{color:CUST.hull,roughness:.45,metalness:.3,flatShading:true}),dark=new THREE.MeshStandardMaterial(REAL()?{color:'#5d636d',roughness:.45,metalness:.75}:{color:'#2a2f45',roughness:.6,metalness:.6,flatShading:true});
@@ -106,7 +108,7 @@ function buildShip(){while(shipG.children.length)shipG.remove(shipG.children[0])
 function shipUpdate(){const key=[ORB.shipKey(),CUST.panel,WEP.map(w=>isU(w.id)?1:0).join(''),CUST.shape,CUST.vis,CUST.hull,CUST.acc,CUST.wings,di,Math.round(Math.log10(s.area)*20),Math.round(Math.log10(PW)*4),s.sailA,...['chem','xe','h2','fus','am'].map(f=>Math.round(Math.log10(s.fuel[f]+.01)*10))].join();if(key!==shipKey){shipKey=key;buildShip()}
  const g=gam(s),d=s.dom,dv=s.burn>0?dirVec():null,f=dv||[s.vx/g-d.vx,s.vy/g-d.vy,s.vz/g-d.vz],fl=Math.hypot(...f)||1;tV.set(f[0]/fl,f[1]/fl,f[2]/fl);tQ.setFromUnitVectors(X1,tV);shipG.quaternion.slerp(tQ,.08);turretTick();
  plume.visible=s.burn>0&&!DR[di].sail;if(plume.visible){const k=(.6+.4*s.burn)*(.9+.2*Math.random());plume.scale.set(k,k*(1+s.burn),k)}
- const S=B[0],sx=S.x-s.x,sy=S.y-s.y,sz=S.z-s.z,sl=Math.hypot(sx,sy,sz);sLight.position.set(sx/sl*100,sy/sl*100,sz/sl*100);sLight.intensity=s.lit?1.8:.12;
+ const S=B[0],sx=S.x-s.x,sy=S.y-s.y,sz=S.z-s.z,sl=Math.hypot(sx,sy,sz);sLight.position.set(sx/sl*100,sy/sl*100,sz/sl*100);{const vl=typeof visLit==='function'?visLit():s.lit?1:0;sLight.intensity=(REAL()?3.2:1.8)*vl+.12*(1-vl)}
  const q=dirAE();SC.position.set(q[0]*svd,q[1]*svd,q[2]*svd);SC.lookAt(0,0,0);SC.aspect=innerWidth/innerHeight;SC.updateProjectionMatrix()}
 function drawArt(){const c=$('art');c.style.display=SV&&CUST.art?'block':'none';if(!(SV&&CUST.art)||!c.getContext)return;c.width=innerWidth;c.height=innerHeight;const x=c.getContext('2d'),W=c.width,H=c.height,Z=130,P=[];
  for(let j=-1;j<=H/Z+1;j++){P[j+1]=[];for(let i=-1;i<=W/Z+1;i++)P[j+1].push([i*Z+(Math.random()-.5)*Z*.8,j*Z+(Math.random()-.5)*Z*.8])}
@@ -125,3 +127,20 @@ addEventListener('resize',drawArt);
  r=row('VIEW');btn(r,()=>SV?'Close ship view':'🚀 Open ship view to see your ship',()=>toggleSV());
  $('custclose').onclick=()=>$('cust').classList.add('h')}
 
+
+// ----- your ship's shape for other players: a compact copy of the layout (no secrets: exactly what their eyes would see)
+function shipLay(){const LM=SH&&SH.lay;if(!LM||!LM.mods)return null;const r2=v=>Math.round(v*100)/100;
+ return{L:r2(LM.L||4),crew:LM.crew,area:Math.round(s.area),eng:DR[di].id,mods:LM.mods.slice(0,60).map(q=>{const d=PARTS[q.id]||{},p=q.k&&q.k[0]==='p'?layPart(q.k):null,o={cat:q.cat,x:r2(q.x),len:r2(q.len),r:r2(q.r)};
+  if(q.radial){o.radial=1;o.off=r2(q.off);o.ang=r2(q.ang)}if(q.rad>0)o.rad=r2(q.rad);if(q.cat==='therm')o.A=Math.round(d.A||60);if(q.cat==='shield')o.f={mag:!!d.mag,whip:!!d.whip,ww:!!d.ww};
+  if(q.id==='rail')o.id='rail';if(p&&p.mk>1)o.mk=p.mk;return o})}}
+const LAY_CATS=new Set(['life','lab','fab','store','gen','therm','shield','tanks','weapon','sensor','truss','frame']);
+function laySafe(L){if(!L||typeof L!=='object'||!Array.isArray(L.mods))return null;const n=(v,lo,hi)=>Math.max(lo,Math.min(hi,+v||0));
+ return{L:n(L.L,1,500),crew:n(L.crew,-1,60)|0,area:n(L.area,0,1e7),eng:String(L.eng||'chem').slice(0,8),mods:L.mods.slice(0,60).filter(q=>q&&LAY_CATS.has(q.cat)).map(q=>({cat:q.cat,x:n(q.x,-500,500),len:n(q.len,.1,60),r:n(q.r,.1,20),
+  radial:!!q.radial,off:n(q.off,0,40),ang:n(q.ang,-7,7),rad:n(q.rad,0,2),A:n(q.A,0,5000),f:q.f&&typeof q.f==='object'?{mag:!!q.f.mag,whip:!!q.f.whip,ww:!!q.f.ww}:null,id:q.id==='rail'?'rail':'',mk:n(q.mk,1,5)|0}))}}
+// another pilot's ship, built from their layout: modules, an engine bell for their drive and solar wings for their area
+function buildRemote(L,cust){const g=new THREE.Group(),c=cust||{},H=new THREE.MeshStandardMaterial({color:c.hull||'#d9dcdf',roughness:.55,metalness:.15}),dark=new THREE.MeshStandardMaterial({color:'#5d636d',roughness:.45,metalness:.75}),A=c.acc||'#b8892e';
+ const sp=buildSpine(H,dark,A,{mods:L.mods,L:L.L,crew:L.crew},g,true),tail=sp.tail,el=/^(ion|vas|mpd|hall|arc)$/.test(L.eng);
+ const bell=new THREE.Mesh(el?new THREE.CylinderGeometry(1.6,1.6,.7,24):new THREE.CylinderGeometry(.8,2,2.8,20,1,true),dark);bell.rotation.z=Math.PI/2;bell.position.x=-tail-(el?.4:1.6);g.add(bell);
+ const W=Math.max(1,Math.min(60,Math.sqrt((L.area||10)/6))),Lw=3*W,pm=new THREE.MeshStandardMaterial({color:'#1b2f66',roughness:.3,metalness:.5});
+ [1,-1].forEach(sg=>{const pn=new THREE.Mesh(new THREE.BoxGeometry(W,.08,Lw),pm);pn.position.z=sg*(sp.rad+2+Lw/2);g.add(pn);const st=new THREE.Mesh(new THREE.BoxGeometry(.4,.4,2.2),dark);st.position.z=sg*(sp.rad+1);g.add(st)});
+ g.userData.tail=-tail;return g}

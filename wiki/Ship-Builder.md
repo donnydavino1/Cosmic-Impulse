@@ -74,10 +74,20 @@ centre of mass back). The **🚀 Engines at the tail** row lets you switch engin
 
 ## Designing your own parts
 
-**🧪 Design a new part** (or **F7**) opens the part designer: choose a radiator, battery, reactor or armour, pick its type
-and drag its size. The designer works out its mass, materials, build energy, research needed and performance from the
+**🧪 Design a new part** (or **F7**) opens the part designer: choose a radiator, battery, reactor, armour, **frame**, **radiation liner**,
+**sensor**, **laboratory** or **fabricator**, pick its type and drag its size. The designer works out its mass, materials, build energy, research needed and performance from the
 same physics for every player (it reproduces the stock parts exactly at their sizes). A saved design appears in
 **Add a part** and is built, mounted, upgraded and repaired like any other part.
+
+What each new kind trades:
+
+| Kind | You choose | The trade-off (same formula for everyone) |
+|---|---|---|
+| 🏗 Frame | aluminium, carbon or titanium-steel; thrust rating in g | mass grows as (g rating)^0.6 from the stock frame of that material |
+| ☢ Radiation liner | aluminium or polyethylene; areal density 1–20 g/cm² | 300 kg per g/cm²; polyethylene counts 1.6× against radiation |
+| 📡 Sensor | Doppler dish, phased array or lidar; aperture and transmit power | range ∝ (power × aperture²)^¼, the radar equation: 16× the power or 4× the aperture doubles the range |
+| 🔬 Laboratory | onboard lab or research station; mass | research points grow as mass^0.85; power use per kg is fixed |
+| 🏭 Fabricator | industrial or orbital factory; mass | manufacturing power proportional to mass |
 
 ## Saved designs
 

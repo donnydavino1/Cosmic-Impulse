@@ -1,6 +1,100 @@
 # Changelog
 
-## 0.29.0 — the shared universe, the part designer, VR
+## 0.33.0 — Proxima Centauri in under a day, no Andromeda, a far more realistic flight deck
+- **Andromeda removed.** The interstellar destination is **Proxima Centauri** (4.25 light-years). Deep-space time speeds
+  (1 s = 9.5, 95, 950 years beyond 2,000 AU from every star) stay, so any ship that can leave the solar system gets
+  there in well under 24 real hours: about 17 minutes even coasting at 20 km/s, ~40 minutes for a fusion ship, seconds
+  of coasting at 0.99 c (4.3 game years, 7.3 months on the ship clock). A test keeps it under 24 hours.
+- **Cruise autopilot fixed:** it used to aim straight at the star from Earth orbit, so a gentle engine fell into the Sun
+  and was flung out at a nonsense speed. It now climbs out of the Sun's gravity first (pushing along its motion), then
+  accelerates until the propellant left is just enough to stop, steering out any sideways drift (aiming straight at
+  the star made ships circle it forever), coasts, brakes, and on arrival settles into a circular orbit 1–2 AU from the star. The physics loop also stops a frame
+  at a planet's or star's surface so a fast pass can never tunnel through it. The cruise dialog's estimate now includes
+  the burns and heat throttling, and warns when heat would hold the engine back.
+- **Hyper-realistic flight deck:** worn painted-metal panels with seams, fasteners and stencilled codes; bevelled
+  display housings with bezel keys and reflective cover glass; guarded toggle switches, knurled knobs and backlit keys;
+  a black side-stick in a rubber boot and a throttle; real-time **shadows** of the window frame across the console;
+  sunlight only enters through the window; displays spill cyan light onto the console; metal reflects a live panorama of
+  the cabin; the windscreen faintly reflects the lit displays and shows dust and scratches in sunlight; dust motes
+  drift in sunbeams; film-like tone mapping; display glass with pixel rows and darker corners.
+
+## 0.32.0 — a real flight deck, a bigger crew, and Andromeda in under an hour
+- **3D flight deck** (new default cockpit style, `2666-flightdeck.js`): a modelled console under the window with three
+  large live screens (FLIGHT, SENSORS, SYSTEMS), two touch panels (CREW, TACTICAL with a blinking master caution), lit
+  keys, side button consoles, control stick and throttle. **Every screen is a mouse button**: SYSTEMS → 🌡 Thermal,
+  CREW → 👩‍🚀 Crew, FLIGHT → 🧭 Navigation, TACTICAL → next target, SENSORS → next radar design. The deck replaces the
+  floating widgets (🧩 Show widgets brings them back). Players on the old default are moved to it once, with a note.
+- **Mouse access to F2/F3:** 🌡 HEAT and 👩‍🚀 CREW buttons in the top bar; THERMAL, CREW and DESIGNER buttons on the
+  physical console.
+- **Bigger crew:** ➕ recruit astronauts at Earth (2 × 10⁹ J, arrive at Level 2 in a speciality, 80 kg each), cabin space
+  from life support (4 / 8 / 12), 🏠 send home. New duties: 🏭 Fabrication (+15 % manufacturing per Level), ⛏ Mining
+  (+15 % collected), 🎯 Gunnery (+10 % damage), ⛑ Medicine (heals, clears radiation sickness). **🧊 Hibernation**
+  (technology *Crew hibernation*, 800 RP): no supplies, no ageing, no wear while asleep.
+- **Andromeda:** the galaxy is now a destination (2.54 million light-years). At 0.99 c the trip is 2.56 million game
+  years and ~361,000 ship years — about **31 real days** at the old top time speed. New **deep-space time speeds**
+  (1 s = 9.5, 95, 950 years) unlock more than 2,000 AU from every star, so the coast takes **~45 real minutes**.
+  🧭 NAVIGATE → Andromeda (or Proxima) → **🚀 Interstellar cruise** runs a relativistic accelerate–coast–brake autopilot
+  and shows game, ship and real time first. Deep-space dust, flares and warnings are quiet out there.
+- Translations (es, zh) for everything new; the audit now also reads the deck's screens and the cruise dialog. Wiki:
+  Cockpit and Displays (flight deck), Survival (recruiting, new duties, hibernation), Relativity (how long to
+  Andromeda), Flying and Orbits (interstellar cruise), Heat and Radiators (mouse access), in all three languages.
+
+## 0.31.0 — playtest fixes: heat, crew, no pausing, score, rewind
+- **Heat was partly broken:** the starter ship made more heat in sunlight than its hull radiator could shed and slowly
+  cooked itself; it now has 50 m² of body radiators (crew loop settles at 18 °C). Hot engines with no high-temperature
+  radiators were silently throttled to ~0.005 % (fusion dumps 150 MW; a low-temp radiator sheds ~60 kW, so buying those
+  did nothing): the game now says so, and points to the new **🌡 Thermal view (F2)**: a heat map of the ship, each
+  loop's heat in / can shed / settling temperature / time to overheat, where the heat comes from, and a **radiator
+  calculator** (engine, throttle, cabin limit → how many of each radiator, with *Build N*).
+- **How many per click:** a quantity box in 🛠 Engineering and 🧱 Builder → Add a part (1/5/10/50/100 or any number)
+  multiplies every Build, Get, Make and Order button; each fuel has an *Exact amount* box.
+- **Crew (RULES `2105-crew.js`, 👩‍🚀 F3):** two astronauts with duties (hull patching, repairs, science, rest, pilot),
+  skills Level 1–5 that grow with time on duty or by training with research points. Hull breaches are sealed
+  automatically with new **hull patch kits**; failed and worn parts are repaired automatically with spare-parts kits.
+  Supplies are per person: **you start with a year for both** (615 kg O₂, 1,830 kg water, 1,170 kg food), and the
+  starter carries 9 t of rocket fuel so it can still escape Earth. Kits now weigh what they're made of (they counted as
+  1 kg before).
+- **Alerts never pause the game.** The **🛟 safety slow-down** (next to the time controls, console switch, F4; on by
+  default) slows time when something will kill the crew within a game day, leaving ~5 real minutes, with a red banner,
+  and restores the rate afterwards.
+- **Score** on the game-over screen (days survived, farthest from Earth, fastest speed, closest to the Sun, technologies,
+  discoveries, mining, contracts, raiders, crew training; best score kept). **⏪ Restart 24 hours earlier** in single
+  player (snapshots about every game hour; slowest time speed).
+- **No day/night strobe at high time speed:** lighting fades smoothly, and when the eclipse cycle is faster than a few
+  real seconds the view shows the orbit's average light (softer shadows, dimmer city lights).
+- Translations (es, zh) for everything new; the audit now also opens the Thermal, Crew, designer and safety screens.
+  Wiki: Survival (crew, kits, safety slow-down, score, rewind), Heat and Radiators (Thermal view, worked fusion example),
+  Ship and Engineering (quantities), Cockpit and Displays (no strobe), Controls (F2–F4), in all three languages.
+
+## 0.30.0 — outposts, rendezvous, a 3D cockpit, and the exact relativity model
+- **VR removed** (the owner doesn't want VR): `1960-vr.js` deleted, the render loop restored, its texts and wiki section gone.
+- **Part designer** (F7): five new kinds. *Frames* (aluminium, carbon, titanium-steel; mass ∝ g-rating^0.6),
+  *radiation liners* (aluminium or polyethylene, 300 kg per g/cm²), *sensors* (Doppler dish, phased array, lidar;
+  range follows the radar equation, ∝ (power × aperture²)^¼, so a big dish really sees farther), *laboratories*
+  (research ∝ mass^0.85) and *fabricators* (manufacturing power ∝ mass). The formulas reproduce the stock parts
+  exactly (`tests/designer.test.mjs`). New official physics fingerprint.
+- **Shared universe:** *outposts* (🛰): turn 4 t of materials into a station on your orbit that stays for everyone;
+  dock to leave or take supplies (the server owns the stores, so nothing duplicates), private/public, dismantle.
+  *Pilot-versus-pilot* hits, passed on by the server only between ships within 2,100 km (reports carried to a common
+  time) and energy-capped. Other pilots' ships are carried along their orbits between reports and drawn **from their
+  real layout** (also in two-player games). `tests/universe.test.mjs` covers outposts, hits and Kepler propagation.
+- **Autopilot rendezvous** with anything orbiting the same body (outposts): a coasting transfer found by Kepler shooting,
+  one burn, coast, gentle final approach, then holding in docking range without fuel. From 460 km behind in low Earth
+  orbit: ~150 kg of chemical propellant instead of the whole tank. Fixed two timing bugs that affected every rendezvous
+  (target time and half-kick velocity inside a physics step).
+- **Relativity:** the ship clock now includes the weak-field gravitational term, dτ = dT/γ · (1 + Φ/c²) (the leading
+  post-Newtonian clock correction); the 🕐 Clocks widget shows both factors. Sensor contacts are light-time delayed
+  (shown where they were d/c ago; new `lt` field). Wiki *Relativity*: a full section on exactly how gravity and
+  relativity are computed and what is left out (no post-Newtonian terms in the motion), in all three languages.
+- **3D cockpit frame:** modelled window frame, pillars, glare shield, side walls, overhead switch panel, grab handles and
+  HUD glass around the first-person view, lit by the real Sun (dark in a planet's shadow), Earthshine and instrument
+  lights (red on critical alarms); head sway against thrust; shake from the engine and hits. 🎨 Customize → COCKPIT STYLE.
+- 3D outpost model (turning habitat ring, solar wings, blinking docking lights); outposts on sensors and the overlay.
+- Translations: autopilot stages and designer part descriptions are now translated too (they were English before).
+- Wiki: Relativity, Multiplayer (outposts, combat, real ships), Ship Builder (designer kinds), Cockpit and Displays
+  (3D frame), Sensors and Radar (light-time, designed sensors) in all three languages. Docs: UNIVERSE.md, PROTOCOL.md.
+
+## 0.29.0 — the shared universe, the part designer
 - **Shared universe** (`server/universe.mjs`, no dependencies; client `2850-universe.js`; `npm run universe`): one
   persistent solar system for everyone. One clock at the server's rate, every pilot's ship (3D and sensor contacts),
   shared asteroid mining, chat, rules fingerprints shared, world saved every 30 s and on shutdown. Protocol ORB-UNI/1

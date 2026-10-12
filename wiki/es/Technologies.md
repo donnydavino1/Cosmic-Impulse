@@ -58,6 +58,7 @@ Los puntos de investigación (PI) vienen de tu tripulación y laboratorios con e
 |---|---|---|---|
 | **Soporte vital regenerativo** | 80 RP | — | Recicla agua y produce oxígeno a partir del agua. |
 | **Invernadero biorregenerativo** | 250 RP | Soporte vital regenerativo | Cultiva comida y oxígeno. |
+| **Hibernación de la tripulación** | 800 RP | Invernadero biorregenerativo, Estación de investigación | Cápsulas de animación suspendida (especulativo): una tripulación dormida no consume suministros, no envejece y está protegida, y la nave se apaga para que nada se desgaste. La única forma de sobrevivir a un viaje intergaláctico. |
 
 ## Blindaje
 

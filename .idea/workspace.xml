@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc6eea9a-32f9-4545-baa4-996be41d2619" name="Changes" comment="v0.2.4" />
+    <list default="true" id="dc6eea9a-32f9-4545-baa4-996be41d2619" name="Changes" comment="v0.3.0" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -128,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791373166697</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="v0.3.0">
+      <option name="closed" value="true" />
+      <created>1791423700223</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1791423700223</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,7 +162,8 @@
     <MESSAGE value="v0.2.2" />
     <MESSAGE value="v0.2.3" />
     <MESSAGE value="v0.2.4" />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.2.4" />
+    <MESSAGE value="v0.3.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.3.0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

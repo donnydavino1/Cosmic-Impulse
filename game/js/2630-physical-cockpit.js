@@ -27,11 +27,11 @@ function pcBuild(){const el=document.createElement('div');el.id='pcons';el.inner
  <div class="pcp pcgauges">${pcGauge('vel','VELOCITY','km/s',[0,5,10,15,20,25,30,35,40])}${pcGauge('bat','BATTERY','%',[0,20,40,60,80,100],[0,.1])}${pcGauge('prop','PROPELLANT','kg (log)',['10','100','1k','10k','100k','1M'])}
   ${pcGauge('o2','OXYGEN','days',[0,5,10,15,20,25,30],[0,.12])}${pcGauge('cab','CABIN','°C',[0,10,20,30,40,50,60],[.75,1])}${pcGauge('dose','DOSE','mSv/day (log)',['.01','.1','1','10','100','1k'],[.6,1])}</div>
  <div class="pcp pcscope"><div class="pch">RADAR</div><div class="pccrt"><canvas id="pcrt" width="260" height="260"></canvas><div class="pcglass"></div></div><div class="pcknobs">${pcButton('rmode','SONAR / 3D')}</div></div>
- <div class="pcp pcsw"><div class="pch">SYSTEMS</div><div class="pcswrow">${pcSwitch('stab','STABILIZER','ON','OFF')}${pcSwitch('shelter','STORM SHELTER','IN','OUT')}${pcSwitch('sense','RADAR','ACTIVE','PASSIVE')}${pcSwitch('mode','THRUST','ORBIT','X/Y/Z')}${pcSwitch('radio','MUSIC','ON','OFF')}</div>
+ <div class="pcp pcsw"><div class="pch">SYSTEMS</div><div class="pcswrow">${pcSwitch('stab','STABILIZER','ON','OFF')}${pcSwitch('shelter','STORM SHELTER','IN','OUT')}${pcSwitch('sense','RADAR','ACTIVE','PASSIVE')}${pcSwitch('mode','THRUST','ORBIT','X/Y/Z')}${pcSwitch('radio','MUSIC','ON','OFF')}${pcSwitch('safe','SAFETY SLOW','ON','OFF')}</div>
   <div class="pcwarp"><button class="pcknob" data-pb="slower">◀</button><div class="pcdial"><div class="pcdialv" id="pcwarp">×1</div><div class="pch">TIME WARP</div></div><button class="pcknob" data-pb="faster">▶</button></div></div>
  <div class="pcp pcbtns"><div class="pch">WEAPONS</div><div class="pcgrid">${pcButton('w1','1 MINING')}${pcButton('w2','2 PULSE')}${pcButton('w3','3 BEAM')}${pcButton('w4','4 RAIL')}${pcButton('w5','5 MISSILE')}${pcButton('target','TARGET','blue')}</div>
   <button class="pcfire" data-pb="fire"><span>FIRE</span></button>
-  <div class="pch">SHIP</div><div class="pcgrid">${pcButton('view','CAMERA')}${pcButton('shop','ENGINEERING')}${pcButton('nav','NAVIGATE')}${pcButton('builder','BUILDER')}${pcButton('ops','OPERATIONS')}${pcButton('contracts','CONTRACTS')}</div></div>`;
+  <div class="pch">SHIP</div><div class="pcgrid">${pcButton('view','CAMERA')}${pcButton('shop','ENGINEERING')}${pcButton('nav','NAVIGATE')}${pcButton('builder','BUILDER')}${pcButton('ops','OPERATIONS')}${pcButton('contracts','CONTRACTS')}${pcButton('thermal','THERMAL','blue')}${pcButton('crew','CREW','blue')}${pcButton('design','DESIGNER')}</div></div>`;
  document.body.appendChild(el);PC.el=el;
  el.addEventListener('click',e=>{const b=e.target.closest('[data-pb]'),w=e.target.closest('[data-sw]');if(w){pcAct(w.dataset.sw);return}if(!b||b.dataset.pb==='fire')return;const id=b.dataset.pb;
   if(id==='ack')PC.ack=performance.now();else if(id==='rmode')PC.radar=PC.radar==='3d'?'sonar':'3d';else pcAct(id)});
@@ -51,7 +51,7 @@ function pcTick(){const want=CK_STYLE==='physical'&&FP&&innerWidth>=900;document
  for(const el of PC.el.querySelectorAll('.pcl')){const k=st[el.dataset.l];any=Math.max(any,k);el.classList.toggle('amber',k===1);el.classList.toggle('red',k===2);el.classList.toggle('dim',k===2&&!acked&&blink)}
  PC.el.querySelector('.pcmc').classList.toggle('lit',any>0&&!acked&&!!blink);
  // switches show the real state
- const sw={stab:STAB,shelter:!!s.shelter,sense:!s.passive,mode:!XYZ,radio:!!radioOn};for(const el of PC.el.querySelectorAll('.pcs'))el.classList.toggle('on',!!sw[el.dataset.sw]);
+ const sw={stab:STAB,shelter:!!s.shelter,sense:!s.passive,mode:!XYZ,radio:!!radioOn,safe:typeof SAFE!=='undefined'&&SAFE.on};for(const el of PC.el.querySelectorAll('.pcs'))el.classList.toggle('on',!!sw[el.dataset.sw]);
  for(const el of PC.el.querySelectorAll('[data-pb^="w"]'))el.classList.toggle('lit',el.dataset.pb==='w'+(WI+1));
  const tg=PC.el.querySelector('[data-pb="target"]');if(tg)tg.classList.toggle('lit',!!WT);
  const o=elements(),alt=(o.r-o.d.R)/1e3;$('pclcd1').textContent='T+ '+fT(T);$('pclcd2').textContent=tr('ALT')+' '+(alt<1e6?f1(alt,0)+' km':fmtD(alt*1e3))+' · '+tr(o.d.n);

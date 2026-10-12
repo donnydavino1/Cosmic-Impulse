@@ -7,7 +7,8 @@ function buyFu(f,n){if(!f||!canMake(f,n))return null;const F=FUEL[f],earth=inEar
  return queueJob({type:'fuel',f,n,water:w,name:(earth?'Order ':'Make ')+f1(n,n<10?2:0)+' kg '+F.n.toLowerCase()+(earth?' from Earth':''),J:n*(earth?F.earthJ:F.J)})}
 function costTxt(f,n){if(!f)return'';const F=FUEL[f];if(f==='am'&&!isU('am'))return'needs the antimatter factory';if(inEarth()&&F.earthJ)return sci(n*F.earthJ)+' J (ordered from Earth)';if(F.earthOnly)return'only inside Earth’s gravity zone';return(F.make.water?f1(n*F.make.water,0)+' kg water + ':'')+sci(n*F.J)+' J'}
 const SUPR={oxygen:{n:'Oxygen',earthJ:1e7,make:{water:1.125},J:1.6e7,how:'split from water by electrolysis'},food:{n:'Food',earthJ:2e7,how:'only from Earth (or a greenhouse)'},water:{n:'Water',earthJ:1e7,how:'from Earth, or mine C-type asteroids'},
- spares:{n:'Spare-parts kits (15 kg)',mat:{iron:10,nickel:2,silicates:2,platinum:.01},J:5e7,kg:15,how:'machined from iron, nickel, silicates and a little platinum'}};
+ spares:{n:'Spare-parts kits (14 kg)',mat:{iron:10,nickel:2,silicates:2,platinum:.01},J:5e7,kg:14,how:'machined from iron, nickel, silicates and a little platinum'},
+ patch:{n:'Hull patch kits (4 kg)',mat:{iron:2.5,carbon:1,silicates:.5},J:1e7,kg:4,how:'aluminium-iron plate, carbon-fibre cloth and sealant'}};
 function supJob(k,n){const R2=SUPR[k];if(R2.mat){const m={};for(const q in R2.mat)m[q]=R2.mat[q]*n;if(!queueJob({type:'sup',k,n,mat:m,name:'Make '+n+' '+R2.n.toLowerCase(),J:R2.J*n}))notify('⚠ Needs '+matTxt(m));return}
  if(inEarth()&&R2.earthJ){queueJob({type:'sup',k,n,name:'Order '+n+' kg '+R2.n.toLowerCase()+' from Earth',J:R2.earthJ*n});return}
  if(R2.make){const m={};for(const q in R2.make)m[q]=R2.make[q]*n;if(!queueJob({type:'sup',k,n,mat:m,name:'Make '+n+' kg '+R2.n.toLowerCase(),J:R2.J*n}))notify('⚠ Needs '+matTxt(m));return}notify('⚠ '+R2.n+': '+R2.how)}

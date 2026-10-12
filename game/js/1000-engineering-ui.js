@@ -1,31 +1,39 @@
 // ===== ENGINEERING WINDOW (tabs) =====
-const sb=$('shopbody'),tbar=document.createElement('div');tbar.className='tabs';sb.appendChild(tbar);const TABS={};let curTab='ship';
+const sb=$('shopbody'),tbar=document.createElement('div');tbar.className='tabs';sb.appendChild(tbar);
+// how many of something to buy or build in one click (instead of pressing a button over and over)
+let QTY=1;const qN=()=>Math.max(1,Math.min(100000,Math.round(QTY)||1)),qL=()=>qN()>1?' ×'+qN().toLocaleString():'';
+{const q=document.createElement('div');q.className='qtybar';q.innerHTML='<span>How many per click:</span> <input id="qtyin" type="number" min="1" max="100000" step="1" value="1"> '+[1,5,10,50,100].map(n=>'<button data-q="'+n+'">'+n+'</button>').join('')+' <small>applies to every Build, Get, Make and Order button</small>';sb.insertBefore(q,tbar);
+ const inp=q.querySelector('#qtyin');inp.addEventListener('input',()=>{QTY=+inp.value||1});inp.addEventListener('keydown',e=>e.stopPropagation());q.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{QTY=+b.dataset.q;inp.value=QTY})}
+// build up to N of one part: stops when materials run out and says how many were queued
+function buildN(mk,name){let n=0;for(let i=0;i<qN();i++){if(!queueJob(mk()))break;n++}if(n<qN())notify(n?'🏭 Queued '+n+' of '+qN()+': '+name+' (materials ran out).':'⚠ Missing materials for '+name+'.');else if(n>1)notify('🏭 Queued '+n+' × '+name+'.');return n}const TABS={};let curTab='ship';
 function showTab(){for(const k in TABS)TABS[k].style.display=k===curTab?'':'none'}
 const mkTab=(id,l)=>{const d=document.createElement('div');sb.appendChild(d);TABS[id]=d;btn(tbar,()=>(curTab===id?'▸ ':'')+l,()=>{curTab=id;showTab()});return d};
 // --- Ship tab
 const tS=mkTab('ship','🔧 Ship');
 dyn(grp(tS,'DESIGN ANALYZER: what your ship can do, and what limits it'),()=>whyTxt());
 {const g0=grp(tS,'BURN PREVIEW');const cv=document.createElement('canvas');cv.width=560;cv.height=140;cv.style.cssText='width:100%;height:140px;position:static;display:block;pointer-events:none';g0.appendChild(cv);regs.push({b:{set textContent(v){burnCurve(cv)},get textContent(){return''}},label:()=>'x'})}
+{const gq=grp(tS,'HEAT AND CREW');btn(gq,'🌡 Thermal: heat map and radiator calculator (F2)',()=>{$('shop').classList.add('h');thermToggle()});btn(gq,'👩‍🚀 Crew: duties, skills and training (F3)',()=>{$('shop').classList.add('h');crewToggle()})}
 dyn(grp(tS,'SYSTEM BUDGETS'),()=>budgetTxt());
 dyn(grp(tS,'INSTALLED COMPONENTS (service with spare-parts kits; removing returns 50% of materials)'),()=>partsHtml());
 // --- Fabricate tab
 const tF=mkTab('fab','🏭 Fabricate');
 dyn(grp(tF,'JOB QUEUE: manufacturing draws power over time (spare power first, then the battery down to 25%)'),()=>jobsHtml());
 let g=grp(tF,'SOLAR PANELS');info(g,()=>`${f1(s.area,0)} m² at ${Math.round(EFF*100)}% efficiency → ${f1(perM2(),0)} W per m² here. Each m² needs ${PSI} kg silicates + ${sci(P1)} J of fabrication. Layout: ${arrLayout()}.`);
-[10,100,1e3,1e4].forEach(n=>btn(g,()=>`Build ${n.toLocaleString()} m² · ${f1(PSI*n,0)} kg silicates · ${sci(P1*n)} J`,()=>{if(canP(n)){s.res.silicates-=PSI*n;queueJob({type:'panel',n,name:'Build '+n+' m² of solar panels',J:P1*n})}},()=>canP(n)));
-btn(g,()=>inEarth()?`Order 100 m² ready-made from Earth · ${sci(PE*100)} J`:'Ready-made panels: only inside Earth’s gravity zone',()=>{if(inEarth())queueJob({type:'panel',n:100,name:'Order 100 m² of panels from Earth',J:PE*100})},()=>inEarth());
+[10,100,1e3,1e4].forEach(n0=>btn(g,()=>{const n=n0*qN();return `Build ${n.toLocaleString()} m² · ${f1(PSI*n,0)} kg silicates · ${sci(P1*n)} J`},()=>{const n=n0*qN();if(canP(n)){s.res.silicates-=PSI*n;queueJob({type:'panel',n,name:'Build '+n+' m² of solar panels',J:P1*n})}},()=>canP(n0*qN())));
+btn(g,()=>inEarth()?`Order ${(100*qN()).toLocaleString()} m² ready-made from Earth · ${sci(PE*100*qN())} J`:'Ready-made panels: only inside Earth’s gravity zone',()=>{const n=100*qN();if(inEarth())queueJob({type:'panel',n,name:'Order '+n+' m² of panels from Earth',J:PE*n})},()=>inEarth());
 g=grp(tF,'SUPPLIES');info(g,()=>`Oxygen ${f1(s.res.oxygen,1)} kg · food ${f1(s.res.food,1)} kg · water ${f1(s.res.water,0)} kg · spare kits ${s.res.spares}. ${inEarth()?'Inside Earth’s gravity zone: you can order supplies from Earth.':'Deep space: oxygen from water, water from C-type asteroids; food only from Earth or a greenhouse.'}`);
-[['oxygen',50],['food',50],['water',500]].forEach(([k,n])=>btn(g,()=>`${SUPR[k].n} +${n} kg · ${inEarth()&&SUPR[k].earthJ?sci(SUPR[k].earthJ*n)+' J from Earth':SUPR[k].make?f1(SUPR[k].make.water*n,0)+' kg water + '+sci(SUPR[k].J*n)+' J':SUPR[k].how}`,()=>supJob(k,n),()=>(inEarth()&&SUPR[k].earthJ)||(SUPR[k].make&&matOK(Object.fromEntries(Object.entries(SUPR[k].make).map(([q,v])=>[q,v*n]))))));
-btn(g,()=>`Make 2 spare-parts kits · 20 kg iron, 4 nickel, 4 silicates, 0.02 platinum · 1e8 J`,()=>supJob('spares',2),()=>matOK({iron:20,nickel:4,silicates:4,platinum:.02}));
+[['oxygen',50],['food',50],['water',500]].forEach(([k,n0])=>btn(g,()=>{const n=n0*qN();return `${SUPR[k].n} +${n} kg · ${inEarth()&&SUPR[k].earthJ?sci(SUPR[k].earthJ*n)+' J from Earth':SUPR[k].make?f1(SUPR[k].make.water*n,0)+' kg water + '+sci(SUPR[k].J*n)+' J':SUPR[k].how}`},()=>supJob(k,n0*qN()),()=>{const n=n0*qN();return(inEarth()&&SUPR[k].earthJ)||(SUPR[k].make&&matOK(Object.fromEntries(Object.entries(SUPR[k].make).map(([q,v])=>[q,v*n]))))}));
+btn(g,()=>{const n=2*qN();return `Make ${n} spare-parts kits · ${10*n} kg iron, ${2*n} nickel, ${2*n} silicates, ${(.01*n).toFixed(2)} platinum · ${sci(5e7*n)} J`},()=>supJob('spares',2*qN()),()=>{const n=2*qN();return matOK({iron:10*n,nickel:2*n,silicates:2*n,platinum:.01*n})});
+btn(g,()=>{const n=4*qN();return `Make ${n} hull patch kits · ${f1(2.5*n,0)} kg iron, ${n} carbon, ${f1(.5*n,0)} silicates · ${sci(1e7*n)} J · you have ${Math.floor(s.res.patch||0)}`},()=>supJob('patch',4*qN()),()=>{const n=4*qN();return matOK({iron:2.5*n,carbon:n,silicates:.5*n})});
 btn(g,()=>s.leak>0?'🩹 Patch the hull breach (5 kg iron, 1 hour)':'Hull intact ✓',()=>{if(s.leak>0)queueJob({type:'patch',mat:{iron:5},name:'Patch hull breach',J:5e6,minT:3600})},()=>s.leak>0&&s.res.iron>=5);
 Object.keys(CATN).forEach(cat=>{const g2=grp(tF,CATN[cat].toUpperCase());Object.keys(PARTS).filter(k=>PARTS[k].cat===cat&&PARTS[k].J>0).forEach(k=>{const d=PARTS[k];
  info(g2,()=>`<b>${d.n}</b> · ${f1(d.m,0)} kg — ${d.d}`);info(g2,()=>!hasT(d.req)?'🔒 Research first: '+TK2[d.req].n:`Needs ${matTxt(d.mat)} · ${sci(d.J)} J${d.earth?(inEarth()?' · ✓ in Earth’s gravity zone':' · ✗ build inside Earth’s gravity zone'):''}${d.one&&s.parts.some(p=>PARTS[p.id].cat===cat)?' · replaces your current one':''}`);
- info(g2,()=>hasT(d.req)?previewTxt(k):'');btn(g2,()=>'Build: '+d.n,()=>{if(!queueJob({type:'part',id:k,mat:{...d.mat},name:d.n,J:d.J}))notify('⚠ Missing materials: '+matTxt(d.mat))},()=>hasT(d.req)&&matOK(d.mat)&&(!d.earth||inEarth())&&!(d.one&&s.parts.some(p=>p.id===k)))})});
+ info(g2,()=>hasT(d.req)?previewTxt(k):'');btn(g2,()=>'Build: '+d.n+(d.one?'':qL()),()=>{if(d.one){if(!queueJob({type:'part',id:k,mat:{...d.mat},name:d.n,J:d.J}))notify('⚠ Missing materials: '+matTxt(d.mat))}else buildN(()=>({type:'part',id:k,mat:{...d.mat},name:d.n,J:d.J}),d.n)},()=>hasT(d.req)&&matOK(d.mat)&&(!d.earth||inEarth())&&!(d.one&&s.parts.some(p=>p.id===k)))})});
 {const g2=grp(tF,'🚀 ENGINES');Object.keys(ENGR).forEach(id=>{const E2=ENGR[id],D=DR.find(x=>x.id===id);info(g2,()=>`<b>${D.ic} ${D.n}</b>${isU(id)?' · ✅ installed':''} — ${!hasT(E2.req)?'🔒 research '+TK2[E2.req].n:'needs '+matTxt(E2.mat)+' · '+sci(E2.J)+' J'+(E2.earth?' · inside Earth’s gravity zone':'')}`);
  btn(g2,()=>isU(id)?'✅ Installed':'Build: '+D.n,()=>{if(!queueJob({type:'eng',id,mat:{...E2.mat},name:D.n,J:E2.J}))notify('⚠ Missing: '+matTxt(E2.mat))},()=>!isU(id)&&hasT(E2.req)&&matOK(E2.mat)&&(!E2.earth||inEarth())&&!s.jobs.some(j=>j.id===id))})}
 {const g2=grp(tF,'🔫 WEAPONS');Object.keys(WEPR).forEach(id=>{const W2=WEPR[id],w=WEP.find(x=>x.id===id);info(g2,()=>`<b>${w.n}</b> (${W2.m} kg)${isU(id)?' · ✅ installed':''} — ${!hasT(W2.req)?'🔒 research '+TK2[W2.req].n:'needs '+matTxt(W2.mat)+' · '+sci(W2.J)+' J'}`);
  btn(g2,()=>isU(id)?'✅ Installed':'Build: '+w.n,()=>{if(!queueJob({type:'weap',id,mat:{...W2.mat},name:w.n,J:W2.J}))notify('⚠ Missing: '+matTxt(W2.mat))},()=>!isU(id)&&hasT(W2.req)&&matOK(W2.mat)&&!s.jobs.some(j=>j.id===id))});
- btn(g2,'Build 1 missile (20 iron, 5 carbon, 25 kg rocket fuel, 1e8 J)',()=>{if(s.fuel.chem>=25&&queueJob({type:'missile',n:1,mat:{iron:20,carbon:5},name:'Missile',J:1e8}))s.fuel.chem-=25},()=>isU('missile')&&matOK({iron:20,carbon:5})&&s.fuel.chem>=25)}
+ btn(g2,()=>{const n=qN();return `Build ${n} missile${n>1?'s':''} (${20*n} iron, ${5*n} carbon, ${25*n} kg rocket fuel, ${sci(1e8*n)} J)`},()=>{const n=qN();if(s.fuel.chem>=25*n&&queueJob({type:'missile',n,mat:{iron:20*n,carbon:5*n},name:n>1?n+' missiles':'Missile',J:1e8*n}))s.fuel.chem-=25*n},()=>{const n=qN();return isU('missile')&&matOK({iron:20*n,carbon:5*n})&&s.fuel.chem>=25*n})}
 // --- Research tab
 const tR=mkTab('res','🔬 Research');
 dyn(grp(tR,'RESEARCH'),()=>{const t=s.research&&TK2[s.research];return `Research points available: <b>${f1(s.rp,1)}</b> · lab produces <b>${SH.rp*(s.crew.acute>1?.6:1)} RP/hour</b>${s.shelter?' (paused: crew in the storm shelter)':''} · discoveries give bonus points (see 📚 Codex).<br>${t?`▶ Researching <b>${t.n}</b>: ${f1(s.rprog[t.id]||0,0)} / ${t.c} RP ${bar((s.rprog[t.id]||0)/t.c,'#5fb8ff')}`:'Pick something to research below.'}<br>Known technologies: ${Object.keys(s.tech).length} / ${TECH.length}`});
@@ -39,7 +47,8 @@ DR.forEach((D,i)=>{const g2=grp(tD,D.ic+' '+D.n.toUpperCase()+(D.f?'  ·  fuel: 
  info(g2,()=>isU(D.id)?D.how:'🔒 Not built. '+(ENGR[D.id]?(hasT(ENGR[D.id].req)?'Build it in 🏭 Fabricate.':'Research '+TK2[ENGR[D.id].req].n+' first.'):''));
  info(g2,()=>isU(D.id)?statsTxt(i):'');if(D.f)info(g2,()=>isU(D.id)?reachTxt(i):'');
  btn(g2,()=>!isU(D.id)?'🔒 Not built':i===di?'✓ Selected':'Use this engine',()=>setDrive(i),()=>isU(D.id)&&i!==di);
- if(D.f){[10,100,1000].forEach(n=>btn(g2,()=>`Get ${n.toLocaleString()} kg ${FUEL[D.f].n.toLowerCase()} · ${costTxt(D.f,n)}`,()=>buyFu(D.f,n),()=>isU(D.id)&&canMake(D.f,n)));
+ if(D.f){[10,100,1000].forEach(n0=>btn(g2,()=>{const n=n0*qN();return `Get ${n.toLocaleString()} kg ${FUEL[D.f].n.toLowerCase()} · ${costTxt(D.f,n)}`},()=>buyFu(D.f,n0*qN()),()=>isU(D.id)&&canMake(D.f,n0*qN())));
+  {const r=document.createElement('div');r.className='qtyfuel';r.innerHTML='<span>Exact amount:</span> <input type="number" min="1" step="1" placeholder="kg"> <button>Get</button>';g2.appendChild(r);const ip=r.querySelector('input');ip.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')r.querySelector('button').click()});r.querySelector('button').onclick=()=>{const n=+ip.value;if(!(n>0))return;if(!isU(D.id)||!canMake(D.f,n))notify('⚠ Can’t make '+f1(n,0)+' kg of '+FUEL[D.f].n.toLowerCase()+' now: '+costTxt(D.f,n));else{buyFu(D.f,n);ip.value=''}}}
   [[1e6/C,'1,000 km/s'],[.1,'0.1c'],[.99,'0.99c']].forEach(([b,t])=>btn(g2,()=>`Get enough to reach ${t}`,()=>buyFu(D.f,fuelFor(i,b)*1.001),()=>{const k=fuelFor(i,b);return isU(D.id)&&k>0&&isFinite(k)&&canMake(D.f,k)}))}
  if(!D.sail){btn(g2,()=>`Enlarge engine ×10 (→ ${sci((i===di?PW:D.pw)*10)} W, +${f1(D.al*(i===di?PW:D.pw)*9,0)} kg)`,()=>engResizeJob(D.id,10),()=>isU(D.id));btn(g2,'Shrink engine ÷10',()=>engResizeJob(D.id,.1),()=>isU(D.id)&&(i===di?PW:D.pw)>1e3);
   btn(g2,()=>D.mk>=3?'Mk III (maximum)':`Upgrade to Mk ${D.mk+1} (needs ${D.mk===1?'Engine refinement Mk II':'Engine refinement Mk III'})`,()=>engUpJob(D.id),()=>isU(D.id)&&D.mk<3&&hasT(D.mk===1?'t_eng2':'t_eng3'))}});
@@ -56,7 +65,7 @@ const tC2=mkTab('codex','📚 Codex');dyn(grp(tC2,'COLLECTION & DISCOVERIES'),()
 const tSv=mkTab('save','💾 Save');{const g2=grp(tSv,'SAVE / LOAD (stored in this browser; autosaves every minute)');['1','2','3'].forEach(k=>{btn(g2,()=>'💾 Save to slot '+k+' '+slotInfo(k),()=>{saveGame(k)&&notify('💾 Saved to slot '+k)});btn(g2,()=>'📂 Load slot '+k,()=>loadGame(k),()=>!!slotInfo(k))});btn(g2,()=>'📂 Load autosave '+slotInfo('auto'),()=>loadGame('auto'),()=>!!slotInfo('auto'));btn(g2,'🆕 Start a new game',()=>{if(confirm('Start over? Unsaved progress is lost.'))location.reload()})}
 const gT=grp(mkTab('test','🧪 Testing'),'TESTING CHEATS');btn(gT,'🔓 UNLOCK EVERYTHING (tech, engines, weapons, materials)  ·  key F9',()=>unlockAll());btn(gT,()=>(INSTANT?'● ':'○ ')+'Instant orders & building (no waiting, no energy cost)',()=>toggleInstant());btn(gT,'+1e12 J (fills storage only)',()=>{s.en=SH.cap});btn(gT,'+10 tonnes of every material',()=>{for(const k of RES)s.res[k]+=1e4});
 btn(gT,'+1,000 research points',()=>s.rp+=1000);btn(gT,'Know every technology',()=>TECH.forEach(t=>s.tech[t.id]=1));btn(gT,'Finish all jobs now',()=>{while(s.jobs.length){const j=s.jobs.shift();if(j.type==='panel')s.area+=Math.max(0,j.J-j.done)/P1;finishJob(j)}});
-btn(gT,'Refill supplies',()=>{s.res.oxygen+=200;s.res.food+=300;s.res.water+=1000;s.res.spares+=20});showTab();
+btn(gT,'Refill supplies',()=>{s.res.oxygen+=200;s.res.food+=300;s.res.water+=1000;s.res.spares+=20;s.res.patch=(s.res.patch||0)+10});showTab();
 // flight bar (bottom)
 const fl=$('ui');
 [['w','fwd','▲ Speed up','+Y','▲ Forward'],['s','back','▼ Slow down','−Y','▼ Back'],['a','left','◀ Inward','−X','◀ Left'],['d','right','▶ Outward','+X','▶ Right'],['e','up','⤒ Tilt','+Z up','⤒ Up'],['q','down','⤓ Tilt','−Z down','⤓ Down']].forEach(([k,id,o,x,f])=>hold(fl,()=>(FP?f:XYZ?x:o)+'  '+KN(BIND[id]),k));
@@ -188,12 +197,12 @@ function drawOrbit(o,fp){if(!(o.eps<0)||!(o.ec<.9999)){eline.visible=false;retur
   ep[k*3]=(d.x-fp.x+P[0]*X+Q[0]*Y)/U;ep[k*3+1]=(d.y-fp.y+P[1]*X+Q[1]*Y)/U;ep[k*3+2]=(d.z-fp.z+P[2]*X+Q[2]*Y)/U}eg.attributes.position.needsUpdate=true}
 // loop
 let last=performance.now(),fc=0;const v3=new THREE.Vector3();
-function frame(now){if(!(typeof XRS!=='undefined'&&XRS.on))requestAnimationFrame(frame);let rem=typeof UNI!=='undefined'&&UNI.on?uniRem(now):MP.role==='guest'&&MP.conn?guestRem(now):Math.min((now-last)/1000,.1)*(paused?0:WARP[wi]),n=0;last=now;const T0f=T;
- while(rem>1e-9&&n++<5000){const dt=Math.min(rem,.02*ctl(),600,apDt());step(dt);rem-=dt;T+=dt}
+function frame(now){requestAnimationFrame(frame);let rem=typeof UNI!=='undefined'&&UNI.on?uniRem(now):MP.role==='guest'&&MP.conn?guestRem(now):Math.min((now-last)/1000,.1)*(paused?0:WARP[wi]),n=0;last=now;const T0f=T;
+ while(rem>1e-9&&n++<5000){const dt=Math.min(rem,.02*ctl(),deepSpace()?1e8:600,apDt());step(dt);rem-=dt;T+=dt;const sd=s.dom;if(Math.hypot(s.x-sd.x,s.y-sd.y,s.z-sd.z)<sd.R)break}
  worldTick(T-T0f,now);survivalTick(T-T0f);ctl();{const d=s.dom,r=Math.hypot(s.x-d.x,s.y-d.y,s.z-d.z);if(r<d.R)groundContact(d);else s.msg=''}
  if(FP||SV)fi=0;if(STAB&&(FP||SV||fi==0))stabApply();else stabCapture();const fp=FOC[fi];
  ALL.forEach((b,i)=>{if(i>N)return;const x=(b.x-fp.x)/U,y=(b.y-fp.y)/U,z=(b.z-fp.z)/U;mp.set([x,y,z],i*3);if(i<N)meshes[i].position.set(x,y,z);if(i==0)light.position.set(x,y,z);
-  if(i&&i<N){const P=B[b.p];rings[i].position.set((P.x-fp.x)/U,(P.y-fp.y)/U,(P.z-fp.z)/U)}});
+  if(i&&i<N&&rings[i]){const P=B[b.p];rings[i].position.set((P.x-fp.x)/U,(P.y-fp.y)/U,(P.z-fp.z)/U)}});
  mg.attributes.position.needsUpdate=true;drawOrbit(elements(),fp);astDraw(fp);pathDraw(fp);mpDraw(fp);
  {const ox=mp[N*3],oy=mp[N*3+1],oz=mp[N*3+2],d=s.dom,g=gam(s),vx=s.vx/g-d.vx,vy=s.vy/g-d.vy,vz=s.vz/g-d.vz,v=Math.hypot(vx,vy,vz)||1,L=dist*.3,dv=dirVec();
   arV.visible=fi==0&&!FP&&!SV;VD=[vx/v,vy/v,vz/v];setA(arV,ox,oy,oz,[vx/v,vy/v,vz/v],L);arT.visible=fi==0&&!FP&&!SV&&!!dv&&s.burn>0;if(dv)setA(arT,ox,oy,oz,dv,L*.7);

@@ -10,6 +10,11 @@ const SENSOR_TIERS=[
  {n:'Interferometric array',range:2e9,acc:5e-5,hz:10,lvl:5,d:'Adds full loadout and engine state.'}];
 // sensor level: what your research gives you, or a sensor part you built (and upgraded), whichever is better
 const sensorTier=()=>Math.min(SENSOR_TIERS.length-1,Math.max(Math.floor(Object.keys(s.tech||{}).length/7),typeof SH!=='undefined'&&SH&&SH.sensT||0));
+// a sensor part you designed (🧪 F7) can see farther or less far than the standard one of its level: by the radar
+// equation, range ∝ (transmit power × aperture²)^¼. Research-level sensors use the standard range.
+const sensorRng=()=>{const sh=typeof SH!=='undefined'&&SH;if(!sh||!sh.sensT)return 1;const tt=Math.floor(Object.keys(s.tech||{}).length/7);
+ return sh.sensT<tt?1:sh.sensT>tt?(sh.sensR||1):Math.max(1,sh.sensR||1)};
+const sensorSpec=t=>{const S=SENSOR_TIERS[t],r=sensorRng();return r===1?S:Object.assign({},S,{range:S.range*r})};
 const ELEM_BY_TYPE={C:{C:.2,H:.02,O:.4,Si:.18,Fe:.15,Ni:.01,Pt:1e-6},S:{Si:.24,O:.42,Fe:.2,Mg:.12,Ni:.02,Pt:2e-6},M:{Fe:.86,Ni:.12,Co:.01,Pt:1.5e-5,Si:.01}};
 function tlmNoise(id,slot,k){let h=2166136261;const t=id+':'+slot+':'+k;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)}return((h>>>0)/4294967295-.5)*2}
 // raw truth → what this sensor tier reports
@@ -18,10 +23,11 @@ function tlmNoise(id,slot,k){let h=2166136261;const t=id+':'+slot+':'+k;for(let 
 // things that are themselves transmitting (raiders, active players), which you hear from 1.5× your active range.
 // A quiet ship (passive, engine off) is only seen by others within half their normal range.
 const SENSE={passR:.35,passErr:4,hearR:1.5,quietR:.5};
-function tlmContact(src,tier){const S=SENSOR_TIERS[tier],g=gam(s),dx=src.x-s.x,dy=src.y-s.y,dz=src.z-s.z,d=Math.hypot(dx,dy,dz),act=!s.passive;
+function tlmContact(src,tier){const S=sensorSpec(tier),g=gam(s),dx=src.x-s.x,dy=src.y-s.y,dz=src.z-s.z,d=Math.hypot(dx,dy,dz),act=!s.passive;
  const R=src.emits&&!act?S.range*SENSE.hearR:S.range*(act?1:SENSE.passR)*(src.quiet?SENSE.quietR:1);if(d>R||d<1)return null;
- const slot=Math.floor(T*S.hz),sig=Math.max(1,S.acc*d*(act?1:SENSE.passErr)),c={v:'ORB-TLM/1',id:src.id,kind:src.kind,name:S.lvl>=2||src.kind==='planet'?src.name:'unknown',t:T,lvl:S.lvl,
-  pos:[src.x+sig*tlmNoise(src.id,slot,0),src.y+sig*tlmNoise(src.id,slot,1),src.z+sig*tlmNoise(src.id,slot,2)],sigma:sig,range:d,hostile:!!src.hostile};
+ // light-time: what you detect left the object d/c ago, so you see it where it was then (first order: x − v·d/c)
+ const lt=d/C,vx0=src.v?src.v[0]:0,vy0=src.v?src.v[1]:0,vz0=src.v?src.v[2]:0,slot=Math.floor(T*S.hz),sig=Math.max(1,S.acc*d*(act?1:SENSE.passErr)),c={v:'ORB-TLM/1',id:src.id,kind:src.kind,name:S.lvl>=2||src.kind==='planet'?src.name:'unknown',t:T,lvl:S.lvl,
+  pos:[src.x-lt*vx0+sig*tlmNoise(src.id,slot,0),src.y-lt*vy0+sig*tlmNoise(src.id,slot,1),src.z-lt*vz0+sig*tlmNoise(src.id,slot,2)],sigma:sig,range:d,lt,hostile:!!src.hostile};
  if(S.lvl>=3&&src.cls)c.cls=src.cls; // ship class, from mass and size (sensor level 3+)
  if(S.lvl>=2&&src.v){const sv=Math.max(.1,S.acc*300);c.vel=[src.v[0]+sv*tlmNoise(src.id,slot,3),src.v[1]+sv*tlmNoise(src.id,slot,4),src.v[2]+sv*tlmNoise(src.id,slot,5)];c.sigmaV=sv;
   c.closing=-(dx*(src.v[0]-s.vx/g)+dy*(src.v[1]-s.vy/g)+dz*(src.v[2]-s.vz/g))/d}
@@ -31,8 +37,8 @@ function tlmContact(src,tier){const S=SENSOR_TIERS[tier],g=gam(s),dx=src.x-s.x,d
  return c}
 // everything that exists near you, in one shape (truth; never shown directly)
 function tlmSources(){const L=[],g=gam(s);
- for(const o of OBJS){if(o.alive===false)continue;const k=o.pilot?'player':o.raider?'raider':o.kind==='drone'?'drone':o.hostile?'missile':o.kind==='missile'?'own-missile':o.kind==='slug'?'slug':null;if(!k)continue;if(!o.tid)o.tid=k+'-'+Math.random().toString(36).slice(2,8);
-  L.push({emits:!!o.raider,cls:o.raider?o.cls||'drone':null,id:o.tid,kind:k,name:o.pilot?o.name:o.raider?'Raider '+(o.cls&&o.cls!=='drone'?(o.cls==='missile'?'missile boat':o.cls)+' ':'')+o.name:k,x:o.x,y:o.y,z:o.z,v:[o.vx,o.vy,o.vz],hostile:!!(o.raider||o.hostile),mass:o.kind==='missile'?(o.dry||25)+(o.fuel||0):o.raider?1800:o.kind==='slug'?2:900,radius:o.r||1,
+ for(const o of OBJS){if(o.alive===false)continue;const k=o.pilot?'player':o.station?'station':o.raider?'raider':o.kind==='drone'?'drone':o.hostile?'missile':o.kind==='missile'?'own-missile':o.kind==='slug'?'slug':null;if(!k)continue;if(!o.tid)o.tid=k+'-'+Math.random().toString(36).slice(2,8);
+  L.push({emits:!!o.raider||!!o.station,cls:o.raider?o.cls||'drone':null,id:o.tid,kind:k,name:o.pilot?o.name:o.station?'Outpost '+o.name:o.raider?'Raider '+(o.cls&&o.cls!=='drone'?(o.cls==='missile'?'missile boat':o.cls)+' ':'')+o.name:k,x:o.x,y:o.y,z:o.z,v:[o.vx,o.vy,o.vz],hostile:!!(o.raider||o.hostile),mass:o.kind==='missile'?(o.dry||25)+(o.fuel||0):o.station?4000:o.raider?1800:o.kind==='slug'?2:900,radius:o.r||1,
    hull:o.hpMax?o.hp/o.hpMax:null,elements:{Fe:.6,C:.2,Si:.1,Ni:.05,Pt:.001},ammo:o.raider?{missiles:o.mis||0}:null,loadout:o.raider?['pulse laser',o.mis?'missile rack':null].filter(Boolean):null,engine:o.raider?{accel:o.acc,burn:o.burn||0}:null})}
  for(const a of AST){const p=astState(a);if(Math.abs(p.x-s.x)>2e9)continue;const m=4.19*a.r**3*2000;L.push({id:'ast-'+a.n,kind:'asteroid',name:a.n+' ('+a.t+'-type)',x:p.x,y:p.y,z:p.z,v:[p.vx,p.vy,p.vz],mass:m,radius:a.r,elements:ELEM_BY_TYPE[a.t]||null})}
  if(typeof RS!=='undefined'&&RS&&RS.x)L.push({emits:RS.act!==false,quiet:RS.act===false&&!(RS.burn>0),id:'player-'+(MP.peerName||'peer'),kind:'player',name:MP.peerName||'Other player',x:RS.x,y:RS.y,z:RS.z,v:[RS.vx,RS.vy,RS.vz],hostile:false,radius:RS.r||15,hull:RS.hull&&RS.hullMax?RS.hull/RS.hullMax:null,engine:RS.eng?{id:RS.eng,burn:RS.burn}:null,mass:RS.led?RS.led.m:null,elements:RS.led?RS.led.el:null,ammo:RS.led?{missiles:RS.led.mis}:null,loadout:RS.led?RS.led.wep:null});
@@ -71,7 +77,7 @@ radarReg('list',(x,W,H,L,o)=>{x.font='10px ui-monospace,monospace';let y=12;for(
 radarReg('minimal',(x,W,H,L,o)=>{const cx=W/2,cy=H/2,R=Math.min(W,H)/2-6;x.strokeStyle='rgba(255,255,255,.18)';x.beginPath();x.arc(cx,cy,R,0,7);x.stroke();
  for(const c of L){const p=rLocal(c),r=rMap(c.range,o.range)*R,an=Math.atan2(p[1],p[0]);x.fillStyle=rCol(c);x.beginPath();x.arc(cx+r*Math.cos(an),cy-r*Math.sin(an),2.2,0,7);x.fill()}},'One ring, coloured dots');
 let RADAR_DESIGN='3d';try{RADAR_DESIGN=localStorage.getItem('orbital-radar')||'3d'}catch(e){}
-function radarDraw(cv){const W=cv.width,H=cv.height,x=cv.getContext&&cv.getContext('2d');if(!x)return;x.clearRect(0,0,W,H);const tier=sensorTier(),S=SENSOR_TIERS[tier],L=tlmContacts();
+function radarDraw(cv){const W=cv.width,H=cv.height,x=cv.getContext&&cv.getContext('2d');if(!x)return;x.clearRect(0,0,W,H);const tier=sensorTier(),S=sensorSpec(tier),L=tlmContacts();
  const hs=L.filter(c=>c.hostile||c.kind==='player'),ref=hs.length?hs:L.slice(0,6),far=ref.reduce((m,c)=>Math.max(m,c.range),0),view=Math.min(S.range,Math.max(2e4,far*1.4));
  const R=RADARS[RADAR_DESIGN]||RADARS.holo;try{R.f(x,W,H,L.filter(c=>c.range<=view),{range:view,sensorRange:S.range,tier,sensor:S,me:s})}catch(e){x.fillStyle='#ff6a5a';x.fillText('radar design error: '+e.message,4,14)}
  x.font='9px ui-monospace,monospace';x.fillStyle='rgba(160,220,255,.75)';x.fillText(`${S.n} · L${S.lvl} · scale ${fmtD(view)} of ${fmtD(S.range)} · ${L.length} contacts · ${s.passive?'PASSIVE':'ACTIVE'}`,4,H-4)}

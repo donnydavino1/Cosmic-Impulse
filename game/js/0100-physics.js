@@ -52,15 +52,17 @@ const FUEL={chem:{n:'Rocket fuel',full:'liquid hydrogen + liquid oxygen',J:3e7,e
  fus:{n:'Deuterium',full:'deuterium (heavy hydrogen)',J:1e10,earthJ:3e10,make:{water:30000},how:'about 1 in 3,200 water molecules holds a deuterium atom: ~30 tonnes of water → 1 kg'},
  am:{n:'Antimatter fuel',full:'matter + antimatter, equal parts',J:C*C,make:{},how:'made in your antimatter factory at exactly its mc² in energy (the theoretical limit)'}};
 for(const k in FUEL)Object.defineProperty(FUEL[k],'cost',{get(){return inEarth()&&this.earthJ?this.earthJ:this.J}});
-s.fuel={chem:4200,xe:100,h2:0,fus:0,am:0};s.res={water:300,carbon:20,silicates:200,iron:100,nickel:20,platinum:0,oxygen:60,food:120,spares:6};s.mined=0;s.sailA=0;s.ammo={missile:4};
+// the starter ship: a year of supplies for a crew of two (0.84 kg O2, 2.5 kg water, 1.6 kg food per person per day) and a
+// rocket-fuel tank sized so the chemical rocket can still escape Earth with all that aboard
+s.fuel={chem:9000,xe:100,h2:0,fus:0,am:0};s.res={water:1830,carbon:20,silicates:200,iron:100,nickel:20,platinum:0,oxygen:615,food:1170,spares:6,patch:8};s.mined=0;s.sailA=0;s.ammo={missile:4};
 // ship systems state
 s.parts=['frame_al','bat_li','ls_open','lab1','fab1'].map(id=>({id,cond:1,fail:false}));s.tLo=293;s.tHi=300;s.rp=20;s.tech={};s.research=null;s.rprog={};s.jobs=[];
 s.crew={hp:100,dose:0,acute:0,alive:true};s.co2=0;s.leak=0;s.pcond=1;s.lim={};s.burnAcc=0;s.wHeat=0;s.pFree=0;s.roomLo=1e9;s.roomHi=1e9;s.engHeat=0;s.genNow=0;s.loadNow=0;
 s.codex={seen:{},log:[],built:{},rec:{maxV:0,minR:AU,maxR:AU,mined:0,age:0}};
 Object.defineProperty(s,'prop',{get(){const f=DR[di].f;return f?s.fuel[f]:Infinity},set(v){const f=DR[di].f;if(f)s.fuel[f]=v},configurable:true});
 let di=0,PW=DR[0].pw,Q=1,UNL={chem:1,ion:1,mlaser:1,plaser:1,missile:1};const isU=id=>!!UNL[id],inEarth=()=>s.dom===B[3];
-const fuelMass=()=>Object.values(s.fuel).reduce((a,b)=>a+b,0),resMass=()=>Object.values(s.res).reduce((a,b)=>a+b,0);
-const mass=()=>dryMass()+.2*s.area+fuelMass()+resMass()+s.sailA*.02+s.ammo.missile*50+(typeof opsMass==='function'?opsMass():0)+s.en/(C*C); // stored energy has mass E/c^2
+const fuelMass=()=>Object.values(s.fuel).reduce((a,b)=>a+b,0),resMass=()=>{let m=0;for(const k in s.res)m+=s.res[k]*(k==='spares'||k==='patch'?kitKg(k):1);return m},kitKg=k=>typeof SUPR!=='undefined'&&SUPR[k]&&SUPR[k].mat?Object.values(SUPR[k].mat).reduce((a,b)=>a+b,0):1;   // kits are counted, so they weigh what they're made of
+const mass=()=>dryMass()+.2*s.area+fuelMass()+resMass()+s.sailA*.02+s.ammo.missile*50+(typeof opsMass==='function'?opsMass():0)+(typeof crewN==='function'?crewN()*80:0)+s.en/(C*C); // stored energy has mass E/c^2
 const gam=b=>Math.sqrt(1+(b.vx*b.vx+b.vy*b.vy+b.vz*b.vz)/(C*C));
 function acc(){for(const b of ALL){if(b.rail)continue;let X=0,Y=0,Z=0;for(const o of B){if(o===b)continue;const dx=o.x-b.x,dy=o.y-b.y,dz=o.z-b.z,r2=dx*dx+dy*dy+dz*dz,f=o.GM/(r2*Math.sqrt(r2));X+=dx*f;Y+=dy*f;Z+=dz*f}b.ax=X;b.ay=Y;b.az=Z}}
 function ctl(){let best=0,bs=1e30,tm=1e30;for(let i=0;i<N;i++){const b=B[i],d=Math.hypot(s.x-b.x,s.y-b.y,s.z-b.z);if(i&&d<b.soi&&b.soi<bs){bs=b.soi;best=i}const t=Math.min(Math.sqrt(d*d*d/b.GM),10*d/(Math.hypot(s.vx,s.vy,s.vz)+1));if(t<tm)tm=t}s.dom=B[best];return tm}
@@ -80,7 +82,9 @@ function step(dt){TDT=dt;const h=dt/2; // inside a step, positions are already a
    s.prop=Math.max(0,s.prop-f*md*dt/g);if(De.el)s.en-=f*PW*dt/g;s.burn=F>0?f:0;s.engHeat=F>0?f*PW*De.hf:0;if(!PREDICTING&&F>0)s.burnAcc+=f*dt}}
  for(const b of ALL){if(b.rail)continue;b.vx+=b.ax*h;b.vy+=b.ay*h;b.vz+=b.az*h}
  {const um=MAXB*C/Math.sqrt(1-MAXB*MAXB),u=Math.hypot(s.vx,s.vy,s.vz);if(u>um){const k=um/u;s.vx*=k;s.vy*=k;s.vz*=k}}
- s.tau+=dt/gam(s);
+ // ship clock: special-relativistic time dilation (1/γ) times the weak-field gravitational term (1 + Φ/c²), Φ = −Σ GM/r:
+ // the leading post-Newtonian clock correction (the one GPS satellites need). Motion itself stays Newton + special relativity.
+ {let phi=0;for(let i=0;i<N;i++){const b=B[i];phi-=b.GM/Math.max(b.R||1,Math.hypot(s.x-b.x,s.y-b.y,s.z-b.z))}s.phi=phi;s.tau+=dt/gam(s)*(1+phi/(C*C))}
  const wx=B[0].x-s.x,wy=B[0].y-s.y,wz=B[0].z-s.z,w2=wx*wx+wy*wy+wz*wz;s.lit=1;
  for(let i=1;i<N;i++){const b=B[i];let t=((b.x-s.x)*wx+(b.y-s.y)*wy+(b.z-s.z)*wz)/w2;t=Math.max(0,Math.min(1,t));
   if(Math.hypot(s.x+t*wx-b.x,s.y+t*wy-b.y,s.z+t*wz-b.z)<b.R){s.lit=0;break}}
@@ -108,15 +112,45 @@ function radCtl(rT,end){const S=B[0],g=gam(s),rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r
  THR=Math.min(1,dl/(a*3000));AP.dtcap=600;if(end)AP.stage=err<0?'stage 3: braking so the orbit shrinks toward the Sun':'stage 3: speeding up so the orbit grows';
  return{dir:[dx/dl,dy/dl,dz/dl]}}
 // rendezvous: steer the velocity relative to the asteroid, cancelling the difference in gravity between ship and asteroid
-function apAst(){const S=B[0],g=gam(s),A=AP.pl?plState(T+TDT):astState(AP.ast,T+TDT),rx=s.x-A.x,ry=s.y-A.y,rz=s.z-A.z,d=Math.hypot(rx,ry,rz)||1,vx=s.vx/g-A.vx,vy=s.vy/g-A.vy,vz=s.vz/g-A.vz,vr=Math.hypot(vx,vy,vz),
+// two-body orbit after dt seconds: Kepler's equation in eccentric-anomaly difference form, then the f and g functions
+function kepProp(mu,r,v,dt){const r0=Math.hypot(r[0],r[1],r[2]),v2=v[0]*v[0]+v[1]*v[1]+v[2]*v[2],a=1/(2/r0-v2/mu);
+ if(!(a>0)||!isFinite(a))return[r[0]+v[0]*dt,r[1]+v[1]*dt,r[2]+v[2]*dt,v[0],v[1],v[2]];
+ const n=Math.sqrt(mu/(a*a*a)),P=2*Math.PI/n;dt=((dt%P)+P)%P;const sa=Math.sqrt(a),s0=(r[0]*v[0]+r[1]*v[1]+r[2]*v[2])/Math.sqrt(mu),c0=1-r0/a,M=n*dt;
+ let E=M;for(let i=0;i<40;i++){const f=E-c0*Math.sin(E)+s0/sa*(1-Math.cos(E))-M,fp=1-c0*Math.cos(E)+s0/sa*Math.sin(E),d=f/fp;E-=d;if(Math.abs(d)<1e-12)break}
+ const cE=Math.cos(E),sE=Math.sin(E),R=a+(r0-a)*cE+s0*sa*sE,f=1-a/r0*(1-cE),g=dt+Math.sqrt(a*a*a/mu)*(sE-E),fd=-Math.sqrt(mu*a)/(R*r0)*sE,gd=1-a/R*(1-cE);
+ return[f*r[0]+g*v[0],f*r[1]+g*v[1],f*r[2]+g*v[2],fd*r[0]+gd*v[0],fd*r[1]+gd*v[1],fd*r[2]+gd*v[2]]}
+// rendezvous with something orbiting the same body (an outpost): plan a coasting transfer that meets it about a third of an
+// orbit from now (Kepler shooting: adjust the start velocity until the coast ends at the target), burn the difference,
+// coast, re-plan as needed; the last 5 km use the direct approach below. Far cheaper than flying straight at it.
+// inside a step positions are already at T+TDT but velocities are half a gravity kick behind: both are brought to T+TDT
+function apRdv(dRel){const Tn=T+TDT,D0=s.dom,mu=D0.GM,g=gam(s),r0=[s.x-D0.x,s.y-D0.y,s.z-D0.z],h2=TDT/2,v0=[(s.vx+s.ax*h2)/g-D0.vx,(s.vy+s.ay*h2)/g-D0.vy,(s.vz+s.az*h2)/g-D0.vz],rr=Math.hypot(r0[0],r0[1],r0[2]),
+  sa=1/(2/rr-(v0[0]**2+v0[1]**2+v0[2]**2)/mu),P=sa>0?2*Math.PI*Math.sqrt(sa**3/mu):6000,amax=Math.max(1e-9,thrustAcc());
+ const plan=tf=>{const tg=AP.rel(Tn+tf,D0);if(!tg)return null;let v=v0.slice();
+  for(let it=0;it<10;it++){const e=kepProp(mu,r0,v,tf),er=[e[0]-tg[0],e[1]-tg[1],e[2]-tg[2]];if(Math.hypot(er[0],er[1],er[2])<5)break;const J=[];
+   for(let k=0;k<3;k++){const vk=v.slice();vk[k]+=.5;const q=kepProp(mu,r0,vk,tf);J.push([(q[0]-e[0])/.5,(q[1]-e[1])/.5,(q[2]-e[2])/.5])}
+   const det=(a,b,c)=>a[0]*(b[1]*c[2]-b[2]*c[1])-a[1]*(b[0]*c[2]-b[2]*c[0])+a[2]*(b[0]*c[1]-b[1]*c[0]),Dt=det(J[0],J[1],J[2]);if(!Dt)return null;
+   const x=[det(er,J[1],J[2])/Dt,det(J[0],er,J[2])/Dt,det(J[0],J[1],er)/Dt];for(let k=0;k<3;k++)v[k]-=Math.max(-2e3,Math.min(2e3,x[k]))}
+  const e=kepProp(mu,r0,v,tf);if(Math.hypot(e[0]-tg[0],e[1]-tg[1],e[2]-tg[2])>2e3)return null;
+  // the coast must stay clear of the surface (and the atmosphere)
+  const hx=r0[1]*v[2]-r0[2]*v[1],hy=r0[2]*v[0]-r0[0]*v[2],hz=r0[0]*v[1]-r0[1]*v[0],a=1/(2/rr-(v[0]**2+v[1]**2+v[2]**2)/mu),ec=Math.sqrt(Math.max(0,1-(hx*hx+hy*hy+hz*hz)/(mu*a)));
+  if(!(a>0)||a*(1-ec)<D0.R*1.015+1e5*(D0.atm?1:0))return null;return{v,dv:Math.hypot(v[0]-v0[0],v[1]-v0[1],v[2]-v0[2])}};
+ if(!AP.tArr||AP.tArr-Tn<Math.min(120,.03*P)){let best=null;for(const f of[.35,.5,.25,.7,.9,1.2]){const tf=Math.max(600,f*P),q=plan(tf);if(q&&(!best||q.dv<best.dv*.8))best={tf,dv:q.dv}}
+  if(!best)return null;AP.tArr=Tn+best.tf}
+ const tf=AP.tArr-Tn,q=plan(tf);if(!q){AP.tArr=0;return null}
+ const dv=[q.v[0]-v0[0],q.v[1]-v0[1],q.v[2]-v0[2]],dn=q.dv;
+ if(dn>(AP.coast?2:.3)){AP.coast=false;THR=Math.min(1,dn/(amax*Math.max(TDT,1e-3)));AP.dtcap=Math.max(1,Math.min(30,dn/amax/2));AP.stage='transfer burn toward '+AP.ast.n+' · '+Math.round(dRel/1e3).toLocaleString()+' km · '+dn.toFixed(dn<10?1:0)+' m/s to go';return{dir:[dv[0]/dn,dv[1]/dn,dv[2]/dn]}}
+ AP.coast=true;THR=0;AP.dtcap=Math.max(2,Math.min(120,tf/40));AP.stage='coasting to '+AP.ast.n+' · '+Math.round(dRel/1e3).toLocaleString()+' km · arriving in '+Math.round(tf/60)+' min';return{}}
+function apAst(){const S=B[0],g=gam(s),A=AP.pl?(AP.fn||plState)(T+TDT):astState(AP.ast,T+TDT),rx=s.x-A.x,ry=s.y-A.y,rz=s.z-A.z,d=Math.hypot(rx,ry,rz)||1,h2=TDT/2,vx=(s.vx+s.ax*h2)/g-A.vx,vy=(s.vy+s.ay*h2)/g-A.vy,vz=(s.vz+s.az*h2)/g-A.vz,vr=Math.hypot(vx,vy,vz),
   rs=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z),ra=Math.hypot(A.x-S.x,A.y-S.y,A.z-S.z);
+ if(AP.rel&&s.dom!==S&&d>5e3&&!AP.hold){const q=apRdv(d);if(q)return q}else AP.tArr=0;
+ if(AP.hold&&AP.rel&&d<4e3&&vr<.8){THR=0;AP.dtcap=4;AP.stage='holding position near '+AP.ast.n+' (docking range)';return{}} // drifting together: no fuel needed
  if(!AP.close&&d>.05*AU&&Math.abs(rs-ra)>.02*AU){AP.stage="stage 3: matching "+AP.ast.n+"'s distance from the Sun";return radCtl(ra,false)}
  AP.close=true;const amax=Math.max(1e-9,thrustAcc()),dock=1500,cl=Math.max(0,d-dock),vc=Math.min(Math.sqrt(.7*amax*cl),AP.vcap||3e4),
   gS=S.GM/ra**3,gSh=gravAt(s.x,s.y,s.z),gA=AP.pl?gravAt(A.x,A.y,A.z):[-(A.x-S.x)*gS,-(A.y-S.y)*gS,-(A.z-S.z)*gS],tau=Math.max(20,Math.min(4000,cl/(vc+1)*.3+20)),
   ax=(-rx/d*vc-vx)/tau+gA[0]-gSh[0],ay=(-ry/d*vc-vy)/tau+gA[1]-gSh[1],az=(-rz/d*vc-vz)/tau+gA[2]-gSh[2],al=Math.hypot(ax,ay,az)||1e-30;
  THR=Math.min(1,al/amax);AP.dtcap=Math.max(2,Math.min(600,tau/4,.05*d/(vr+.1)));
- if(d<2*dock&&vr<.5&&!AP.hold){AP.hold=true;apNote='✅ Arrived at '+AP.ast.n+': holding position '+(d/1e3).toFixed(1)+' km away, in mining range'}
- AP.stage=AP.hold?'holding position near '+AP.ast.n+' (mining range)':'stage 4: closing in on '+AP.ast.n+' · '+(d>1e9?(d/AU).toFixed(3)+' AU':Math.round(d/1e3).toLocaleString()+' km')+' · closing at '+(vr<1e3?vr.toFixed(0)+' m/s':(vr/1e3).toFixed(1)+' km/s');
+ if(d<2*dock&&vr<.5&&!AP.hold){AP.hold=true;apNote='✅ Arrived at '+AP.ast.n+': holding position '+(d/1e3).toFixed(1)+' km away, in '+(AP.rel?'docking':'mining')+' range'}
+ AP.stage=AP.hold?'holding position near '+AP.ast.n+(AP.rel?' (docking range)':' (mining range)'):'stage 4: closing in on '+AP.ast.n+' · '+(d>1e9?(d/AU).toFixed(3)+' AU':Math.round(d/1e3).toLocaleString()+' km')+' · closing at '+(vr<1e3?vr.toFixed(0)+' m/s':(vr/1e3).toFixed(1)+' km/s');
  return{dir:[ax/al,ay/al,az/al]}}
 // orbit planner: steer onto a circular orbit of radius O.r around B[O.b]; eq = equatorial (geostationary), else keep the
 // current orbital plane (geosynchronous / custom). Tangential speed tracks the circular speed while a radial drift
@@ -132,10 +166,33 @@ function apOrb(){const O=AP.orb,P=B[O.b],g=gam(s);if(s.dom!==P){AP.stage='waitin
  THR=Math.min(1,dl/(a*Math.max(20,per/200)));AP.dtcap=Math.max(1,Math.min(120,per/400));
  AP.stage=Math.abs(err)>.01*O.r?(err>0?'raising':'lowering')+' the orbit toward '+Math.round(O.r/1e3).toLocaleString()+' km':Math.abs(off)>.01*O.r?'tilting into the equator':'rounding off the orbit';
  return{dir:[dx/dl,dy/dl,dz/dl]}}
+// INTERSTELLAR CRUISE (stars and galaxies): accelerate straight at the target while there is still enough propellant
+// (rapidity budget, relativistic rocket equation Δφ = (vₑ/c)·ln(m₀/m₁)) to stop, coast, then brake at constant proper
+// acceleration α over the relativistic stopping distance (c²/α)(γ − 1), arriving inside the target's arrival radius.
+function apIst(){const Tg=B[AP.ist.i],g=gam(s),rx=Tg.x-s.x,ry=Tg.y-s.y,rz=Tg.z-s.z,d=Math.hypot(rx,ry,rz)||1,ux=s.vx-Tg.vx*g,uy=s.vy-Tg.vy*g,uz=s.vz-Tg.vz*g,u=Math.hypot(ux,uy,uz),
+  gm=Math.sqrt(1+u*u/(C*C)),phi=Math.asinh(u/C),D=DR[di],a=Math.max(1e-12,thrustAcc()*((s.lim&&s.lim.f>0)?s.lim.f:1)),R=AP.ist.r,along=u>0?(ux*rx+uy*ry+uz*rz)/(u*d):1;
+ if(d<R&&u<1e5){apNote='✅ Arrived at '+AP.name+': '+fmtD(d)+' from it';const i=AP.ist.i,nm=AP.name;AP=s.dom===Tg?{name:nm,orb:{b:i,r:Math.max(AU,Math.min(2*AU,d))},stage:''}:null;if(AP)notify('🛰 '+tr('Arrived: the autopilot now settles into a circular orbit around')+' '+tr(nm)+'.');return AP?{}:null}
+ const M=mass(),Phi=D.f?(D.ve/C)*Math.log(M/Math.max(1e-9,M-s.prop)):Infinity,stopD=(C*C/a)*(gm-1)*1.08,toGo=d-R*.5;
+ const ud=MAXB*C/Math.sqrt(1-MAXB*MAXB)*.999,dirTo=[rx/d,ry/d,rz/d];
+ if(along>0&&toGo<=stopD){THR=1;AP.dtcap=Math.max(30,Math.min(d>1e17?1e8:1e6,.002*Math.max(u,1e4)/a));AP.stage='braking for '+AP.name+' · '+fmtD(d)+' · '+spd(u/gm/C);
+  const k=Math.min(1,u/1e6),dx=-ux/(u||1)+dirTo[0]*.05*(1-k),dy=-uy/(u||1)+dirTo[1]*.05*(1-k),dz=-uz/(u||1)+dirTo[2]*.05*(1-k),l=Math.hypot(dx,dy,dz)||1;return{dir:[dx/l,dy/l,dz/l]}}
+ // first climb out of the Sun's gravity well: while the Sun pulls harder than a third of your thrust, push along your
+ // motion around the Sun (a spiral that only ever raises the orbit) instead of aiming at the star and falling sunward
+ {const S=B[0],sx=s.x-S.x,sy=s.y-S.y,sz=s.z-S.z,sr=Math.hypot(sx,sy,sz),vx=s.vx/g-S.vx,vy=s.vy/g-S.vy,vz=s.vz/g-S.vz,vs=Math.hypot(vx,vy,vz)||1;
+  if(Tg!==S&&sr<2e3*AU&&S.GM/(sr*sr)>a/3&&phi<Phi*.97){THR=1;AP.dtcap=Math.max(30,Math.min(1e6,.002*Math.max(vs,1e4)/a,sr/vs*.002));
+   AP.stage='climbing out of the Sun’s gravity · '+fmtD(sr)+' from the Sun · '+spd(vs/C);return{dir:[vx/vs,vy/vs,vz/vs]}}}
+ // steer toward the speed you could still brake from (so sideways drift is cancelled too: aiming straight at the star
+ // is a central push that keeps your sideways motion and makes you circle it instead of arriving)
+ const vdes=Math.min(ud,Math.sqrt(2*a*Math.max(0,toGo))*.8),wx0=dirTo[0]*vdes-ux,wy0=dirTo[1]*vdes-uy,wz0=dirTo[2]*vdes-uz,wl=Math.hypot(wx0,wy0,wz0);
+ if(phi<Phi*.97&&wl>Math.max(50,.02*u)&&(u<vdes||(wx0*ux+wy0*uy+wz0*uz)<.5*wl*u)){const wx=wx0,wy=wy0,wz=wz0,l=wl||1;THR=1;AP.dtcap=Math.max(30,Math.min(d>1e17?1e8:1e6,.002*Math.max(u,1e4)/a));
+  AP.stage='accelerating toward '+AP.name+' · '+fmtD(d)+' · '+spd(u/gm/C);return{dir:[wx/l,wy/l,wz/l]}}
+ THR=0;AP.dtcap=Math.max(1e3,Math.min(1e9,(toGo-stopD)/(u/gm+1)*.05));AP.stage='coasting to '+AP.name+' · '+fmtD(d)+' · '+spd(u/gm/C)+' · braking in '+dur(Math.max(0,toGo-stopD)/(u/gm+1));return{}}
 function apKeys(){THR=1;if(!AP)return null;const S=B[0];if(AP.orb&&!AP.wait)return apOrb();
  if(AP.wait){if(s.jobs.includes(AP.wait)){AP.stage='waiting for fuel production: '+Math.round(100*(AP.wait.fr||0))+'% (ETA '+dur(jobETA(AP.wait,s.jobs.indexOf(AP.wait)))+')';THR=0;AP.dtcap=600;return{}}AP.wait=null;PRED=null}
- if(s.dom!==S){const oo=elements();if(oo.eps<1.25e5){AP.stage='stage 1: spiraling out to escape '+s.dom.n;AP.dtcap=600;return{w:1}}
+ // a moving target inside the same planet's (or moon's) gravity, e.g. another ship or an outpost in orbit: no need to escape first
+ const same=AP.ist&&s.dom.star||AP.pl&&s.dom!==S&&(()=>{const A=(AP.fn||plState)(T);return Math.hypot(A.x-s.dom.x,A.y-s.dom.y,A.z-s.dom.z)<s.dom.soi})();
+ if(s.dom!==S&&!same){const oo=elements();if(oo.eps<1.25e5){AP.stage='stage 1: spiraling out to escape '+s.dom.n;AP.dtcap=600;return{w:1}}
   AP.stage='stage 2: coasting out of '+s.dom.n+"'s gravity (engine off, saving fuel)";THR=0;AP.dtcap=600;return{}}
- return AP.ast?apAst():radCtl(AP.r,true)}
+ return AP.ist?apIst():AP.ast?apAst():radCtl(AP.r,true)}
 const apDt=()=>AP&&AP.dtcap||600;
 acc(); // initialise accelerations before the first leapfrog step

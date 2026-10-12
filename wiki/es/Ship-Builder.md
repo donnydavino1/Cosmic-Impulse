@@ -75,6 +75,17 @@ porque toda la nave debe girar para apuntarlo. Los **motores** están en la popa
 
 ## Diseñar tus propias piezas
 
+Además de radiadores, baterías, reactores y blindaje, el diseñador hace **estructuras**, **blindaje antirradiación**,
+**sensores**, **laboratorios** y **fabricadores**:
+
+| Tipo | Eliges | El compromiso (la misma fórmula para todos) |
+|---|---|---|
+| 🏗 Estructura | aluminio, carbono o acero al titanio; empuje nominal en g | la masa crece como (g)^0,6 desde la estructura de serie de ese material |
+| ☢ Blindaje antirradiación | aluminio o polietileno; 1–20 g/cm² | 300 kg por g/cm²; el polietileno cuenta 1,6× contra la radiación |
+| 📡 Sensor | antena Doppler, antena en fase o lidar; apertura y potencia | alcance ∝ (potencia × apertura²)^¼, la ecuación del radar: 16× la potencia o 4× la apertura duplican el alcance |
+| 🔬 Laboratorio | laboratorio a bordo o estación de investigación; masa | los puntos de investigación crecen como masa^0,85 |
+| 🏭 Fabricador | industrial o fábrica orbital; masa | potencia de fabricación proporcional a la masa |
+
 **🧪 Diseñar una pieza nueva** (o **F7**) abre el diseñador: elige radiador, batería, reactor o blindaje, su tipo y arrastra
 su tamaño. El diseñador calcula su masa, materiales, energía de fabricación, investigación necesaria y rendimiento con la
 misma física para todos (reproduce exactamente las piezas de serie a sus tamaños). Un diseño guardado aparece en

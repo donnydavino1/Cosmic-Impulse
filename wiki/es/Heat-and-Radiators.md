@@ -59,3 +59,24 @@ Ambos son piezas en 🛠 → 🏭 Fabricar (requieren *Materiales compuestos de 
 - Los láseres y el cañón de riel también convierten energía en calor ([[Combate|Combat]]).
 - En el [[Constructor de naves|Ship Builder]], los radiadores son módulos con aletas; colócalos donde quieras: los
   circuitos van por la estructura.
+
+## La vista 🌡 Térmico (F2)
+
+Ábrela con **F2**, el botón **🌡 CALOR** de la barra superior, un clic en la pantalla **SISTEMAS** de la cabina de vuelo 3D, o 🛠 Ingeniería → Nave → 🌡 Térmico. Muestra:
+
+- un **mapa de calor** de tu nave: cada módulo coloreado según la temperatura de su circuito (azul frío, verde cómodo,
+  amarillo en el límite de 45 °C de la tripulación, rojo caliente, blanco a 1.200 K), las aletas de los radiadores y la
+  tobera del motor brillando mientras empuja;
+- el **calor entrante** de cada circuito, lo que sus radiadores **pueden disipar**, dónde se **estabiliza** su temperatura
+  y cuánto falta para superar el límite;
+- **de dónde viene el calor** ahora (sistemas y tripulación, sol sobre el casco, armas, fabricación, reactores, motor);
+- una **calculadora de radiadores**: elige un motor, una potencia y la temperatura máxima de la cabina, y te dice el área
+  que necesita cada circuito y **cuántos radiadores de cada tipo** añadir, con un botón **🏭 Construir N**.
+
+**Ejemplo:** el motor de fusión por confinamiento magnético (1 GW) convierte el 15 % de su potencia en calor: **150 MW**
+para el circuito alto. Un radiador de baja temperatura disipa unos 60 kW, así que harían falta 2.500; uno de tubos de
+calor disipa unos 7 MW a 1.164 K, así que bastan **22** (6,6 t), o 7 radiadores de gotas líquidas (2,8 t). Sin
+radiadores del circuito alto el motor queda limitado a un 0,005 % del empuje, y el juego te dice por qué.
+
+El casco de la nave inicial tiene 50 m² de radiadores integrados (ambas caras), suficientes para sus sistemas a pleno
+sol a la distancia de la Tierra.

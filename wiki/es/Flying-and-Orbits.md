@@ -26,3 +26,12 @@ que necesita; si te falta combustible, oxígeno, agua o comida, te dice qué fal
 
 Los motores van desde cohetes químicos (mucho empuje, poca eficiencia) pasando por iónicos y nucleares hasta fusión
 y antimateria (eficiencia enorme, necesitan investigación y combustible). Ver [[Ingeniería|Ship and Engineering]].
+
+## Crucero interestelar
+
+Más allá de los planetas, la búsqueda de 🧭 NAVEGAR también encuentra **Próxima Centauri** (☀) y su planeta
+**Próxima b**. El botón **🚀 Crucero interestelar** de la estrella entrega la nave a un piloto automático relativista:
+sale del pozo gravitatorio del Sol, acelera hasta que el propelente restante basta justo para frenar (nunca por encima
+de 0,99 c), vuela libre y frena a tiempo para detenerse en la estrella. A más de 2.000 UA de toda estrella se activan
+**velocidades de espacio profundo** más rápidas (hasta 1 s = 950 años), así que el viaje dura minutos de tiempo real en
+vez de días. Ver [[Relatividad|Relativity]] para los tiempos de viaje y [[Supervivencia|Survival]] para la hibernación.

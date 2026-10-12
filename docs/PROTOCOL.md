@@ -92,7 +92,8 @@ your sensor tier. Noise is deterministic per contact and update slot, so a displ
  "loadout":["pulse laser"],"engine":{"accel":12,"burn":1}}
 ```
 
-`kind`: `raider` `drone` `missile` (hostile) `own-missile` `slug` `asteroid` `player`.
+`kind`: `raider` `drone` `missile` (hostile) `own-missile` `slug` `asteroid` `player` `station` (a shared-universe outpost).
+`lt` (seconds): the light-time to the contact; `pos` is where it was then (x − v·lt), as real sensors would report.
 
 **Fidelity levels** (each includes the ones above it):
 
@@ -156,3 +157,18 @@ changes in element mass or energy that no allowed process explains.
 
 From sensor level 3 (phased array), raider contacts also carry `cls`: `drone`, `interceptor`, `gunship` or
 `missile` (missile boat), worked out from the contact's mass and size.
+
+## Ship layout (`lay`)
+
+Sent in two-player `ship` messages (every 2 s) and in the shared universe's `st` (every 10 s) so other players see your
+real ship. Built by `shipLay()` and checked by `laySafe()` in `game/js/1300-ship-model.js` (at most 60 modules, every
+number clamped):
+
+```json
+{"L":38.2,"crew":0,"area":120,"eng":"chem","mods":[{"cat":"life","x":2.1,"len":4.2,"r":2.1},
+ {"cat":"therm","x":20,"len":1.5,"r":1,"A":60,"radial":1,"off":3.2,"ang":1.57,"mk":2}]}
+```
+
+`cat` is one of `life lab fab store gen therm shield tanks weapon sensor truss frame`; `x` is the module's centre
+measured from the nose (m), `len`/`r` its length and radius, `radial/off/ang` a side mount, `rad` a reactor's leak,
+`A` a radiator's area, `f` shield flags, `id:'rail'` a spinal railgun, `mk` the upgrade mark.

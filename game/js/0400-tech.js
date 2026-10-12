@@ -24,6 +24,7 @@ const TECH=[
  {id:'t_beam',b:'Propulsion',n:'Beamed-core antimatter drive',c:5000,pre:['t_am'],d:'Magnetically steered pions: far more thrust per watt than light.'},
  {id:'t_eclss',b:'Life support',n:'Regenerative life support',c:80,pre:[],d:'Recycle water, make oxygen from water.'},
  {id:'t_bio',b:'Life support',n:'Bioregenerative greenhouse',c:250,pre:['t_eclss'],d:'Grow food and oxygen.'},
+ {id:'t_cryo',b:'Life support',n:'Crew hibernation',c:800,pre:['t_bio','t_lab3'],d:'Suspended-animation pods (speculative): a sleeping crew uses no supplies, does not age and is shielded, and the ship powers down so nothing wears out. The only way to survive an intergalactic trip.'},
  {id:'t_pe',b:'Shielding',n:'Polyethylene shielding',c:40,pre:[],d:'Better protection per kilogram.'},
  {id:'t_ww',b:'Shielding',n:'Water-wall habitat',c:60,pre:[],d:'Your water supply doubles as shielding.'},
  {id:'t_mag',b:'Shielding',n:'Active magnetic shielding',c:500,pre:['t_sc'],d:'Deflect charged particles with superconducting coils.'},

@@ -47,6 +47,9 @@
 | **8** | 🛸 Operaciones: drones mineros y sondas científicas |
 | **7** | 🧱 Constructor de naves: distribución de módulos y rendimiento |
 | **F7** | 🧪 Diseñador de piezas: inventa tus propios radiadores, baterías, reactores y blindajes |
+| **F2** | 🌡 Térmico: mapa de calor, balance de calor y calculadora de radiadores |
+| **F3** | 👩‍🚀 Tripulación: tareas, habilidades y entrenamiento |
+| **F4** | 🛟 Ralentización de seguridad sí / no (ralentiza el tiempo si algo va a matar a la tripulación en menos de un día) |
 | **F6** | 🛰 Planificador de órbitas: geoestacionaria, geosíncrona o cualquier órbita circular |
 | **6** | 📡 Radar activo / pasivo |
 | **F8** | 🌐 Idioma: English / Español / 中文 |

@@ -20,3 +20,8 @@ El **Analizador de diseño** explica qué limita tu nave (potencia, calor, estru
 
 Los **pedidos** tardan en completarse (la fabricación consume potencia), salvo que actives *Pedidos instantáneos*
 en 🧪 Pruebas.
+
+**Cuántos por clic:** arriba en 🛠 Ingeniería (y en 🧱 Constructor → Añadir una pieza) escribe cuántos quieres, o
+elige 1, 5, 10, 50 o 100: cada botón Construir, Obtener, Fabricar y Pedir hace entonces esa cantidad de una vez (se
+detiene si se acaban los materiales y te dice cuántos puso en cola). El combustible de cada motor tiene además una
+casilla de **Cantidad exacta**: escribe los kilogramos y pulsa Intro.

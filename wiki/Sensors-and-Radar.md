@@ -27,3 +27,9 @@ find it much harder to lock onto ([[Combat]]).
 **Radar designs:** 🎨 Customize → RADAR DISPLAY: *3d, sonar, sweep, holo, grid, list, minimal*. Add the 📡 Sensors widget
 to your cockpit from the dashboard editor (**I**). On phones a mini radar shows in the cockpit.
 You (or your AI) can design new radar displays: see [[Build Your Own Cosmic Impulse]].
+
+**Light-time:** what your sensors detect left the object d/c ago, so every contact is shown where it *was*: 1.3 s ago
+at the Moon's distance, over 8 minutes ago at the Sun's. Contacts carry this delay as `lt` ([[Relativity]]).
+
+**Designed sensors:** a sensor you design (🧪, [[Ship Builder]]) can see farther or less far than the standard one of
+its level: by the radar equation, range grows as (transmit power × aperture²)^¼.

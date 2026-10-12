@@ -65,7 +65,7 @@ Developer’s standing wishes (from the chat that set up this workflow):
 6. **Before finishing:** update §3 (state), §4 (now), §5 (next), `CHANGELOG.md`, and any doc whose facts you
    changed. Bump `package.json` version (minor for features).
 
-## 3. Current state (v0.29.0, official physics fingerprint: see `game/official-rules.json`)
+## 3. Current state (v0.33.0, official physics fingerprint: see `game/official-rules.json`)
 
 Working and tested in a headless browser:
 - Solar system, relativity, orbit/XYZ flight, autopilot, chemical start that can escape Earth.
@@ -129,20 +129,51 @@ Working and tested in a headless browser:
 
 - **v0.28:** trip check before autopilot (`apAsk`), navigator search (all languages).
 
-- **v0.29:** shared universe server + client (ORB-UNI/1), part designer (RULES), planet relief/ocean glint, experimental WebXR (not tested on a headset).
+- **v0.29:** shared universe server + client (ORB-UNI/1), part designer (RULES), planet relief/ocean glint. (WebXR VR was tried in v0.29 and removed in v0.30 at the owner's request: no VR.)
+
+- **v0.30:** VR removed. Part designer: frames, radiation liners, sensors (range ∝ (P·A²)^¼ via `sensorSpec`), labs,
+  fabricators (`tests/designer.test.mjs`). Shared universe: persistent **outposts** (server-owned stores, Kepler-propagated
+  orbits `kepProp`), PvP hits range-checked by the server, pilots' ships propagated between reports and drawn from their
+  real layout (`shipLay`/`laySafe`/`buildRemote`, also in two-player games). Autopilot **rendezvous** with targets in the
+  same body's orbit (`apRdv`: Kepler shooting transfer, coast, final approach; key fixes: inside a physics step positions
+  are at T+TDT and velocities half a kick behind). Ship clock includes the gravitational (1+Φ/c²) term; sensor contacts
+  are light-time delayed. **3D cockpit frame** (`2665-cockpit3d.js`) lit by the real Sun/Earthshine with head sway and
+  shake: composition checked with a Python preview only, **not yet seen in WebGL — ask for a screenshot**. Wiki
+  *Relativity* has the exact gravity/relativity model (no PN for motion; 1PN clock term).
+
+- **v0.31 (playtest fixes):** starter body radiators 50 m²; 🌡 Thermal view F2 (`2670-thermal-ui.js`, heat breakdown
+  `s.hb` from `powerStep`); quantity per click (`QTY`, `buildN` in 1000); crew roster RULES `2105-crew.js` + UI F3
+  (`2675`), patch kits `s.res.patch`, consumption × `crewN()`, start with 1 year for 2 and 9 t chem; alerts no longer
+  pause (`alertCrit`), 🛟 safety slow-down `2680-safety.js` (F4); score + rewind `2690-score.js` (`saveState`/`loadState`
+  in 2200); no strobe `1955-comfort.js` (`visLit()`).
+
+- **v0.33:** Andromeda removed (developer: Proxima is the goal, under 24 real hours). `apIst` climbs out of the Sun's
+  gravity before aiming at the star; step loop in 1000 breaks at a body's surface. Realistic deck materials/lighting:
+  procedural textures `deckTexMake`, `deckRBox` extrusions, instanced small parts, PMREM cabin panorama `ck3Env`,
+  window-gated sun `ck3Win`, 2048 shadow map, ACES only for the cockpit pass, display spill PointLights, windscreen
+  reflection group mirrored across a raked plane. **Still never seen in WebGL.**
+- **v0.32:** 3D flight deck `2666-flightdeck.js` (style `deck`, default; `deckBuild` called from `ck3Build`; canvas
+  screens redrawn every 250 ms; clicks raycast against `DECK.click` faces; CSS `225-flight-deck.css` hides widgets
+  unless `body.deckw`); geometry checked with the Python box preview only — **ask for a WebGL screenshot**. Crew
+  recruiting/capacity/new duties/hibernation in `2105-crew.js` (`t_cryo` tech, sleep skips life support and wear).
+  `WARP` up to 3e10 gated by `deepSpace()` (2,000 AU from any
+  star, `WARP_DEEP`); `apIst()` relativistic cruise autopilot; `istGo()` in the trip check; test
+  `tests/interstellar.test.mjs`.
 
 Not verified visually (no WebGL in the build sandbox): planets, debris, turrets, antenna/trim, hardpoint moves.
 The developer has not yet confirmed that GitHub Pages is switched on (Settings → Pages → Source: GitHub Actions).
 
 ## 4. NOW — do this next session (in order)
 
-1. **Raider AI into RULES** (it decides outcomes) and multiplayer stealth parity; raider formations and a boss wave every fifth wave.
-2. **3D cockpit interior** (modelled frame and console instead of the SVG window frame), Earth night lights and
-   ocean glint, Sun glare; ask the developer for screenshots after each visual change.
-3. **Radar as hardware:** dish size, power and processing as parts with upgrades; active (precise, reveals you) vs
-   passive sensing (RULES; affects what others see).
-4. **Armour placement:** hits strike outer modules first; damaged modules visible on the model.
-5. **Wiki:** generated pages per engine family and part category; Builder cookbook with real spacecraft.
+1. **Ask the developer for a first-person screenshot of the new 3D flight deck** (day side and in shadow, a wide and
+   a narrow window) and tune screen sizes, text size, materials and light levels from it. Then: reflections on the
+   window, screen glare, animated button lamps tied to real systems.
+2. **Outposts that do things:** fuel depots that make propellant from stored water with solar power, fabricator
+   modules, docking-port geometry; outposts as sensor beacons; contracts that deliver to outposts.
+3. **Raider AI into RULES** and a boss wave every fifth wave.
+4. **Authoritative universe server:** run the same RULES modules in Node to check each pilot's reported state.
+5. **Relativity extras (optional):** GR light/ship deflection factor (1+β²) near the Sun for relativistic ships;
+   relativistic aberration and Doppler colour of the starfield at high speed.
 6. Keep `npm run i18n` at 0 and update the wiki in all three languages with every change.
 
 ## 5. NEXT — backlog, roughly by value

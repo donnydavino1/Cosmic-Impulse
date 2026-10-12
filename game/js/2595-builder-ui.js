@@ -60,14 +60,14 @@ function bldDraw(force){if(BLDW.classList.contains('h')||!BLD.order)return;const
  <p>${pending?'<b>🏭 <span>Refit in progress</span></b>':`<button data-b="apply" ${same?'disabled':''}>🔧 Refit to this layout</button>`} <small>${same?'':(newT?f1(newT*LAY.trussM,0)+' kg iron · ':'')+'<span>done by your fabricator</span>'}</small></p>
  <h4>🚀 <span>Engines at the tail</span></h4><p>${DR.map((E,i)=>isU(E.id)?`<span class="bldeng${i===di?' on':''}">${E.ic||'🚀'} ${E.n} Mk ${E.mk||1} · ${f1(engMass(E,i===di?PW:E.pw),0)} kg ${i===di?'· <b>✓ <span>in use</span></b>':`<button data-b="euse" data-e="${i}">Use</button> <button data-b="escr" data-e="${i}">♻</button>`}</span>`:'').join(' ')}</p>
  <p class="opsn">All your engines sit at the tail: unused ones still add mass there. Weapons are modules too: turrets mount beside a module, and the railgun lies along the spine (the whole ship aims it).</p>
- <h4>🧩 <span>Add a part</span></h4><p><button data-b="design">🧪 Design a new part</button></p><p>${Object.entries(CATN).map(([c,n])=>`<button data-b="cat" data-c="${c}" class="${BLD.cat===c?'bldsel':''}">${n}</button>`).join(' ')}</p>
+ <h4>🧩 <span>Add a part</span></h4><p><button data-b="design">🧪 Design a new part</button></p><p class="bldqty"><span>How many per click:</span> <input id="bldq" type="number" min="1" max="1000"> <small>(🏭 Build; a mirrored pair builds this many pairs)</small></p><p>${Object.entries(CATN).map(([c,n])=>`<button data-b="cat" data-c="${c}" class="${BLD.cat===c?'bldsel':''}">${n}</button>`).join(' ')}</p>
  ${BLD.cat?`<div class="bldcat">${Object.entries(PARTS).filter(([k,d])=>d.cat===BLD.cat).map(([k,d])=>{const ok=hasT(d.req),hostOK=onSpine&&q&&q.cat!=='truss'&&!d.one&&d.cat!=='frame';
   return`<div class="bldpi${ok?'':' bldlock'}"><b>${d.n}</b> <small>${f1(d.m,0)} kg · ${Object.entries(d.mat||{}).map(([m,v])=>f1(v,v<1?2:0)+' kg '+m).join(', ')} · ${sci(d.J||0)} J${ok?'':' · 🔒 <span>research</span> '+(TECH.find(t=>t.id===d.req)||{n:d.req}).n}</small><br>
   ${ok?`<button data-b="bld" data-p="${k}">🏭 Build</button> ${hostOK?`<button data-b="bld1" data-p="${k}">⤴ <span>Build beside</span> ${q.ic}</button> <button data-b="bld2" data-p="${k}">⤴⤴ <span>Build a mirrored pair beside</span> ${q.ic}</button>`:''}`:''}</div>`}).join('')}</div>`:''}
  ${qp&&PARTS[qp.id].cat!=='frame'?`<p><button data-b="scrap">♻ <span>Recycle this part (50 % of its materials back)</span></button></p>`:''}
  <h4>💾 <span>Saved designs</span></h4><p>${BLD.designs.map((d,i)=>`<button data-b="load" data-i="${i}">${d.name}</button> <button data-b="del" data-i="${i}">✕</button>`).join(' ')||'<span class="opsn">None yet.</span>'} <button data-b="save">💾 Save this draft</button></p>
  <p class="opsn">Tips: a long truss between the crew and a reactor cuts its radiation by distance squared, and tanks in between block even more. Tanks next to the crew make the storm shelter work, and tanks mounted around the crew cabin work best. Mounting modules beside the spine makes the ship shorter: it turns faster and can thrust harder. Several modules on one host spread evenly around it (2 = mirrored, 3 = triangle, 4 = cross).</p>`;
- const b=$('bldb');if(b._h!==h){b._h=h;b.innerHTML=h}}
+ const b=$('bldb');if(b._h!==h){b._h=h;b.innerHTML=h}{const qi=$('bldq');if(qi&&document.activeElement!==qi)qi.value=typeof QTY!=='undefined'?QTY:1}}
 $('bldsv').addEventListener('click',e=>{if(BLD.dragged){BLD.dragged=false;return}const g=e.target.closest('[data-k]');if(g){BLD.sel=g.dataset.k;bldDraw(true)}});
 // drag and drop in the side view: along the line reorders, above or below the line mounts beside the nearest module
 $('bldsv').addEventListener('pointerdown',e=>{const g=e.target.closest('#bldside [data-k]');if(!g)return;BLD.drag={k:g.dataset.k,x:e.clientX,y:e.clientY,g,moved:false};g.setPointerCapture&&g.setPointerCapture(e.pointerId)});
@@ -92,7 +92,7 @@ $('bldb').addEventListener('click',e=>{const x=e.target.closest('button');if(!x|
  else if(op==='escr'){const E=DR[+x.dataset.e];if(E&&confirm(tr('Scrap this engine')+'? '+E.n)){scrapEng(E.id);recalc()}}
  else if(op==='design'){desToggle()}
  else if(op==='cat'){BLD.cat=BLD.cat===x.dataset.c?null:x.dataset.c}
- else if(op==='bld'||op==='bld1'||op==='bld2'){const pk=x.dataset.p,d=PARTS[pk],n=op==='bld2'?2:1;let ok=0;for(let c=0;c<n;c++){const j={type:'part',id:pk,mat:{...d.mat},name:d.n,J:d.J};if(op!=='bld')j.place=k;if(queueJob(j))ok++}
+ else if(op==='bld'||op==='bld1'||op==='bld2'){const pk=x.dataset.p,d=PARTS[pk],qq=d.one?1:Math.max(1,Math.min(1000,Math.round(typeof QTY!=='undefined'?QTY:1)||1)),n=(op==='bld2'?2:1)*qq;let ok=0;for(let c=0;c<n;c++){const j={type:'part',id:pk,mat:{...d.mat},name:d.n,J:d.J};if(op!=='bld')j.place=k;if(queueJob(j))ok++}
   notify(ok?'🏭 '+(ok>1?ok+' × ':'')+d.n+' '+tr('queued')+(op==='bld'?'.':' → '+tr('mounted beside the selected module when finished.')):'⚠ Missing materials: '+Object.entries(d.mat||{}).map(([m,v])=>f1(v,0)+' kg '+m).join(', '))}
  else if(op==='scrap'){const qp=layPart(k);if(qp&&confirm(tr('Recycle this part (50 % of its materials back)')+'?')){scrapPart(qp.uid);recalc();BLD.order=BLD.order.filter(z=>z!==k);delete R[k];BLD.sel=BLD.order[0]}}
  else if(op==='reset'){BLD.order=s.lay.order.slice();BLD.rad=Object.assign({},s.lay.rad||{});BLD.sel=BLD.order[0]}
@@ -145,3 +145,6 @@ function bldPreview(m){const cv=$('bldprev');if(!cv)return;const x=cv.getContext
   const pg=x.createLinearGradient(b[0],0,b[0]+130,0);pg.addColorStop(0,'rgba(255,190,120,.35)');pg.addColorStop(1,'rgba(255,190,120,0)');x.fillStyle=pg;x.beginPath();x.moveTo(b[0],b[1]-r1*.8);x.lineTo(b[0]+130,b[1]-r1*.3);x.lineTo(b[0]+130,b[1]+r1*.3);x.lineTo(b[0],b[1]+r1*.8);x.fill()}
  m.spine.slice().reverse().forEach(draw);front.forEach(draw);
  x.fillStyle='rgba(200,215,235,.75)';x.font='13px ui-monospace,monospace';x.fillText(`${f1(m.L,1)} m · ${f1(m.mass/1e3,1)} t`,12,H-12)}
+// the "how many per click" box in Add a part shares its value with 🛠 Engineering
+$('bldb').addEventListener('input',e=>{if(e.target.id==='bldq'){QTY=Math.max(1,+e.target.value||1);const q=$('qtyin');if(q)q.value=QTY}});
+$('bldb').addEventListener('keydown',e=>{if(e.target.id==='bldq')e.stopPropagation()});

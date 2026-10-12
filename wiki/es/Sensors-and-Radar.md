@@ -27,3 +27,10 @@ mucho más fijarla ([[Combate|Combat]]).
 **Diseños de radar:** 🎨 Personalizar → PANTALLA DE RADAR: *3d, sónar, barrido, holo, rejilla, lista, mínimo*. Añade el widget
 📡 Sensores a tu cabina desde el editor del panel (**I**). En el móvil aparece un mini radar en la cabina.
 Tú (o tu IA) podéis diseñar nuevas pantallas de radar: ver [[Construye tu propio Cosmic Impulse|Build Your Own Cosmic Impulse]].
+
+**Tiempo de luz:** lo que detectan tus sensores salió del objeto hace d/c, así que cada contacto aparece donde *estaba*:
+hace 1,3 s a la distancia de la Luna, hace más de 8 minutos a la del Sol. Los contactos llevan este retardo como `lt`
+([[Relatividad|Relativity]]).
+
+**Sensores diseñados:** un sensor que diseñes (🧪, [[Constructor de naves|Ship Builder]]) puede ver más o menos lejos que
+el estándar de su nivel: por la ecuación del radar, el alcance crece como (potencia × apertura²)^¼.

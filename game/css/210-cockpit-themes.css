@@ -26,3 +26,4 @@ body.fp.objw #obj{display:none!important}
 body.fp #wpn{top:96px!important;bottom:auto!important;right:auto!important;left:50%!important;transform:translateX(-50%)}
 body.fp #status{bottom:auto!important;top:128px;max-width:min(560px,40vw);font-size:11px}
 body.fp #fpbar button{padding:3px 9px;font-size:11px}
+body.ck3d #canopy{display:none}
