@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc6eea9a-32f9-4545-baa4-996be41d2619" name="Changes" comment="v0.3.3">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="dc6eea9a-32f9-4545-baa4-996be41d2619" name="Changes" comment="v0.3.4" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -165,7 +163,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791832075174</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="v0.3.4">
+      <option name="closed" value="true" />
+      <created>1791888201426</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1791888201426</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,7 +201,8 @@
     <MESSAGE value="v0.3.1" />
     <MESSAGE value="v0.3.2" />
     <MESSAGE value="v0.3.3" />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.3.3" />
+    <MESSAGE value="v0.3.4" />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.3.4" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
