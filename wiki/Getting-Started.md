@@ -19,3 +19,13 @@ Tips
 - **Navigation (N)** has an autopilot that flies transfers to planets and asteroids for you.
 - Lost? **C** opens the in-game guide with every key, and lets you rebind them.
 - Testing or just exploring? **F9** unlocks every technology, engine and weapon.
+
+## Sandbox mode (single player)
+
+Want to try every engine and part without mining and waiting? Press **🧪 Sandbox: build anything** on the welcome
+screen, or 🛠 → 🧪 Testing → *Sandbox mode*. Every technology, engine and weapon is unlocked; building, ordering and
+research are instant; materials, water, research points and energy are never used up (the battery stays full); fuel
+and supplies that normally come only from Earth can be ordered anywhere. Flying is still real physics: propellant,
+heat, thrust, radiation and the crew's needs work as always. A green **🧪 SANDBOX** badge in the top bar reminds you
+(click it to switch off; what you built stays). Sandbox games don't set a personal best score, and multiplayer always
+uses the real rules: connecting to another player or the shared universe switches sandbox off.

@@ -30,3 +30,34 @@ end of the ship, behind the tanks and a truss, and the dose almost vanishes. The
 ## Research
 
 Shielding technologies: polyethylene, water walls and the active magnetic shield ([[Technologies]]).
+
+## Radiation belts
+
+Planetary magnetic fields trap protons and electrons in belts. Dose rates behind 2 g/cm² of shielding:
+
+| Where | Dose |
+|---|---|
+| Low Earth orbit (under the belts) | none from the belts |
+| Earth's inner belt (1.6 Earth radii from the centre) | ~90 mSv/day |
+| Earth's outer belt (4.5 radii) | ~80 mSv/day (electrons: a little shielding stops most) |
+| Crossing both on the way out | ~2 mSv |
+| Jupiter at Io's orbit | ~33 Sv/day: lethal within hours |
+| Europa / Ganymede / Callisto | ~5 Sv/day / ~0.24 Sv/day / ~0.5 mSv/day |
+| Saturn (rings soak particles up) | ~7 mSv/day at most |
+
+Hard protons are cut by shielding as e^(−ad/15 g/cm²), soft electrons as e^(−ad/1.5), Jupiter's very energetic
+electrons only as e^(−ad/20). Alerts warn you when you enter a belt. Callisto is the safe place to park at Jupiter.
+
+## The solar cycle
+
+The Sun's activity rises and falls over about 11 years. Near solar maximum proton storms come about four times as
+often as at minimum and are stronger, but the Sun's stronger magnetic field pushes galactic cosmic rays away: their
+dose is about 25 % lower at maximum and 25 % higher at minimum. The game starts a little past maximum; the life
+support readout (H) shows the activity and when the next maximum or minimum comes.
+
+## Bit flips in the flight computer
+
+A fast particle passing through a memory chip can flip a bit. In a radiation belt or a solar storm an ordinary flight
+computer may crash and reboot, and the autopilot drops out (about one upset per 200 mSv/h of exposure per hour: rare
+crossing Earth's belts, hourly near Io). A radiation-hardened computer (🏭 Fabricate → **FLIGHT COMPUTER**: special
+chips, error-correcting memory, triple voting) shrugs them off.

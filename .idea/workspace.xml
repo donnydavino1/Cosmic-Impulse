@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc6eea9a-32f9-4545-baa4-996be41d2619" name="Changes" comment="v0.3.2" />
+    <list default="true" id="dc6eea9a-32f9-4545-baa4-996be41d2619" name="Changes" comment="v0.3.3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +48,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -152,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791831498400</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="v0.3.3">
+      <option name="closed" value="true" />
+      <created>1791832075174</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1791832075174</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,7 +194,8 @@
     <MESSAGE value="v0.3.0" />
     <MESSAGE value="v0.3.1" />
     <MESSAGE value="v0.3.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.3.2" />
+    <MESSAGE value="v0.3.3" />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.3.3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

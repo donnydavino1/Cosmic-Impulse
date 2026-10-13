@@ -6,7 +6,7 @@
 const UPG={max:5,techs:[0,0,0,8,12,16],
  // per mark above I: multiply these fields by (1 + f × (mk − 1))
  cat:{frame:{g:.15},store:{cap:.2,pmax:.2},gen:{pe:.15,rad:-.15},therm:{A:.15,Tmax:.03},life:{p:-.1},shield:{ad:.15,p:-.1},lab:{rp:.25},fab:{pw:.25},sensor:{p:-.1}}};
-function partEff(p){const d=PARTS[p.id],k=(p.mk||1)-1;if(!k)return d;const f=UPG.cat[d.cat]||{},e=Object.assign({},d);
+function partEff(p){let d=PARTS[p.id];if(d&&d.hp&&typeof hpfApply==='function')d=hpfApply(d);if(d&&d.eta&&typeof pcvApply==='function')d=pcvApply(d);const k=(p.mk||1)-1;if(!k)return d;const f=UPG.cat[d.cat]||{},e=Object.assign({},d);
  for(const q in f)if(typeof e[q]==='number')e[q]=e[q]*Math.max(.05,1+f[q]*k);e.m=d.m+(p.add||0);return e}
 // what the next mark costs: half the part's own materials × current mark, and energy doubling each mark
 function upgCost(p){const d=PARTS[p.id],n=p.mk||1;if(n>=UPG.max)return null;const mat={};for(const k in d.mat||{})mat[k]=d.mat[k]*.5*n;

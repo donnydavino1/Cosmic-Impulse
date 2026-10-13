@@ -16,3 +16,6 @@
 #crw{position:absolute;inset:0;background:rgba(2,3,10,.78);display:flex;align-items:flex-start;justify-content:center;z-index:7;padding:12px;overflow:auto}#crw .card{margin:auto;background:#0b1024;border:1px solid #5dff8a;border-radius:12px;padding:14px 18px;max-width:780px;width:100%;font-size:12.5px}#crw h2{margin:0 0 4px;color:#9dffb0}#crw .opsn{color:var(--mut);font-size:11.5px}
 .crsum{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0}.crm{border:1px solid #2a3458;border-radius:8px;padding:8px 10px;margin:8px 0;background:#0f1530}.crh{font-size:13.5px;margin-bottom:4px}.crr{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px}.crr button{padding:3px 8px;font-size:11.5px}.crbar i{background:linear-gradient(90deg,#3fdc7a,#9dffb0)}.crwarn{color:#ffb3ad;border:1px solid #ff4a4a;border-radius:6px;padding:4px 8px;background:#2a0c10}
 .crdis{float:right;padding:2px 8px!important;font-size:11px}
+.crmor{display:grid;gap:3px;margin:6px 0 8px}.crmor .thbar{height:8px}.crtr{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;border:1px solid #8a6cff;color:#d8ccff;font-size:11px}
+.crage{display:inline-block;margin-left:6px;color:#ffd8a8;font-size:11px}
+.crfit{flex-wrap:wrap;gap:6px;align-items:center}.crfit button{padding:2px 8px}.crhl{font-size:12px;margin:2px 0 4px;opacity:.95}

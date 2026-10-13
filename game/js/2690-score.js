@@ -27,7 +27,7 @@ function snapBefore(t){let best=null;for(const x of SNAP.list)if(x.T<=t&&(!best|
 function restartEarlier(){const x=snapBefore(T-86400);if(!x){notify('⚠ '+tr('No earlier snapshot to go back to.'));return}const back=T-x.T;
  loadState(JSON.parse(x.j));SNAP.list=SNAP.list.filter(q=>q.T<=x.T);SNAP.lastT=x.T;wi=0;paused=false;
  notify('⏪ '+tr('Back {} earlier, at the slowest time speed. Good luck!').replace('{}',dur(back)))}
-ORB.on('gameover',why=>{const sc=scoreNow();let best=0;try{best=+localStorage.getItem('orbital-best-score')||0}catch(e){}const nb=sc.total>best;if(nb)try{localStorage.setItem('orbital-best-score',String(sc.total))}catch(e){}
+ORB.on('gameover',why=>{const sc=scoreNow();let best=0;try{best=+localStorage.getItem('orbital-best-score')||0}catch(e){}const nb=sc.total>best&&!s.sandbox;if(nb)try{localStorage.setItem('orbital-best-score',String(sc.total))}catch(e){}
  const el=$('gotxt');el.innerHTML+=`<h3 class="goh">🏆 ${tr('SCORE')}: ${sc.total.toLocaleString()}${nb?' · '+tr('new personal best!'):' · '+tr('best')+' '+best.toLocaleString()}</h3><table class="bldt gosc">${sc.rows.map(r=>`<tr><td>${tr(r[0])}</td><td>${r[1]}</td><td>+${r[2].toLocaleString()}</td></tr>`).join('')}</table>`;
  const gb=$('gob');let b=$('gorew');if(!b){b=document.createElement('button');b.id='gorew';b.onclick=restartEarlier;gb.insertBefore(b,gb.firstChild)}
  const x=snapBefore(T-86400);b.disabled=!x||MP.conn;b.textContent='⏪ '+(x?tr('Restart {} earlier (slowest time speed)').replace('{}',dur(Math.max(0,T-x.T))):tr('Restart 24 hours earlier (no snapshot yet)'))});

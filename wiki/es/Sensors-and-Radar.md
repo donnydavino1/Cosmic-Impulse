@@ -34,3 +34,29 @@ hace 1,3 s a la distancia de la Luna, hace más de 8 minutos a la del Sol. Los c
 
 **Sensores diseñados:** un sensor que diseñes (🧪, [[Constructor de naves|Ship Builder]]) puede ver más o menos lejos que
 el estándar de su nivel: por la ecuación del radar, el alcance crece como (potencia × apertura²)^¼.
+
+## Comunicaciones con la Tierra
+
+🧭 NAVEGAR → **COMUNICACIONES** muestra el retardo de la luz hasta la Tierra (de ida, y para una pregunta y su
+respuesta) y lo rápido que tres tipos de enlace podrían enviar datos desde donde estás. Un enlace de radio recibe
+Pr = Pt·Gt·Gr·(λ/4πd)², con ganancia de antena G = η·(πD/λ)², y transporta R = Pr/(k·Tsys·Eb/N0); un enlace láser
+cuenta fotones (unos 2 por bit). En tierra se usa una antena de 34 m para radio y un telescopio de 5 m para el láser.
+
+| Enlace | A 1 UA | A 160 UA |
+|---|---|---|
+| Radio en banda X, antena de 3 m, 100 W | ~10 Mbit/s | ~390 bit/s |
+| Radio en banda Ka, antena de 3 m, 100 W | ~44 Mbit/s | ~1,7 kbit/s |
+| Láser, telescopio de 22 cm, 4 W | ~13 Mbit/s | ~510 bit/s |
+
+Las velocidades caen con 1/distancia², y cada enlace tiene un techo de hardware cerca de la Tierra.
+
+Conjunción solar: cuando el Sol queda a menos de 2° de la Tierra vista desde la nave, su ruido de radio ahoga todos los
+enlaces (las misiones a Marte pierden el contacto unas dos semanas cada 26 meses). El panel de comunicaciones avisa
+cuando el ángulo se cierra.
+
+## Firma térmica
+
+🛠 → 🔧 Nave → **FIRMA TÉRMICA**. Cada vatio que usa tu nave acaba radiado como infrarrojo contra un cielo a 3 K, así que
+un sensor te ve cuando P / (4πr²) supera su nivel de ruido: alcance de detección r = √(P / 4πF). Con un telescopio
+infrarrojo de 1 m (F ≈ 10⁻¹⁵ W/m²) los ~7 kW de la nave inicial se ven desde unos 750.000 km; un gran telescopio
+espacial (10⁻¹⁸ W/m²) la ve desde 0,16 UA. Un motor encendido brilla mucho más. En el espacio no hay sigilo.

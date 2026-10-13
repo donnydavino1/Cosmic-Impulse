@@ -48,3 +48,20 @@ C-types are where you get water (for drinking, oxygen and hydrogen fuel); M-type
 
 Everything you mine is counted by element in the ledger: matter is never created (Law 3,
 [[The Laws of Cosmic Impulse]]). Mining contracts pay extra ([[Contracts]]).
+
+## 🔬 Spectrometer
+
+Press **\** (or 🛠 → ⛏ Inventory → *Scan an asteroid*) to read an asteroid's reflectance spectrum from 0.4 to 2.5 µm before you fly
+there. C-types are dark (albedo 0.05) with a hydrated-mineral dip at 0.7 µm; S-types are brighter and red-sloped with
+olivine and pyroxene bands at 1 and 2 µm; M-types are metal: smooth and featureless; icy bodies are bright with water-ice
+bands at 1.5 and 2 µm. Farther targets give noisier spectra. Below it you get the body's density, total mass and how
+many tonnes of each material it holds, minus what has been mined.
+
+## Gravity and spin
+
+The spectrometer also shows each asteroid's surface gravity (GM/R²), escape speed (√(2GM/R)) and rotation. On a
+few-hundred-metre asteroid gravity is about a hundred-thousandth of Earth's and the escape speed is a few centimetres to
+tens of centimetres per second: a hard jump would launch you into space. Rubble-pile asteroids bigger than ~200 m cannot
+spin faster than about once every 2.2 hours without flying apart (the spin barrier); small solid ones can spin in minutes.
+
+The first clean spectrum of each asteroid (signal noise under 3 %, so get within about 0.6 AU) is new science: 6 research points for a stony or carbon-rich body, 10 for an icy one, 12 for a metal one.

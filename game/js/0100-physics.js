@@ -62,7 +62,7 @@ s.codex={seen:{},log:[],built:{},rec:{maxV:0,minR:AU,maxR:AU,mined:0,age:0}};
 Object.defineProperty(s,'prop',{get(){const f=DR[di].f;return f?s.fuel[f]:Infinity},set(v){const f=DR[di].f;if(f)s.fuel[f]=v},configurable:true});
 let di=0,PW=DR[0].pw,Q=1,UNL={chem:1,ion:1,mlaser:1,plaser:1,missile:1};const isU=id=>!!UNL[id],inEarth=()=>s.dom===B[3];
 const fuelMass=()=>Object.values(s.fuel).reduce((a,b)=>a+b,0),resMass=()=>{let m=0;for(const k in s.res)m+=s.res[k]*(k==='spares'||k==='patch'?kitKg(k):1);return m},kitKg=k=>typeof SUPR!=='undefined'&&SUPR[k]&&SUPR[k].mat?Object.values(SUPR[k].mat).reduce((a,b)=>a+b,0):1;   // kits are counted, so they weigh what they're made of
-const mass=()=>dryMass()+.2*s.area+fuelMass()+resMass()+s.sailA*.02+s.ammo.missile*50+(typeof opsMass==='function'?opsMass():0)+(typeof crewN==='function'?crewN()*80:0)+s.en/(C*C); // stored energy has mass E/c^2
+const mass=()=>dryMass()+(typeof pvKg==='function'?pvKg():.2)*s.area+fuelMass()+resMass()+s.sailA*(typeof sailKg==='function'?sailKg():.02)+(typeof tankKg==='function'?tankKg():0)+(typeof coatKg==='function'?coatKg():0)+(typeof tetherKg==='function'?tetherKg():0)+s.ammo.missile*50+(typeof opsMass==='function'?opsMass():0)+(typeof crewN==='function'?crewN()*80:0)+s.en/(C*C); // stored energy has mass E/c^2
 const gam=b=>Math.sqrt(1+(b.vx*b.vx+b.vy*b.vy+b.vz*b.vz)/(C*C));
 function acc(){for(const b of ALL){if(b.rail)continue;let X=0,Y=0,Z=0;for(const o of B){if(o===b)continue;const dx=o.x-b.x,dy=o.y-b.y,dz=o.z-b.z,r2=dx*dx+dy*dy+dz*dz,f=o.GM/(r2*Math.sqrt(r2));X+=dx*f;Y+=dy*f;Z+=dz*f}b.ax=X;b.ay=Y;b.az=Z}}
 function ctl(){let best=0,bs=1e30,tm=1e30;for(let i=0;i<N;i++){const b=B[i],d=Math.hypot(s.x-b.x,s.y-b.y,s.z-b.z);if(i&&d<b.soi&&b.soi<bs){bs=b.soi;best=i}const t=Math.min(Math.sqrt(d*d*d/b.GM),10*d/(Math.hypot(s.vx,s.vy,s.vz)+1));if(t<tm)tm=t}s.dom=B[best];return tm}
@@ -76,10 +76,11 @@ function step(dt){TDT=dt;const h=dt/2; // inside a step, positions are already a
  const dv=dirVec(),g=gam(s);s.burn=0;s.engHeat=0;
  if(dv&&(s.en>0||!DR[di].el)&&s.prop>0){const De=DR[di],u=Math.hypot(s.vx,s.vy,s.vz),m=mass(),ux=u>0?s.vx/u:0,uy=u>0?s.vy/u:0,uz=u>0?s.vz/u:0,par=dv[0]*ux+dv[1]*uy+dv[2]*uz;
   if(!(par>0&&u/g>=MAXB*C*.999999)){ // forward thrust blocked at the speed cap
-   const F=De.sail?sailF(dv):De.k*PW/De.ve*(De.solarT?solTh(De):1),md=De.sail?0:F/De.ve,lim=engLimits(De,F,m,dt/g),f=Math.min(THR,lim,s.prop/(md*dt/g)),a=f*F/m; // costs are per SHIP (proper) time
+   const F=De.sail?sailF(dv):De.k*PW/De.ve*(De.solarT?solTh(De):1)*(typeof engClusterK==='function'?engClusterK(De):1),md=De.sail?0:F/De.ve,lim=engLimits(De,F,m,dt/g),f=Math.min(THR,lim,s.prop/(md*dt/g)),a=f*F/m; // costs are per SHIP (proper) time
    const qx=dv[0]-par*ux,qy=dv[1]-par*uy,qz=dv[2]-par*uz; // SR: parallel force unchanged, perpendicular force /gamma
    s.ax+=a*(par*ux+qx/g);s.ay+=a*(par*uy+qy/g);s.az+=a*(par*uz+qz/g);if(!PREDICTING){THV[0]+=a*(par*ux+qx/g)*dt;THV[1]+=a*(par*uy+qy/g)*dt;THV[2]+=a*(par*uz+qz/g)*dt}
    s.prop=Math.max(0,s.prop-f*md*dt/g);if(De.el)s.en-=f*PW*dt/g;s.burn=F>0?f:0;s.engHeat=F>0?f*PW*De.hf:0;if(!PREDICTING&&F>0)s.burnAcc+=f*dt}}
+ if(typeof aeroStep==='function')aeroStep(dt,g);
  for(const b of ALL){if(b.rail)continue;b.vx+=b.ax*h;b.vy+=b.ay*h;b.vz+=b.az*h}
  {const um=MAXB*C/Math.sqrt(1-MAXB*MAXB),u=Math.hypot(s.vx,s.vy,s.vz);if(u>um){const k=um/u;s.vx*=k;s.vy*=k;s.vz*=k}}
  // ship clock: special-relativistic time dilation (1/γ) times the weak-field gravitational term (1 + Φ/c²), Φ = −Σ GM/r:
@@ -96,12 +97,12 @@ function elements(){const gs=gam(s),d=s.dom,mu=d.GM,rx=s.x-d.x,ry=s.y-d.y,rz=s.z
 let TDT=0,AP=null,apNote='',THR=1,XYZ=false,FP=false,STAB=true;
 function FPV(){const ce=Math.cos(el),f=[ce*Math.cos(az),ce*Math.sin(az),Math.sin(el)],r=[Math.sin(az),-Math.cos(az),0],u=[r[1]*f[2]-r[2]*f[1],r[2]*f[0]-r[0]*f[2],r[0]*f[1]-r[1]*f[0]];return{w:f,s:f.map(x=>-x),d:r,a:r.map(x=>-x),e:u,q:u.map(x=>-x)}}
 const AX={d:[1,0,0],a:[-1,0,0],w:[0,1,0],s:[0,-1,0],e:[0,0,1],q:[0,0,-1]}; // WASD/QE in fixed Sun-frame axes
-function thrustAcc(){const D=DR[di];if(D.esail){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return D.F0*(AU/r)/mass()}if(D.sail){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return s.lit?2*S0*(AU/r)**2*s.sailA/C/mass():0}
- let a=D.k*PW/D.ve/mass()*(D.solarT?solTh(D):1);if(D.el&&s.en<PW*600){const inc=.7*S0*(AU*AU/((s.x-B[0].x)**2+(s.y-B[0].y)**2+(s.z-B[0].z)**2))*s.area*EFF;a*=Math.min(1,inc/PW)}return a}
+function thrustAcc(){const D=DR[di];if(D.esail){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return D.F0*(AU/r)/mass()}if(D.sail){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return s.lit?(1+sailRho())*S0*(AU/r)**2*s.sailA/C/mass():0}
+ let a=D.k*PW/D.ve/mass()*(D.solarT?solTh(D):1)*(typeof engClusterK==='function'?engClusterK(D):1);if(D.el&&s.en<PW*600){const inc=.7*S0*(AU*AU/((s.x-B[0].x)**2+(s.y-B[0].y)**2+(s.z-B[0].z)**2))*s.area*EFF;a*=Math.min(1,inc/PW)}return a}
 function gravAt(x,y,z){let X=0,Y=0,Z=0;for(const o of B){const dx=o.x-x,dy=o.y-y,dz=o.z-z,r2=dx*dx+dy*dy+dz*dz,f=o.GM/(r2*Math.sqrt(r2));X+=dx*f;Y+=dy*f;Z+=dz*f}return[X,Y,Z]}
 // solar thermal: the share of rated power the concentrator delivers right now
 function solTh(D){const S=B[0],r=Math.hypot(s.x-S.x,s.y-S.y,s.z-S.z);return s.lit?Math.min(1,S0*(AU/r)**2*D.coll*.6/Math.max(1,PW)):0}
-function sailF(dv){const D=DR[di];if(D.esail){const S=B[0],rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),c=(dv[0]*rx+dv[1]*ry+dv[2]*rz)/r;return c<=0?0:D.F0*(AU/r)*c}if(!s.sailA||!s.lit)return 0;const S=B[0],rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),c=(dv[0]*rx+dv[1]*ry+dv[2]*rz)/r;return c<=0?0:2*S0*(AU/r)**2*s.sailA/C*c*c}
+function sailF(dv){const D=DR[di];if(D.esail){const S=B[0],rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),c=(dv[0]*rx+dv[1]*ry+dv[2]*rz)/r;return c<=0?0:D.F0*(AU/r)*c}if(!s.sailA||!s.lit)return 0;const S=B[0],rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),c=(dv[0]*rx+dv[1]*ry+dv[2]*rz)/r;return c<=0?0:(1+sailRho())*S0*(AU/r)**2*s.sailA/C*c*c}
 // track a near-circular velocity around the Sun while drifting toward radius rT
 function radCtl(rT,end){const S=B[0],g=gam(s),rx=s.x-S.x,ry=s.y-S.y,rz=s.z-S.z,r=Math.hypot(rx,ry,rz),vx=s.vx/g-S.vx,vy=s.vy/g-S.vy,vz=s.vz/g-S.vz,
   ux=rx/r,uy=ry/r,uz=rz/r,hx=ry*vz-rz*vy,hy=rz*vx-rx*vz,hz=rx*vy-ry*vx,h=Math.hypot(hx,hy,hz),nx=hx/h,ny=hy/h,nz=hz/h,

@@ -63,3 +63,12 @@ orbit readout uses your **dominant body**, the one whose gravity matters most wh
 
 Δv = vₑ · ln(m_full / m_empty). Doubling your propellant does **not** double your Δv; a faster exhaust (vₑ) does.
 See [[Engines]] and [[Fuels]], and the Design Analyzer in 🛠.
+
+## Lagrange points
+
+Around any pair of bodies there are five points where a small craft keeps pace with the smaller body. L1 and L2 sit
+either side of it at about the Hill radius r = a·(m/3M)^⅓ (Sun–Earth: 0.01 AU, 1.5 million km; Earth–Moon: ~61,500 km
+from the Moon), L3 on the far side of the primary, and L4 and L5 60° ahead of and behind it. L1–L3 are unstable and
+need small station-keeping burns; L4 and L5 are stable when the mass ratio exceeds 25, which is why Jupiter's are full
+of Trojan asteroids. 🧭 NAVIGATE → **LAGRANGE POINTS** shows them for Sun–Earth, Earth–Moon, Sun–Mars, Sun–Jupiter,
+Sun–Saturn and Saturn–Titan, with your distance to each.

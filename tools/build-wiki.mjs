@@ -12,7 +12,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..'), W = (f) => joi
 export const SECTIONS = [
   ['start', { en: 'Start here', es: 'Empieza aquí', zh: '从这里开始' }, ['Vision and Philosophy', 'Getting Started', 'First 10 Hours', 'Controls', 'The Laws of Cosmic Impulse', 'FAQ']],
   ['fly', { en: 'Flying', es: 'Pilotaje', zh: '飞行' }, ['Flying and Orbits', 'Orbital Mechanics', 'Relativity']],
-  ['ship', { en: 'Your ship', es: 'Tu nave', zh: '你的飞船' }, ['Ship and Engineering', 'Ship Builder', 'Upgrades', 'Engines', 'Propulsion Concepts', 'Fuels', 'Parts', 'Technologies', 'Energy and Power', 'Heat and Radiators']],
+  ['ship', { en: 'Your ship', es: 'Tu nave', zh: '你的飞船' }, ['Ship and Engineering', 'Ship Builder', 'Upgrades', 'Engines', 'Engine Workshop', 'Rocket Equation Lab', 'Propulsion Concepts', 'Fuels', 'Parts', 'Technologies', 'Energy and Power', 'Heat and Radiators']],
   ['life', { en: 'Staying alive', es: 'Sobrevivir', zh: '生存' }, ['Survival', 'Radiation']],
   ['world', { en: 'The solar system', es: 'El sistema solar', zh: '太阳系' }, ['Solar System', 'Asteroids and Mining', 'Drones and Probes', 'Contracts']],
   ['fight', { en: 'Combat and sensors', es: 'Combate y sensores', zh: '战斗与传感器' }, ['Combat', 'Sensors and Radar']],
@@ -107,11 +107,11 @@ ${d.DR.map((e) => `### ${e.ic || ''} ${e.n}\n${e.how || e.d || ''}${d.ENGR && d.
 }
 // Page titles for the sidebar and browser tab, so every title follows the language even if a page body falls back.
 export const TITLES = {
-  es: { 'Home': 'Wiki de Cosmic Impulse', 'The Laws of Cosmic Impulse': 'Las leyes de Cosmic Impulse', 'Getting Started': 'Primeros pasos', 'Controls': 'Controles', 'Contracts': 'Contratos',
+  es: { 'Engine Workshop': 'Taller de motores', 'Rocket Equation Lab': 'Laboratorio de la ecuación del cohete', 'Home': 'Wiki de Cosmic Impulse', 'The Laws of Cosmic Impulse': 'Las leyes de Cosmic Impulse', 'Getting Started': 'Primeros pasos', 'Controls': 'Controles', 'Contracts': 'Contratos',
     'Flying and Orbits': 'Vuelo y órbitas', 'Engines': 'Motores', 'Fuels': 'Combustibles', 'Ship and Engineering': 'Nave e ingeniería', 'Drones and Probes': 'Drones y sondas', 'Vision and Philosophy': 'Visión y filosofía', 'Ship Builder': 'Constructor de naves', 'Upgrades': 'Mejoras', 'Propulsion Concepts': 'Conceptos de propulsión', 'First 10 Hours': 'Tus primeras 10 horas', 'Cockpit and Displays': 'Cabina y pantallas', 'Orbital Mechanics': 'Mecánica orbital', 'Relativity': 'Relatividad', 'Heat and Radiators': 'Calor y radiadores', 'Radiation': 'Radiación', 'Asteroids and Mining': 'Asteroides y minería', 'Solar System': 'Sistema solar', 'Energy and Power': 'Energía y potencia',
     'Parts': 'Piezas', 'Technologies': 'Tecnologías', 'Survival': 'Supervivencia', 'Combat': 'Combate', 'Sensors and Radar': 'Sensores y radar', 'Customization': 'Personalización',
     'Multiplayer': 'Multijugador', 'Fair Play and Rules': 'Juego limpio y reglas', 'Build Your Own Cosmic Impulse': 'Construye tu propio Cosmic Impulse', 'Glossary': 'Glosario', 'FAQ': 'Preguntas frecuentes' },
-  zh: { 'Home': 'Cosmic Impulse 百科', 'The Laws of Cosmic Impulse': 'Cosmic Impulse 的定律', 'Getting Started': '入门', 'Controls': '操作', 'Contracts': '合同',
+  zh: { 'Engine Workshop': '发动机工坊', 'Rocket Equation Lab': '火箭方程实验室', 'Home': 'Cosmic Impulse 百科', 'The Laws of Cosmic Impulse': 'Cosmic Impulse 的定律', 'Getting Started': '入门', 'Controls': '操作', 'Contracts': '合同',
     'Flying and Orbits': '飞行与轨道', 'Engines': '发动机', 'Fuels': '燃料', 'Ship and Engineering': '飞船与工程', 'Drones and Probes': '无人机与探测器', 'Vision and Philosophy': '愿景与理念', 'Ship Builder': '飞船建造器', 'Upgrades': '升级', 'Propulsion Concepts': '推进概念', 'First 10 Hours': '你的前 10 小时', 'Cockpit and Displays': '驾驶舱与显示', 'Orbital Mechanics': '轨道力学', 'Relativity': '相对论', 'Heat and Radiators': '热量与散热器', 'Radiation': '辐射', 'Asteroids and Mining': '小行星与采矿', 'Solar System': '太阳系', 'Energy and Power': '能量与功率',
     'Parts': '部件', 'Technologies': '科技', 'Survival': '生存', 'Combat': '战斗', 'Sensors and Radar': '传感器与雷达', 'Customization': '自定义',
     'Multiplayer': '多人游戏', 'Fair Play and Rules': '公平竞技与规则', 'Build Your Own Cosmic Impulse': '打造你自己的 Cosmic Impulse', 'Glossary': '术语表', 'FAQ': '常见问题' } };
@@ -158,18 +158,20 @@ const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>':
 const slug = (n) => n.replace(/ /g, '-');
 function md(t, lang = 'en') { // small Markdown subset: headings, tables, lists, quotes, code, bold, italics, code spans, [[links]]
   const inl = (s) => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\*([^*]+)\*/g, '<i>$1</i>')
-    .replace(/\[\[([^\]]+)\]\]/g, (_, n) => { const [txt, pg] = n.includes('|') ? n.split('|') : [n, n]; return `<a href="#${lang}/${slug(pg)}">${txt}</a>` });
+    .replace(/\[\[([^\]]+)\]\]/g, (_, n) => { const [txt, pg] = n.includes('|') ? n.split('|') : [n, n]; return `<a href="#${lang}/${slug(pg)}">${txt}</a>` })
+    .replace(/\[([^\]]+)\]\(((?:https:\/\/|[a-z0-9-]+\.html)[^)\s]*)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');   // [text](https://… or page.html)
   const out = [], L = [];
   let inCode = false;   // join wrapped lines back onto their paragraph or list item
   for (const l of t.split('\n')) {
     if (/^```/.test(l)) inCode = !inCode;
-    const block = inCode || /^(```|#|\||\s*- |\s*\d+\. |> )/.test(l) || !l.trim();
+    const block = inCode || /^(```|#|\||\s*- |\s*\d+\. |> |<!-- )/.test(l) || !l.trim();
     const prev = L[L.length - 1];
     if (!block && prev && prev.trim() && !/^(```|#|\|)/.test(prev) && !inCode) L[L.length - 1] = prev + (/[\u3000-\u9fff\uff00-\uffef]$/.test(prev) ? '' : ' ') + l.trim(); else L.push(l);
   }
   for (let i = 0; i < L.length; i++) {
     const l = L[i];
     if (/^```/.test(l)) { const c = []; while (++i < L.length && !/^```/.test(L[i])) c.push(esc(L[i])); out.push('<pre>' + c.join('\n') + '</pre>'); continue }
+    if (/^<!-- embed: [a-z0-9-]+\.html -->$/.test(l.trim())) { const u = l.trim().slice(12, -4); out.push(`<iframe class="embed" src="${u}?embed=1&amp;lang=${lang}" loading="lazy" title="${u}"></iframe>`); continue }   // an interactive page shown inside the wiki
     if (/^#{1,3} /.test(l)) { const n = l.match(/^#+/)[0].length; out.push(`<h${n}>${inl(l.slice(n + 1))}</h${n}>`); continue }
     if (/^\|/.test(l)) { const rows = []; while (i < L.length && /^\|/.test(L[i])) rows.push(L[i++]); i--;
       const cells = (r) => r.split('|').slice(1, -1).map((c) => inl(c.trim()));
@@ -233,9 +235,11 @@ nav .st{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(-
 .foot{margin-top:28px;padding-top:12px;border-top:1px solid #24305a;font-size:14px;color:var(--mut)}.foot div{margin:6px 0}.pn{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
 blockquote{border-left:3px solid var(--ac);margin:10px 0;padding:6px 14px;background:#121b3d;color:#f0e0c0}
 @media (max-width:720px){body{display:block}nav{width:auto;height:auto;position:static}main{padding:16px}}
+iframe.embed{display:block;width:100%;min-height:900px;border:0;border-radius:10px;margin:10px 0;background:transparent}
 </style></head><body><nav><h1>🪐 <span id="wt">Cosmic Impulse Wiki</span></h1><a id="play" href="cosmic-impulse.html" data-l="*">▶ Play</a><div id="langs">${Object.entries(LANGS).map(([l, n]) => `<button data-set="${l}">${n}</button>`).join('')}</div><input id="q" placeholder="Search…">${Object.values(navs).flat().join('')}</nav>
 <main>${pages}<p id="none" style="display:none">No page matches.</p></main>
 <script>
+addEventListener('message',e=>{const d=e.data;if(d&&d.lab&&d.h>0)document.querySelectorAll('iframe.embed').forEach(f=>{if(f.contentWindow===e.source)f.style.height=Math.ceil(d.h+4)+'px'})});
 const S=[...document.querySelectorAll('section')],A=[...document.querySelectorAll('nav a[data-l]:not(#play)')],C=${JSON.stringify(CHROME)};let L='en';try{L=localStorage.getItem('orbital-lang')||((navigator.language||'en').slice(0,2));}catch(e){}if(!['en','es','zh'].includes(L))L='en';
 function cur(){let h=decodeURIComponent(location.hash.slice(1))||'Home';if(!h.includes('/'))h=L+'/'+h;return h}
 function show(){const id=cur();L=id.split('/')[0];try{localStorage.setItem('orbital-lang',L)}catch(e){}document.documentElement.lang=L;const c=C[L],sec=document.getElementById(id),h=sec&&sec.querySelector('h1');document.title=(h&&id.split('/')[1]!=='Home'?h.textContent+' · ':'')+c.wiki;document.getElementById('wt').textContent=c.wiki;document.getElementById('q').placeholder=c.q;document.getElementById('none').textContent=c.none;document.getElementById('play').textContent=c.play;

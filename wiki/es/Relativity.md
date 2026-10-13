@@ -35,6 +35,13 @@ La información de los sensores también viaja a la velocidad de la luz, así qu
 ([[Sensores y radar|Sensors and Radar]]); los datos de las sondas vuelven a la velocidad de la luz
 ([[Drones y sondas|Drones and Probes]]).
 
+Cerca de la velocidad de la luz el propio cielo cambia, tal como predice la relatividad. **Aberración**: una estrella a un
+ángulo θ de tu dirección de viaje aparece a θ′ con cos θ′ = (cos θ + β) / (1 + β cos θ), así que las estrellas se agolpan en
+un disco brillante delante y el cielo de detrás se vacía. **Efecto Doppler**: la luz de delante llega con mayor frecuencia,
+D = γ (1 + β cos θ), así que las estrellas de delante se vuelven azules y brillan más y las de detrás se enrojecen y se
+apagan. Ambos aparecen en el cielo del juego desde el 0,2 % de la velocidad de la luz. En la cabina de vuelo 3D, la
+pantalla VUELO también muestra γ y a qué ritmo va el reloj de tu nave.
+
 ## ¿Cuánto se tarda en llegar a Próxima Centauri?
 
 Próxima Centauri, la estrella más cercana, está a **4,25 años luz** (268.000 UA). La duración del viaje depende de lo

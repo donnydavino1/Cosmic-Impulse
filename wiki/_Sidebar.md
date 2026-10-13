@@ -12,6 +12,8 @@
 - [[Ship Builder]]
 - [[Upgrades]]
 - [[Engines]]
+- [[Engine Workshop]]
+- [[Rocket Equation Lab]]
 - [[Propulsion Concepts]]
 - [[Fuels]]
 - [[Parts]]

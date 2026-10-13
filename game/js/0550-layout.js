@@ -39,7 +39,7 @@ function layMetrics(order,rad){rad=rad||s.lay.rad||{};const M=order.map(layMod).
  const RM=[],byHost={};for(const k in rad){const h=M.find(q=>q.k===rad[k]),q=h&&layMod(k);if(!q)continue;(byHost[h.k]=byHost[h.k]||[]).push(q);q.host=h.k;q.radial=true;q.x=h.x;q.off=h.r+q.r+.3;RM.push(q)}
  for(const h in byHost)byHost[h].forEach((q,i,A)=>{q.ang=Math.PI/2+2*Math.PI*i/A.length});
  const D=DR[di],mEng=isU(D.id)?engMass(D,PW):0,xEng=L+1.5;
- let other=.2*s.area+s.sailA*.02+s.ammo.missile*50+(typeof opsMass==='function'?opsMass():0)+resMass()-s.res.water;
+ let other=(typeof pvKg==='function'?pvKg():.2)*s.area+s.sailA*(typeof sailKg==='function'?sailKg():.02)+(typeof tankKg==='function'?tankKg():0)+(typeof coatKg==='function'?coatKg():0)+(typeof tetherKg==='function'?tetherKg():0)+s.ammo.missile*50+(typeof opsMass==='function'?opsMass():0)+resMass()-s.res.water;
  for(const p of s.parts)if(PARTS[p.id].cat==='frame')other+=PARTS[p.id].m;
  let mTail=0;DR.forEach((E,i)=>{if(i!==di&&isU(E.id))mTail+=engMass(E,E.pw)});
  const ALL=M.concat(RM),mMod=ALL.reduce((a,q)=>a+q.m,0),mt=mMod+mEng+mTail+other,xc=(ALL.reduce((a,q)=>a+q.m*q.x,0)+(mEng+mTail)*xEng+other*L/2)/Math.max(1,mt);

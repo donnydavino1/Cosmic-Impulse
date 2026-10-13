@@ -64,3 +64,12 @@ cuerpos, pero los datos de órbita usan tu **cuerpo dominante**, el que más pes
 
 Δv = vₑ · ln(m_llena / m_vacía). Duplicar el propelente **no** duplica tu Δv; un escape más rápido (vₑ) sí ayuda.
 Ver [[Motores|Engines]] y [[Combustibles|Fuels]], y el Analizador de diseño en 🛠.
+
+## Puntos de Lagrange
+
+Alrededor de cualquier par de cuerpos hay cinco puntos donde una nave pequeña sigue el paso del cuerpo menor. L1 y L2
+están a ambos lados de él, a aproximadamente el radio de Hill r = a·(m/3M)^⅓ (Sol–Tierra: 0,01 UA, 1,5 millones de km;
+Tierra–Luna: ~61.500 km de la Luna), L3 al otro lado del primario, y L4 y L5 60° por delante y por detrás. L1–L3 son
+inestables y necesitan pequeños encendidos de mantenimiento; L4 y L5 son estables cuando la razón de masas supera 25,
+por eso los de Júpiter están llenos de asteroides troyanos. 🧭 NAVEGAR → **PUNTOS DE LAGRANGE** los muestra para
+Sol–Tierra, Tierra–Luna, Sol–Marte, Sol–Júpiter, Sol–Saturno y Saturno–Titán, con tu distancia a cada uno.

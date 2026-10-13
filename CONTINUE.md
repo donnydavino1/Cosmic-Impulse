@@ -65,7 +65,7 @@ Developer’s standing wishes (from the chat that set up this workflow):
 6. **Before finishing:** update §3 (state), §4 (now), §5 (next), `CHANGELOG.md`, and any doc whose facts you
    changed. Bump `package.json` version (minor for features).
 
-## 3. Current state (v0.33.0, official physics fingerprint: see `game/official-rules.json`)
+## 3. Current state (v0.36.0, official physics fingerprint: see `game/official-rules.json`)
 
 Working and tested in a headless browser:
 - Solar system, relativity, orbit/XYZ flight, autopilot, chemical start that can escape Earth.
@@ -147,6 +147,27 @@ Working and tested in a headless browser:
   pause (`alertCrit`), 🛟 safety slow-down `2680-safety.js` (F4); score + rewind `2690-score.js` (`saveState`/`loadState`
   in 2200); no strobe `1955-comfort.js` (`visLit()`).
 
+- **v0.36:** RULES `0110-atmosphere.js` (`ATM`, `aeroStep` called from `step()` after thrust, `aeroRho`),
+  `0585-power-conversion.js` (`s.pcv`, `pcvApply` from `partEff`; core life `p.burn`, `coreK` in powerStep), `0593-fuel-cells.js` (`s.fcN`, `fcW` into `S.rtg`),
+  `0594-hull-coating.js` (`s.coat`, `hullAlpha` in powerStep/analyzer/sun burn limit), `2101-radiation-belts.js`
+  (`beltRate` in `doseNow`, solar cycle `solAct/solFlareK/solGcrK`, bit flips `seuTick`/`s.radhard`), `2106-crew-health.js` (fitness `m.fit`, `s.exer`,
+  `chFitK` in `crewWork`, `m.d0` lifetime dose, `m.ill` medical events, `crewOn` skips the sick, spin `s.spinMode/s.spinRpm/
+  s.tether`, `s.gLim` in engLimits). Engines: clusters `c.n`/`c.lost` (`engClusterK` in thrustAcc and step, `engClusterFail` in 2100), `ENGLIVE`/`engLiveTune`, `ENGBIM`/`engBimReactors` (pushed into
+  `SH.reactors`, skipped while that engine burns). Client: porkchop `2644` (Lambert), mission planner `2649`, flip-and-burn
+  `2642`, Lagrange `2643`, almanac `2648`, captain's log `2682` (wraps `notify`), heat signature `2683`, orbit shadow `2684`.
+- **v0.35:** depth pass. RULES: `0580-engine-design.js` (ENGFAM/ENGOPT/ENGDIM, `engSpec(D,cfg)`, `engRecalc`,
+  `engSyncAll` on load, job type `design`, `engDose`; new FUEL entries), `0590-optics.js` (`s.optics`, `optReach`), `0591-rail-slugs.js` (`s.slug`, `slugV`; read by fire/impact in 1700),
+  `0595-solar-cells.js` (`s.pv`, `pvAge` from survivalTick), `0596-cryo-tanks.js` (`s.tank`, `cryoTick` from survivalTick, `cryoW` in recalc load), `0597-heat-pipes.js` (`s.hpf`, `hpfApply` called from
+  `partEff` for parts flagged `hp`), `0598-sail-film.js` (`s.sailM`, `sailT`, `sailTick`; `sailInit` gives 10,000 m²
+  on unlock), `0599-greenhouse.js` (`s.crop`, read by lifeStep, recalc load, crew morale). Client: workshop
+  `2671-engine-workshop.js`, transfer windows `2645`, gravity assists `2646`, comms `2647`, recorder `2678`, spectrometer `2679`,
+  relativistic sky `2681` (never seen in WebGL), crew traits/morale/age in `2105`/`2675`. Choice groups for cells,
+  heat pipes, sail film and crops live in the 🏭 Fabricate tab (1000). Tests: `engine-design`, `depth-choices`.
+- **v0.34:** sandbox `2110-sandbox.js` (`SBX()` read by `matOK/takeMat/queueJob` in 0600, fuel in 0700, crew 2105;
+  frame hook keeps battery full and turns sandbox off when `MP.conn`/`UNI.on`); cargo `2107-cargo.js` (`cargoItems`,
+  `jettison`) + window `2677-cargo-ui.js` + `css/330-cargo.css`; trip estimates `effPush()/burnDays()/apStageTxt()` in
+  2650; `rocket-lab.html` (standalone, own i18n dictionary, posts its height to the wiki iframe); wiki renderer supports
+  `[text](url)` and `<!-- embed: page.html -->`.
 - **v0.33:** Andromeda removed (developer: Proxima is the goal, under 24 real hours). `apIst` climbs out of the Sun's
   gravity before aiming at the star; step loop in 1000 breaks at a body's surface. Realistic deck materials/lighting:
   procedural textures `deckTexMake`, `deckRBox` extrusions, instanced small parts, PMREM cabin panorama `ck3Env`,
@@ -172,8 +193,8 @@ The developer has not yet confirmed that GitHub Pages is switched on (Settings �
    modules, docking-port geometry; outposts as sensor beacons; contracts that deliver to outposts.
 3. **Raider AI into RULES** and a boss wave every fifth wave.
 4. **Authoritative universe server:** run the same RULES modules in Node to check each pilot's reported state.
-5. **Relativity extras (optional):** GR light/ship deflection factor (1+β²) near the Sun for relativistic ships;
-   relativistic aberration and Doppler colour of the starfield at high speed.
+5. **Relativity extras (optional):** GR light/ship deflection factor (1+β²) near the Sun for relativistic ships.
+   Ask for a WebGL screenshot of the relativistic sky (2681) and the workshop plume colours.
 6. Keep `npm run i18n` at 0 and update the wiki in all three languages with every change.
 
 ## 5. NEXT — backlog, roughly by value

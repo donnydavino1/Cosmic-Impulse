@@ -50,3 +50,21 @@ Los de tipo C dan agua (para beber, oxígeno e hidrógeno combustible); los de t
 
 Todo lo que minas se cuenta por elemento en el libro de cuentas: la materia nunca se crea (Ley 3,
 [[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]]). Los contratos de minería pagan extra ([[Contratos|Contracts]]).
+
+## 🔬 Espectrómetro
+
+Pulsa **\** (o 🛠 → ⛏ Inventario → *Analizar un asteroide*) para leer el espectro de reflectancia de un asteroide de 0,4 a 2,5 µm
+antes de volar hasta él. Los tipo C son oscuros (albedo 0,05) con una caída de minerales hidratados a 0,7 µm; los tipo S
+son más brillantes y rojizos, con bandas de olivino y piroxeno a 1 y 2 µm; los tipo M son metálicos: lisos y sin
+bandas; los helados son brillantes con bandas de hielo de agua a 1,5 y 2 µm. Los objetivos lejanos dan espectros con
+más ruido. Debajo verás la densidad, la masa total y cuántas toneladas de cada material contiene, menos lo ya extraído.
+
+## Gravedad y rotación
+
+El espectrómetro también muestra la gravedad superficial (GM/R²), la velocidad de escape (√(2GM/R)) y la rotación de cada
+asteroide. En un asteroide de unos cientos de metros la gravedad es una cienmilésima de la terrestre y la velocidad de
+escape va de unos centímetros a decenas de centímetros por segundo: un salto fuerte te lanzaría al espacio. Los
+asteroides de escombros de más de ~200 m no pueden girar más rápido que una vez cada 2,2 horas sin deshacerse (la
+barrera de rotación); los pequeños y sólidos pueden girar en minutos.
+
+El primer espectro limpio de cada asteroide (ruido de señal por debajo del 3 %, así que acércate a menos de unos 0,6 UA) es ciencia nueva: 6 puntos de investigación por un cuerpo rocoso o carbonáceo, 10 por uno helado y 12 por uno metálico.

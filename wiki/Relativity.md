@@ -33,6 +33,12 @@ world energy use. At 99 % of c it is about 1,200 times more. That is why only fu
 Sensor information travels at light speed too, so far away things are seen as they were ([[Sensors and Radar]]);
 probe data comes home at light speed ([[Drones and Probes]]).
 
+Near light speed the sky itself changes, exactly as relativity predicts. **Aberration**: a star at angle θ from your
+direction of travel appears at θ′ with cos θ′ = (cos θ + β) / (1 + β cos θ), so the stars crowd into a bright disc ahead and
+the sky behind empties. **Doppler shift**: light from ahead arrives at a higher frequency, D = γ (1 + β cos θ), so stars ahead
+turn blue and brighten and stars behind turn red and fade. Both appear in the game's sky from 0.2 % of light speed. On the
+3D flight deck the FLIGHT screen also shows γ and how fast your ship clock runs.
+
 ## How long to Proxima Centauri?
 
 Proxima Centauri, the nearest star, is **4.25 light-years** away (268,000 AU). How long the trip takes depends on how

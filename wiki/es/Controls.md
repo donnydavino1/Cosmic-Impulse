@@ -49,6 +49,10 @@
 | **F7** | 🧪 Diseñador de piezas: inventa tus propios radiadores, baterías, reactores y blindajes |
 | **F2** | 🌡 Térmico: mapa de calor, balance de calor y calculadora de radiadores |
 | **F3** | 👩‍🚀 Tripulación: tareas, habilidades y entrenamiento |
+| **]** | 📦 Carga: todo lo que hay a bordo, suelta cualquier cantidad |
+| **\\** | 🔬 Espectrómetro: de qué está hecho un asteroide, según su espectro |
+| **;** | 📈 Registrador de vuelo: toda la misión en gráficas |
+| **[** | 🔧 Taller de motores: reacción, propelente, ajuste y tamaño |
 | **F4** | 🛟 Ralentización de seguridad sí / no (ralentiza el tiempo si algo va a matar a la tripulación en menos de un día) |
 | **F6** | 🛰 Planificador de órbitas: geoestacionaria, geosíncrona o cualquier órbita circular |
 | **6** | 📡 Radar activo / pasivo |

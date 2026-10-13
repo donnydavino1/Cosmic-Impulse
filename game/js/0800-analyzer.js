@@ -1,7 +1,7 @@
 // ===== DESIGN ANALYZER: what limits the ship, and why =====
 function analyze(add){const keep=s.parts;if(add){s.parts=s.parts.concat(add.map(id=>({id,cond:1,fail:false})));recalc()}
- const D=DR[di],M=mass(),P=PW,r=sunDist(),flux=S0*(AU/r)**2,F=D.sail?2*flux*s.sailA/C:D.k*P/D.ve,reac=SH.reactors.reduce((a,q)=>a+q.d.pe,0),reacW=SH.reactors.reduce((a,q)=>a+q.d.pe*(1/q.d.eta-1),0),
-  gen=flux*s.area*EFF*.62+SH.rtg+reac,free=gen-SH.load,capLo=qrej(SH.radLoA,318),capHi=SH.radHiA?qrej(SH.radHiA,SH.radHiT*.97):0,baseLo=SH.load*.9+100+.3*flux*10,
+ const D=DR[di],M=mass(),P=PW,r=sunDist(),flux=S0*(AU/r)**2,F=D.sail?(1+sailRho())*flux*s.sailA/C:D.k*P/D.ve,reac=SH.reactors.reduce((a,q)=>a+q.d.pe,0),reacW=SH.reactors.reduce((a,q)=>a+q.d.pe*(1/q.d.eta-1),0),
+  gen=flux*s.area*EFF*.62+SH.rtg+reac,free=gen-SH.load,capLo=qrej(SH.radLoA,318),capHi=SH.radHiA?qrej(SH.radHiA,SH.radHiT*.97):0,baseLo=SH.load*.9+100+(typeof hullAlpha==='function'?hullAlpha():.3)*flux*10,
   roomLo=capLo-baseLo-(SH.radHiA?0:reacW),roomHi=SH.radHiA?capHi-reacW:roomLo,
   fP=D.el?Math.max(0,Math.min(1,free/P)):1,fH=D.hf>0&&D.loop!=='none'&&P>0?Math.max(0,Math.min(1,(D.loop==='lo'?roomLo:roomHi)/(P*D.hf))):1,fG=F>0?Math.min(1,SH.gmax*9.81*M/F):1,
   f=Math.min(fP,fH,fG),acc=F*f/M,fuel=D.f?s.fuel[D.f]:Infinity,dv=D.f?(fuel>0?C*Math.tanh(D.ve/C*Math.log(M/(M-fuel))):0):Infinity,md=D.sail?0:F*f/D.ve,burn=md>0?fuel/md:Infinity,

@@ -136,6 +136,7 @@ function deckFlight(x,W,H){dkBase(x,W,H,'FLIGHT · click for navigation');const 
  dkRow(x,W,y,'Orbit',o.ec<1?fmtD(Math.max(0,o.a*(1-o.ec)-d.R))+' × '+fmtD(Math.max(0,o.a*(1+o.ec)-d.R)):tr('escape'),o.ec<1?DK.hi:DK.am);y+=28;
  dkRow(x,W,y,'Engine',tr(D.n));y+=28;dkRow(x,W,y,'Thrust',s.burn>0?Math.round(s.burn*100)+' %':tr('off'),s.burn>0?DK.am:DK.fg);y+=28;
  dkRow(x,W,y,'Time speed',paused?tr('paused'):'1 s = '+dur(WARP[wi]),paused?DK.am:DK.fg);y+=28;
+ {const gm=gam(s);if(gm>1.0005){dkRow(x,W,y,'Time dilation','γ = '+f1(gm,gm<10?3:1)+' · '+tr('ship clock runs')+' '+f1(1/gm,3)+'×',DK.am);y+=28}}
  dkRow(x,W,y,'Ship clock',new Date(Date.UTC(2026,9,4)+T*1e3).toISOString().slice(0,10));y+=30;
  x.font='15px ui-monospace,monospace';x.fillStyle=AP?DK.gr:'rgba(159,234,255,.55)';x.fillText(AP?'AP · '+tr(String(AP.stage||'on')).slice(0,52):tr('Autopilot off'),14,Math.min(H-16,y))}
 function deckSystems(x,W,H){dkBase(x,W,H,'SYSTEMS · click for heat');const hasHi=SH.radHiA>0,hm=hullMax(),cl=s.tLo>318?DK.rd:s.tLo>308?DK.am:DK.gr;let y=54;

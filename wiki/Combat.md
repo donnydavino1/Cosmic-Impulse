@@ -35,3 +35,25 @@ lose you, they fly to where they last saw you and circle there, and you get a me
 
 **Against other players:** see [[Multiplayer]]. Hits only count when both games run the same rules and physics
 ([[Fair Play and Rules]]).
+
+## Pulse laser optics
+
+🛠 → 🔫 Weapons → **PULSE LASER OPTICS**. A laser beam spreads by diffraction: its spot grows as 1.22 × wavelength ×
+distance ÷ mirror diameter, so the pulse delivers its energy only while the spot is smaller than the target. Choose
+**infrared 1,064 nm** (full 5 MJ per pulse, shortest reach), **green 532 nm** (frequency-doubled: twice the reach, 60 %
+of the energy) or **ultraviolet 355 nm** (tripled: three times the reach, 35 %). A **bigger mirror** multiplies the reach
+by its diameter but weighs 120 kg per extra m² and is cast from silicates, iron and a little platinum. The beam you see
+takes the colour of the light (infrared and ultraviolet are invisible, shown faint red and violet).
+
+## Railgun slugs
+
+🛠 → 🔫 Weapons → **RAILGUN SLUGS**. Every shot gives the slug the same 64 MJ, so its speed is v = √(2E/m):
+
+| Slug | Muzzle speed | Iron per shot |
+|---|---|---|
+| Needle, 0.5 kg | 16 km/s | 0.5 kg |
+| Standard, 2 kg | 8 km/s | 2 kg |
+| Heavy, 8 kg | 4 km/s | 8 kg |
+
+Impact energy is ½·m·v_rel² with the speed relative to the target, so a fast needle meeting a target head-on hits
+hardest and leaves it the least time to dodge. Heavy slugs kick your own ship back harder (recoil momentum √(2E·m)).

@@ -57,7 +57,7 @@ function buildSpine(H,dark,A,LMo,grp,remote){const LM=LMo||(SH&&SH.lay?SH.lay:la
  const sp=cyl(.25,L,dark,8);G0.add(sp);
  return{rad:maxR,nose:top,tail:top}}
 function buildShip(){while(shipG.children.length)shipG.remove(shipG.children[0]);
- const A=CUST.acc,H=new THREE.MeshStandardMaterial(REAL()?{color:CUST.hull,roughness:.55,metalness:.15}:{color:CUST.hull,roughness:.45,metalness:.3,flatShading:true}),dark=new THREE.MeshStandardMaterial(REAL()?{color:'#5d636d',roughness:.45,metalness:.75}:{color:'#2a2f45',roughness:.6,metalness:.6,flatShading:true});
+ const A=CUST.acc,H=new THREE.MeshStandardMaterial(s.coat==='gold'?{color:'#d9a930',roughness:.32,metalness:.95}:s.coat==='osr'?{color:'#dfe8f5',roughness:.12,metalness:.85}:REAL()?{color:CUST.hull,roughness:.55,metalness:.15}:{color:CUST.hull,roughness:.45,metalness:.3,flatShading:true}),dark=new THREE.MeshStandardMaterial(REAL()?{color:'#5d636d',roughness:.45,metalness:.75}:{color:'#2a2f45',roughness:.6,metalness:.6,flatShading:true});
  let sh=CUST.shape,rad=sh==='ring'?6.8:sh==='capsule'?3:4.2,nose=sh==='capsule'?6.6:sh==='ring'?2:3.7,tail=sh==='capsule'?6.8:sh==='ring'?2.6:4;
  if(sh==='modular'){const sp=buildSpine(H,dark,A);rad=sp.rad;nose=sp.nose;tail=sp.tail}
  else if(sh==='capsule'){const b=part(new THREE.CylinderGeometry(3,3,8,10),H,A);b.rotation.z=Math.PI/2;shipG.add(b);[4,-4].forEach(x=>{const c=part(new THREE.SphereGeometry(3,10,6),H,A);c.position.x=x;shipG.add(c)})}
@@ -79,8 +79,8 @@ function buildShip(){while(shipG.children.length)shipG.remove(shipG.children[0])
  else if(eid==='am'||eid==='beam'){const m=new THREE.Mesh(new THREE.SphereGeometry(4*es,28,12,0,Math.PI*2,0,.85),new THREE.MeshStandardMaterial({color:'#e8ecf5',metalness:1,roughness:.08,side:THREE.DoubleSide,emissive:'#ffffff',emissiveIntensity:.06}));
   m.rotation.z=-Math.PI/2;m.position.x=ex-4*es;shipG.add(m);nz=ex-4*es*.34}
  else nz=ex;
- const pg=new THREE.ConeGeometry(2*es,10*es,16,1,true);pg.translate(0,5*es,0);plume=new THREE.Mesh(pg,new THREE.MeshBasicMaterial({color:DRC[di],transparent:true,opacity:REAL()?(/^(ion|vas|mpd)$/.test(eid)?.16:eid==='chem'?.5:.35):.7,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
- plume.rotation.z=Math.PI/2;plume.position.x=nz;shipG.add(plume);if(!DR[di].sail){const ng=glow(DRC[di],(REAL()?3:8)*es);ng.position.x=nz;shipG.add(ng)}
+ const pg=new THREE.ConeGeometry(2*es,10*es,16,1,true);pg.translate(0,5*es,0);plume=new THREE.Mesh(pg,new THREE.MeshBasicMaterial({color:DR[di].col||DRC[di],transparent:true,opacity:REAL()?(/^(ion|vas|mpd)$/.test(eid)?.16:eid==='chem'?.5:.35):.7,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+ plume.rotation.z=Math.PI/2;plume.position.x=nz;shipG.add(plume);if(!DR[di].sail){const ng=glow(DR[di].col||DRC[di],(REAL()?3:8)*es);ng.position.x=nz;shipG.add(ng)}
  // FUEL TANKS: one pair per fuel type, real volume from real density
  let xo=1.5,ext=0;if(sh!=='modular')['chem','xe','h2','fus','am'].forEach(f=>{const mf=s.fuel[f];if(mf<.01)return;const r=Math.max(.15,Math.cbrt(3*(mf/RHO[f])/(8*Math.PI))),
   M=new THREE.MeshStandardMaterial({color:TCOL[f],roughness:.3,metalness:.6,flatShading:true,emissive:f==='am'?'#7a2cff':'#000000',emissiveIntensity:f==='am'?.7:0});
@@ -101,11 +101,11 @@ function buildShip(){while(shipG.children.length)shipG.remove(shipG.children[0])
   for(let Ly=0;Ly<layers;Ly++){const x=(Ly-(layers-1)/2)*gap;for(let k=0;k<nl&&k<cs.length;k++){const[,y,z]=cs[k];dm.position.set(x,y,z);dm.rotation.set(Ly*Math.PI/6,0,0);dm.updateMatrix();im.setMatrixAt(c,dm.matrix);col.set(k%9===0?'#4f86ff':k%5===0?'#1e3f8a':'#2a55c8');if(im.setColorAt)im.setColorAt(c,col);c++}
    for(let k=0;k<3;k++){const sp=part(new THREE.BoxGeometry(.6,2*rOut,.6),dark);sp.rotation.x=k*Math.PI/3;sp.position.x=x;shipG.add(sp)}}
   im.count=c;shipG.add(im);arrR=rOut+Rh}
- if(s.sailA>0){const Ls=Math.sqrt(s.sailA),sm=new THREE.Mesh(new THREE.BoxGeometry(.05,Ls,Ls),new THREE.MeshStandardMaterial({color:'#dfe6f2',metalness:1,roughness:.15,emissive:'#223',side:THREE.DoubleSide}));sm.position.x=nose+Ls*.35;shipG.add(sm);
+ if(s.sailA>0){const Ls=Math.sqrt(s.sailA),sm=new THREE.Mesh(new THREE.BoxGeometry(.05,Ls,Ls),new THREE.MeshStandardMaterial({color:s.sailM==='carb'?'#4a4d55':'#dfe6f2',metalness:1,roughness:.15,emissive:'#223',side:THREE.DoubleSide}));sm.position.x=nose+Ls*.35;shipG.add(sm);
   for(let k=0;k<2;k++){const bm=part(new THREE.BoxGeometry(.3,Ls*1.414,.3),dark);bm.rotation.x=Math.PI/4+k*Math.PI/2;bm.position.x=nose+Ls*.35;shipG.add(bm)}arrR=Math.max(arrR,Ls*.75)}
  if(sh!=='modular')buildTurrets(rad);ORB.emit('ship:build',{g:shipG,rad,part,H,dark,A});
  shipR=Math.max(10,arrR,ext,Math.abs(nz)+12*es);if(shipR>fitR*1.05||shipR<fitR*.6){svd=Math.max(svd,shipR*2.4);fitR=shipR}}
-function shipUpdate(){const key=[ORB.shipKey(),CUST.panel,WEP.map(w=>isU(w.id)?1:0).join(''),CUST.shape,CUST.vis,CUST.hull,CUST.acc,CUST.wings,di,Math.round(Math.log10(s.area)*20),Math.round(Math.log10(PW)*4),s.sailA,...['chem','xe','h2','fus','am'].map(f=>Math.round(Math.log10(s.fuel[f]+.01)*10))].join();if(key!==shipKey){shipKey=key;buildShip()}
+function shipUpdate(){const key=[ORB.shipKey(),DR[di].col||'',CUST.panel,WEP.map(w=>isU(w.id)?1:0).join(''),CUST.shape,CUST.vis,CUST.hull,s.coat,CUST.acc,CUST.wings,di,Math.round(Math.log10(s.area)*20),Math.round(Math.log10(PW)*4),s.sailA,s.sailM,...['chem','xe','h2','fus','am'].map(f=>Math.round(Math.log10(s.fuel[f]+.01)*10))].join();if(key!==shipKey){shipKey=key;buildShip()}
  const g=gam(s),d=s.dom,dv=s.burn>0?dirVec():null,f=dv||[s.vx/g-d.vx,s.vy/g-d.vy,s.vz/g-d.vz],fl=Math.hypot(...f)||1;tV.set(f[0]/fl,f[1]/fl,f[2]/fl);tQ.setFromUnitVectors(X1,tV);shipG.quaternion.slerp(tQ,.08);turretTick();
  plume.visible=s.burn>0&&!DR[di].sail;if(plume.visible){const k=(.6+.4*s.burn)*(.9+.2*Math.random());plume.scale.set(k,k*(1+s.burn),k)}
  const S=B[0],sx=S.x-s.x,sy=S.y-s.y,sz=S.z-s.z,sl=Math.hypot(sx,sy,sz);sLight.position.set(sx/sl*100,sy/sl*100,sz/sl*100);{const vl=typeof visLit==='function'?visLit():s.lit?1:0;sLight.intensity=(REAL()?3.2:1.8)*vl+.12*(1-vl)}

@@ -81,7 +81,7 @@ const PA=new Float32Array(1600*3),PG=new THREE.BufferGeometry();PG.setAttribute(
 function pathDraw(fp){if(!PRED||!AP){pathL.visible=false;return}pathL.visible=true;const P=PRED.pts,n=Math.min(P.length,1600);for(let k=0;k<n;k++){const p=P[k],b=B[p[0]]||B[0];PA[k*3]=(b.x+p[1]-fp.x)/U;PA[k*3+1]=(b.y+p[2]-fp.y)/U;PA[k*3+2]=(b.z+p[3]-fp.z)/U}PG.setDrawRange(0,n);PG.attributes.position.needsUpdate=true}
 function navTick(){const el=$('navinfo');if(!AP){PRED=null;el.classList.add('h');return}el.classList.remove('h');
  if(!AP.hold&&!AP.wait&&!PJ&&(!PRED||PRED.ap!==AP||performance.now()-predWall>10000))predStart();const P=PRED,rate=WARP[wi];
- let h='<b>🧭 AUTOPILOT → '+AP.name+'</b><br>'+(AP.stage||'')+'<br>';
+ let h='<b>🧭 AUTOPILOT → '+AP.name+'</b><br>'+apStageTxt()+'<br>';
  if(AP.hold)h+='Parked in mining range. Pick the mining laser and hold 🔥 FIRE. Any flight key takes manual control.';
  else if(!P||P.ap!==AP)h+='Projecting path… '+(PJ?Math.round(PJ.n/400)+'%':'');
  else{const left=Math.max(0,P.dt-(T-P.T0));h+=P.out==='arrive'?`ETA: <b>${dur(left)}</b> game time → <b>${paused?'(paused)':dur(left/rate)}</b> real time at the current speed (1 s = ${dur(rate)}; ⏩ to go faster)<br>✓ Projected to arrive with ${f1(P.left,P.left<10?2:0)} kg ${P.fname} left`

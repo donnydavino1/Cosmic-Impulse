@@ -11,3 +11,15 @@
 8. **Vigila tus signos vitales** en la cabina (V): la franja superior muestra todo lo que puede matarte.
 
 Consejos: **Contratos (9)** te dan metas con recompensa · **Operaciones (8)** envía drones mineros y sondas ([[Drones y sondas|Drones and Probes]]) · **Navegación (N)** tiene piloto automático · **C** abre la guía · **F9** desbloquea todo para probar.
+
+## Modo sandbox (un jugador)
+
+¿Quieres probar todos los motores y piezas sin minar ni esperar? Pulsa **🧪 Sandbox: construye lo que quieras** en la
+pantalla de bienvenida, o 🛠 → 🧪 Pruebas → *Modo sandbox*. Todas las tecnologías, motores y armas quedan
+desbloqueados; construir, encargar e investigar es instantáneo; los materiales, el agua, los puntos de investigación y
+la energía nunca se gastan (la batería se mantiene llena); el combustible y los suministros que normalmente solo vienen
+de la Tierra se pueden encargar en cualquier lugar. El vuelo sigue siendo física real: propelente, calor, empuje,
+radiación y las necesidades de la tripulación funcionan como siempre. Una insignia verde **🧪 SANDBOX** en la barra
+superior te lo recuerda (haz clic para desactivarlo; lo que construiste se queda). Las partidas sandbox no establecen
+récord personal, y el multijugador siempre usa las reglas reales: conectarte con otro jugador o con el universo
+compartido desactiva el sandbox.

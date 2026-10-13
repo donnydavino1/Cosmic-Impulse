@@ -81,3 +81,66 @@ When the crew is lost you get a **score**: days survived, the farthest you got f
 how close you came to the Sun, technologies, discoveries, mined mass, contracts, raiders destroyed and crew training.
 Your best score is kept in your browser. In single player you can **⏪ restart 24 hours earlier**: the game keeps a
 snapshot about every game hour and takes you back to the one a day before, at the slowest time speed.
+
+## Traits, morale and age
+
+**Traits.** Every astronaut has one: *Steady hands* (+1 Level at repairs and hull patching), *Quick learner* (skills
+grow 50 % faster), *Light eater* (20 % less oxygen, water and food), *Sharp eye* (+1 Level at gunnery and mining),
+*Tinkerer* (+1 at fabrication and science), *Calm under pressure* (raises everyone's morale), *Field medic* (+1 at
+medicine and rest) or *Ace pilot*. Ada Reyes has steady hands, Kenji Sato is a quick learner; recruits arrive with one.
+
+**Morale (0–100)** sets how well everyone works: 50 % output at 0, full output at 100. It drifts toward a target the
+Crew window explains: room to move (cabin space per person), danger alarms and warnings, low supplies, a hull breach,
+poor health, someone on rest duty, a greenhouse, and calm crewmates. Below 25 you are warned.
+
+**Age and the twin paradox.** Each astronaut's age counts only the time they spend awake on the ship clock. Near light
+speed the ship clock runs slow ([[Relativity]]) and hibernation stops ageing, so after a fast trip the Crew window shows
+how much younger they are than the calendar back home.
+
+## Greenhouse crops
+
+With the bioregenerative greenhouse installed, choose what grows in it (🏭 Fabricate → **GREENHOUSE CROPS**).
+It always makes all the oxygen; the crop sets the food surplus, the LED power and the crew's mood. Replanting takes
+two weeks, 40 kg of carbon and 200 kg of water.
+
+| Crop | Food surplus per person per day | Lighting power | Morale |
+|---|---|---|---|
+| Potatoes and wheat (stock) | 0.3 kg | 6 kW | +8 |
+| Algae tanks | 0.45 kg | 3.6 kW | −4 |
+| Mixed garden | 0.12 kg | 7.5 kW | +16 |
+
+Algae is the survival pick when power is short; the garden keeps a crew happy (and working faster) on long voyages.
+
+## Weightlessness and lifetime dose
+
+Without gravity, bones thin and muscles waste. Each astronaut has a **fitness** (100 % = as fit as on Earth) that falls
+each month by 2.5 % with no exercise, 1 % with 1 hour a day and 0.25 % with 2.5 hours a day (the ISS routine, and the
+game's baseline). Choose the schedule in 👩‍🚀 Crew: less exercise gives more time for duties, but low fitness slows all
+work (× 0.6 + 0.4 · fitness) and hurts morale. **Thrust is real gravity:** while the engine pushes the ship at 2 m/s²
+or more, fitness recovers by 3 % a month × (g / 9.81).
+
+Every astronaut also carries a **lifetime dose** since joining the crew. The career limit is 600 mSv; each sievert
+adds about 5 % lifetime risk of fatal cancer. Past the limit, morale drops.
+
+## Medical events
+
+About once every 18 months each astronaut gets a medical problem: a kidney stone (twice as likely when bones are losing
+calcium in weightlessness), a dental abscess, a skin infection, eye swelling from fluids shifting to the head (SANS), a
+burn from a hot coolant line, or (rarely) appendicitis. The patient is off duty until recovered, from 3 to 14 days.
+A crewmate on medicine duty speeds recovery by 50 % per skill level and stops the serious ones from draining the
+crew's health; without one, appendicitis is dangerous.
+
+### Spin gravity
+
+Turning the ship gives the crew centripetal gravity, g = ω²r (👩‍🚀 Crew → **Spin gravity**). Spinning the hull end over
+end uses half the ship's length as the radius, so it needs a fast spin for little gravity; a 225 m tether with a
+counterweight (400 kg of carbon, +500 kg) gives 1 g at about 2 rpm. Above about 4 rpm the inner ear rebels: dizziness
+and lower morale. The spin stops while the engine burns, and spin gravity rebuilds fitness like thrust gravity.
+
+### Acceleration limit
+
+People tolerate about 1 g indefinitely, 2–3 g for hours lying in acceleration couches, and 6 g only for minutes. In
+👩‍🚀 Crew choose the crew's limit (1, 2, 3 or 6 g; default 3): the engine is held to it even if the frame could take
+more. Above 2 g the crew tires (health −1 % an hour for each g over 2). A hibernating crew is not limited.
+
+Isolation also weighs on morale: once Earth is more than a light-minute away, calls home become exchanged recordings (morale −2, growing to −10 when Earth is light-days away).

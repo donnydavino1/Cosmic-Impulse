@@ -13,7 +13,7 @@ const tName=t=>t.kind==='pl'||t.kind==='up'?'👤 '+t.o.name+'’s ship':tName0(
 function wTxt(){const w=WEP[WI];let h=`${w.n}${isU(w.id)?'':' 🔒 not built'}${w.id==='mlaser'?' · '+sci(PML)+' W':''}${w.id==='missile'?' · '+s.ammo.missile+' missiles':''}${w.id==='rail'?' · iron '+f1(s.res.iron,0)+' kg':''}`;
  if(!WT)return h+' · no target ('+KN(BIND.target)+' to pick one)';const T2=tState(WT),d=Math.hypot(T2.x-s.x,T2.y-s.y,T2.z-s.z)-T2.r;
  h+=` · 🎯 ${tName(WT)} · ${fmtD(Math.max(0,d))}`+(WT.kind==='ast'?(d<1e4?' · ✓ in collection range':' · get within 10 km to collect material'):` · ${WT.kind==='pl'?'hull '+Math.round(100*WT.o.hull/WT.o.hullMax)+'%':WT.kind==='up'?'hull '+Math.round(100*(WT.o.hull??1))+'%':''}${WT.kind==='pl'||WT.kind==='up'?'':' armour '}${WT.kind==='pl'||WT.kind==='up'?'':Math.max(0,100*WT.o.hp/(WT.o.hpMax||2e7)).toFixed(0)+'%'}`);
- if(WT.kind!=='ast'&&(w.id==='plaser'||w.id==='pbeam'))h+=' · laser delivers '+Math.round(100*fall(Math.max(0,d),w.id==='plaser'?5e4:1e5))+'% at this range';
+ if(WT.kind!=='ast'&&(w.id==='plaser'||w.id==='pbeam'))h+=' · laser delivers '+Math.round(100*(w.id==='plaser'?optEff():1)*fall(Math.max(0,d),w.id==='plaser'?optReach():1e5))+'% at this range';
  if(mineRate>0)h+=` · collecting ${f1(mineRate*3600,1)} kg/hour`;return h}
 // deliver energy to a target; asteroids release material (≈2 MJ/kg by laser, 0.5 MJ/kg by impact), collected only within 10 km
 function hit(t,E,kind,dTo){if(t.kind!=='ast'&&t.kind!=='me'&&typeof crewGun==='function')E*=crewGun();   // gunnery crew
@@ -30,11 +30,11 @@ function fireDown(){initAudio();if(!WT||(CB.on&&WT.kind==='ast'))autoT();const w
  const g=gam(s),sv=[s.vx/g,s.vy/g,s.vz/g];let aim,T2=null;
  if(WT){T2=tState(WT);aim=[T2.x-s.x,T2.y-s.y,T2.z-s.z]}else if(FP)aim=dirAE();else{const d=s.dom,v=[sv[0]-d.vx,sv[1]-d.vy,sv[2]-d.vz];aim=v}
  const al=Math.hypot(...aim)||1;let u=aim.map(x=>x/al);
- if(w.id==='plaser'){if(s.en<1e7){notify('⚠ Battery too low for a pulse (needs 10 MJ)');return}s.en-=1e7;cbShot('plaser');if(WT&&al-T2.r<=w.range)hit(WT,5e6*fall(al-T2.r,5e4),'laser',al-T2.r);
-  beamFx=WT?{tx:T2.x,ty:T2.y,tz:T2.z,col:0xff3344,until:now+140}:{u,col:0xff3344,until:now+140};return}
- if(w.id==='rail'){if(s.en<1.28e8||s.res.iron<2){notify('⚠ The railgun needs 128 MJ of energy and 2 kg of iron per shot');return}s.en-=1.28e8;s.res.iron-=2;
+ if(w.id==='plaser'){if(s.en<1e7){notify('⚠ Battery too low for a pulse (needs 10 MJ)');return}s.en-=1e7;cbShot('plaser');if(WT&&al-T2.r<=w.range)hit(WT,5e6*optEff()*fall(al-T2.r,optReach()),'laser',al-T2.r);
+  const oc=OPTICS[optCfg().lam].col;beamFx=WT?{tx:T2.x,ty:T2.y,tz:T2.z,col:oc,until:now+140}:{u,col:oc,until:now+140};return}
+ if(w.id==='rail'){const sm=slugM(),sv=slugV(sm);if(s.en<1.28e8||s.res.iron<sm){notify('⚠ The railgun needs 128 MJ of energy and '+sm+' kg of iron per shot');return}s.en-=1.28e8;s.res.iron-=sm;
   if(WT){const rv=[T2.vx-sv[0],T2.vy-sv[1],T2.vz-sv[2]],t=intercept(aim,rv,8000);if(t>0){const p=[aim[0]+rv[0]*t,aim[1]+rv[1]*t,aim[2]+rv[2]*t],pl=Math.hypot(...p);u=p.map(x=>x/pl)}}
-  cbShot('rail');spawnObj({kind:'slug',m:2,tgt:WT,r:.2},u,8000);const k=-2*8000/mass()*g;s.vx+=u[0]*k;s.vy+=u[1]*k;s.vz+=u[2]*k;return}
+  cbShot('rail');spawnObj({kind:'slug',m:sm,tgt:WT,r:.2},u,sv);const k=-sm*sv/mass()*g;s.vx+=u[0]*k;s.vy+=u[1]*k;s.vz+=u[2]*k;return}
  if(w.id==='missile'){if(s.ammo.missile<1){notify('⚠ No missiles left. Build more in 🛠 → 🔫 Weapons.');return}s.ammo.missile--;cbShot('missile');spawnObj({kind:'missile',dry:25,fuel:25,tgt:WT,r:.3},u,50)}}
 function intercept(p,v,sp){const a=v[0]*v[0]+v[1]*v[1]+v[2]*v[2]-sp*sp,b=2*(p[0]*v[0]+p[1]*v[1]+p[2]*v[2]),c=p[0]*p[0]+p[1]*p[1]+p[2]*p[2],D=b*b-4*a*c;if(D<0||Math.abs(a)<1e-9)return 0;
  const t1=(-b-Math.sqrt(D))/(2*a),t2=(-b+Math.sqrt(D))/(2*a),ts=[t1,t2].filter(t=>t>0);return ts.length?Math.min(...ts):0}
@@ -57,7 +57,7 @@ function worldTick(dtg,now){if(PJ)predRun(6);mineRate=0;s.wHeat=0;CB.firing=fals
    o.vx+=dx/dl*dv2;o.vy+=dy/dl*dv2;o.vz+=dz/dl*dv2;o.fuel=Math.max(0,o.fuel-used*k)}
   if(o.tgt&&tAlive(o.tgt)){const T2=tState(o.tgt),rx=o.x-T2.x,ry=o.y-T2.y,rz=o.z-T2.z,R2=T2.r+(o.kind==='missile'?50:5);
    if(o.prel){const ax=o.prel[0],ay=o.prel[1],az=o.prel[2],bx=rx-ax,by=ry-ay,bz=rz-az,bb=bx*bx+by*by+bz*bz,tt=bb>0?Math.max(0,Math.min(1,-(ax*bx+ay*by+az*bz)/bb)):0;
-    if(Math.hypot(ax+bx*tt,ay+by*tt,az+bz*tt)<R2){const vr2=(o.vx-T2.vx)**2+(o.vy-T2.vy)**2+(o.vz-T2.vz)**2,Ek=.5*(o.kind==='missile'?o.dry+o.fuel:2)*vr2+(o.kind==='missile'?(o.wh||2e7):0),dTo=Math.hypot(T2.x-s.x,T2.y-s.y,T2.z-s.z)-T2.r,
+    if(Math.hypot(ax+bx*tt,ay+by*tt,az+bz*tt)<R2){const vr2=(o.vx-T2.vx)**2+(o.vy-T2.vy)**2+(o.vz-T2.vz)**2,Ek=.5*(o.kind==='missile'?o.dry+o.fuel:(o.m||2))*vr2+(o.kind==='missile'?(o.wh||2e7):0),dTo=Math.hypot(T2.x-s.x,T2.y-s.y,T2.z-s.z)-T2.r,
       cl=hit(o.tgt,Ek,'kinetic',dTo);boom(T2.x+ax+bx*tt,T2.y+ay+by*tt,T2.z+az+bz*tt,o.kind==='missile'?60:20);
      if(o.tgt.kind==='ast')notify(`💥 ${o.kind==='missile'?'Missile':'Railgun slug'} hit ${o.tgt.a.n} with ${sci(Ek)} J${cl>0?': collected '+f1(cl,0)+' kg of fragments':' (get within 10 km to collect the fragments)'}`);rmObj(o);continue}}
    o.prel=[rx,ry,rz]}

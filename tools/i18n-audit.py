@@ -91,6 +91,18 @@ STEPS = [('guide', "openGuide()"), ('help', "document.getElementById('help').cla
          ('safety', "s.res.oxygen=1;safeToggle(false)"), ('safety2', "s.res.oxygen=600;safeToggle(true)"),
          ('deck', "window.__deckT=[];const c=document.createElement('canvas');c.width=640;c.height=340;const x=c.getContext('2d');x.fillText=t=>{t=String(t);if(!/[0-9]/.test(t))__deckT.push(t)};WT=null;for(const S of DECK.screens)S.draw(x,640,340);ALERTS=[{l:'crit',t:'Hull breach: losing oxygen'}];for(const S of DECK.screens)S.draw(x,640,340);ALERTS=[]"),
          ('interstellar', "window.confirm=m=>{for(const l of m.split('\\n'))if(!/[0-9]/.test(l))__deckT.push(l.replace(/^⚠ /,''));return false};toggleNav();istGo(B.findIndex(b=>b.star))"),
+         ('cargo', "cargoToggle()"), ('cargo2', "CG.at=0;cargoDraw(true);cargoToggle()"),
+         ('slow trip', "unlockAll();setDrive(DR.findIndex(d=>d.id==='ion'));s.fuel.xe=2000;recalc();apAsk(planDist(1.524,'Mars'),()=>0)"), ('slow trip2', "document.getElementById('tcw').classList.add('h');setDrive(0);recalc()"),
+         ('workshop', "ewToggle('dfd')"), ('ws-dt', "EW.c.opt='dt';ewDraw()"), ('ws-dhe3', "EW.c.opt='dhe3';ewDraw()"), ('ws-pb11', "EW.c.opt='pb11';ewDraw()"), ('ws-icf', "EW.id='icf';ewLoad();ewDraw()"),
+         ('ws-ion', "EW.id='ion';ewLoad();ewDraw()"), ('ws-kr', "EW.c.opt='kr';ewDraw()"), ('ws-ar', "EW.c.opt='ar';ewDraw()"), ('ws-mpd', "EW.id='mpd';ewLoad();EW.c.opt='li';ewDraw()"), ('ws-vas', "EW.id='vas';ewLoad();EW.c.opt='ar';ewDraw()"),
+         ('ws-ntr', "EW.id='ntr';ewLoad();ewDraw()"), ('ws-ch4', "EW.c.opt='ch4';ewDraw()"), ('ws-nh3', "EW.c.opt='nh3';ewDraw()"), ('ws-wat', "EW.c.opt='wat';ewDraw()"), ('ws-chem', "EW.id='chem';ewLoad();ewDraw()"), ('ws-ml', "EW.c.opt='ml';ewDraw()"), ('ws-gcnr', "EW.id='gcnr';ewLoad();ewDraw()"), ('ws-hall', "EW.id='hall';ewLoad();ewDraw()"), ('ws-arc', "EW.id='arc';ewLoad();ewDraw()"), ('ws-solth', "EW.id='solth';ewLoad();ewDraw()"), ('ws-fus', "EW.id='fus';ewLoad();ewDraw();ewToggle()"),
+         ('recorder', "wi=7"), ('recorder2', "frToggle()"), ('recorder3', "frToggle();wi=3"),
+         ('spectro', "spOpen(AST.find(a=>a.t==='C'))"), ('spectro-S', "spDraw(AST.find(a=>a.t==='S'))"), ('spectro-M', "spDraw(AST.find(a=>a.t==='M'))"), ('spectro-I', "spDraw(AST.find(a=>a.t==='I')||AST[0]);spToggle()"),
+         ('plan', "PL.stops=['Mars','Phobos','Earth'];plToggle()"), ('plan2', "plToggle()"), ('pork', "pkToggle()"), ('pork2', "pkToggle()"),
+         ('ill', "s.crew.list[0].ill={k:'kidney',left:100};crewToggle()"), ('ill2', "crewToggle();delete s.crew.list[0].ill"),
+         ('log', "notify('⚠ No heat-pipe radiators aboard.');lgToggle()"), ('log2', "lgToggle()"), ('crewfit', "s.exer=0;s.crew.list.forEach(m=>m.fit=50);crewToggle()"), ('crewfit2', "crewToggle();s.exer=2.5"),
+         ('reac', "unlockAll();s.parts.push({id:'fis1',uid:9e5+3,cond:1,mk:1});s.parts.push({id:'ls_bio',uid:9e5+5,cond:1,mk:1});recalc();toggleShop()"), ('reac2', "toggleShop()"),
+         ('sandbox', "sandboxSet(true)"), ('sandbox2', "sandboxSet(false)"),
          ('game over', "s.crew.alive=false;gameOver('a crash into Earth at 7.70 km/s')")]
 res = {}
 with sync_playwright() as p:

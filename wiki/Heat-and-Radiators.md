@@ -77,3 +77,26 @@ radiators the drive is held to about 0.005 % thrust, and the game tells you why.
 
 The starter ship's hull has 50 m² of body-mounted radiators (both faces), enough for its systems in full sunlight
 at Earth's distance.
+
+## Heat-pipe working fluid
+
+A heat pipe is a sealed tube: liquid metal boils at the hot end, the vapour carries heat to the cold end, condenses
+and soaks back through a wick. Each metal only works in its own temperature band, so the fluid decides how hot your
+heat-pipe radiators (stock and designed) may run. Change it in 🏭 Fabricate → **HEAT-PIPE FLUID**; refilling every
+heat-pipe radiator is one job.
+
+| Fluid | Limit | Tube mass | Heat shed per m² (vs sodium) |
+|---|---|---|---|
+| Potassium | 900 K | ×0.85 (thin steel) | 32 % |
+| Sodium (stock) | 1,200 K | ×1 (nickel alloy) | 100 % |
+| Lithium | 1,500 K | ×1.4 (refractory metal) | 244 % |
+
+Because radiated power grows as T⁴, lithium radiators shed 2.4× the heat of sodium ones per m², so a big fusion
+drive needs far fewer of them, even though each is heavier. Droplet radiators use molten tin and are not affected.
+
+## Hull coating
+
+The sunlit hull absorbs a share α of sunlight, and that heat lands in the crew loop. 🏭 Fabricate → **HULL COATING**:
+white thermal paint (α 0.30, stock), optical solar reflector tiles (silvered quartz, α 0.08, +300 kg: under a third of
+the solar heat, and the hull takes 3.75× brighter sunlight before it burns), or gold foil (the classic look, same heat
+as paint, +20 kg). Without a sunshade or heat shield the hull starts to burn above 25 kW/m² × (0.30 / α).

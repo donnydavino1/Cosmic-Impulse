@@ -1,5 +1,100 @@
 # Changelog
 
+## 0.36.0 — mission design, living crews, atmospheres and radiation belts
+- **🥩 Porkchop plot** (🧭 Navigate): departure day × flight time map of total speed change, each point an exact Lambert
+  solution (universal variables), cheapest launch marked, contours every 1 km/s, hover or tap to read.
+- **🗺 Mission planner**: chain stops (planets, moons, Pluto); Hohmann legs low orbit to low orbit with the Oberth effect,
+  moons of other planets via circularising at the moon's distance; totals vs your ship's Δv and propellant left
+  after each leg.
+- **Flip-and-burn**: brachistochrone trip times for powerful engines (exact relativistic form, mass ratio needed,
+  burn-coast-brake when propellant is short). **Lagrange points** for six pairs. **Almanac**: gravity, escape speed,
+  day, orbit, temperature, atmosphere and light time for every body. **Comms**: solar conjunction blackout.
+- **🌫 Atmospheres** (RULES `0110-atmosphere.js`): drag and Sutton–Graves entry heating at Earth, Venus, Mars, Titan
+  and the giant planets: aerobraking and aerocapture; unshielded hulls burn above 40 kW/m², heat shields take 10 MW/m².
+- **☢ Radiation belts** (RULES `2101-radiation-belts.js`): Earth's Van Allen belts (none in low orbit, ~2 mSv to cross),
+  Jupiter's lethal belts (~33 Sv/day at Io, safe at Callisto), Saturn's weak ones; alerts. **Solar cycle**: 11-year
+  activity, storms 4× as often at maximum, cosmic rays ±25 % (lowest at maximum). **Bit flips**: particles can crash an
+  ordinary flight computer and drop the autopilot; build a radiation-hardened one.
+- **👩‍🚀 Crew health in space** (RULES `2106-crew-health.js`): fitness lost in weightlessness, exercise schedule (0, 1,
+  2.5 h/day) traded against duty time, thrust gravity and **spin gravity** (hull spin or a 225 m tether) rebuild it;
+  lifetime dose per astronaut against the 600 mSv career limit with cancer risk; **medical events** (kidney stones,
+  SANS, appendicitis…) with medics speeding recovery; **crew acceleration limit** (1–6 g); isolation morale with light
+  delay to Earth.
+- **⚛ Reactor power conversion**: thermoelectric 7 %, Stirling 25 %, Brayton 30 %, supercritical CO₂ 40 % for every
+  fission reactor (same heat, different watts, mass and reliability). **Core life**: cores last 10 / 7 full-power
+  years, then fade; order fresh ones from Earth.
+- **Engines**: clusters of 1–4 engines (engine-out: a failure stops one, the rest push on), in-flight exhaust tuning for the helicon magnetoplasma engine (variable specific impulse, no rebuild);
+  **bimodal** nuclear thermal and gas-core rockets that double as power reactors while coasting.
+- **Tank volumes** per propellant (liquid hydrogen needs 14× the volume of water). **Fuel cells** (5 kW stacks: electricity and drinking water from rocket fuel), **hull coatings** (white paint, optical
+  solar reflectors, gold foil: solar heat and burn limit), spectrometer shows asteroid gravity, escape speed and spin,
+  and first clean spectra earn research points.
+- **📜 Captain's log** (key '): every message with mission day, ship time and place; your own entries; save as text.
+- **Orbit shadow** panel (shadow fraction asin(R/r)/π and the battery needed); the mission planner can write its plan
+  into the captain's log.
+- **Heat signature** panel: how far away your infrared glow can be seen. Save-slot dates no longer depend on the
+  browser's language.
+- Translations for everything new (audit opens the log, planner, porkchop, sick crew and reactor screens); wiki sections
+  in Flying and Orbits, Orbital Mechanics, Radiation, Survival, Energy and Power, Heat and Radiators, Sensors and Radar,
+  Asteroids and Mining, Solar System, Ship and Engineering, Engine Workshop.
+
+## 0.35.0 — depth everywhere: engine workshop, new fuels, crew personalities, spectrometer, sail films and more
+- **🔧 Engine workshop** (key [, top-bar button, Engines tab; RULES `0580-engine-design.js`): redesign every engine
+  family. Fusion drives choose their reaction (D–D, D–T, D–³He, p–¹¹B) with real exhaust speeds, heat, neutron dose and
+  plasma colour; ion/Hall thrusters choose xenon, krypton or argon; plasma engines hydrogen, argon or lithium; nuclear
+  and solar thermal engines hydrogen, methane, ammonia or water (√(T/M)); chemical engines methalox. Tune exhaust speed
+  against thrust, set core diameter and length (power scales with size), add a neutron shield, and pick the nozzle
+  expansion ratio for chemical and thermal engines (bigger bell: faster exhaust and more thrust, heavier). Live animated cutaway
+  with a pulsing plasma glow in the reaction's true colour (inertial fusion flashes at its pellet rate), Now vs This
+  design table (exhaust, power, thrust, mass, waste heat, Δv, dose, wear), and live telemetry. Plumes and engine glow
+  take the design's colour and size. 10 new fuels: D–T, ³He, boron, krypton, argon, lithium, methane, ammonia, water,
+  methalox (multi-material fuel making).
+- **Neutron dose from fusion engines** (falls with your shielding and the neutron shield) and engine wear by design.
+- **🧭 Transfer windows:** Hohmann flight time, Δv from your orbit (Oberth included), arrival speed, phase angle now and
+  needed, next window and synodic period for every planet. **Gravity assists:** turn angle and free speed change from a
+  flyby of each planet, at your speed now and on a Hohmann arrival. **Comms:** light-speed delay to Earth and the data rate of X-band,
+  Ka-band and laser links from a real link budget.
+- **📈 Flight recorder** (key ;): nine charts of the whole mission (distance, speed, altitude, battery, cabin
+  temperature, dose rate, propellant, hull, supplies) with hover read-out.
+- **👩‍🚀 Crew personalities:** traits (steady hands, quick learner, frugal, sharp eye, tinkerer, calm, medic, ace pilot),
+  morale with reasons (it sets how fast everyone works), biological age that runs on ship time (twin paradox shown).
+- **🔬 Spectrometer** (key \): reflectance spectra of asteroids (hydrated minerals, olivine/pyroxene, metal, ice
+  bands) with distance noise, plus the body's total mass and composition.
+- **Pulse laser optics:** infrared, green or ultraviolet (shorter reach-limited by diffraction, less efficient) and the
+  mirror diameter; reach = 5×10⁴ km·(D/0.5 m)·(1064 nm/λ).
+- **Railgun slugs:** needle 0.5 kg at 16 km/s, standard 2 kg at 8 km/s or heavy 8 kg at 4 km/s (same 64 MJ); impact
+  energy now uses the slug's real mass and relative speed; recoil and iron follow the slug.
+- **Solar cell types and ageing:** silicon, triple-junction GaAs or thin-film perovskite; cells age with sunlight and
+  proton storms; refurbish or re-cell.
+- **Cryogenic boil-off:** liquid hydrogen, deuterium, methane and the mixtures slowly boil away (faster near the Sun);
+  refit the tanks with a sunshield or power-hungry cryocoolers for zero boil-off.
+- **Heat-pipe fluid:** potassium (900 K), sodium (1,200 K) or lithium (1,500 K) in every heat-pipe radiator.
+- **Solar sail film:** aluminised polyimide, thin aluminised film or carbon microtruss, with real film temperature,
+  closest safe distance to the Sun, tearing when overheated, and more sail area on demand. (Fixed: the sail engine
+  had no sail area, so it gave no thrust.)
+- **🌱 Greenhouse crops:** potatoes and wheat, algae tanks or a mixed garden (food surplus vs power vs morale).
+- **Relativistic sky:** stars crowd forward and turn blue ahead, red behind (aberration and Doppler) at high speed;
+  the flight deck shows time dilation γ.
+- Translations for everything new; wiki: new Engine Workshop page, and sections in Survival, Flying and Orbits,
+  Asteroids and Mining, Combat, Energy and Power, Heat and Radiators, Ship and Engineering, Relativity.
+
+## 0.34.0 — sandbox, cargo manager, honest trip estimates, Rocket Equation Lab
+- **Navigator bug fixed:** trip estimates promised e.g. "77 days" while a gentle or throttled engine spiralled around
+  Earth for months or years. Estimates (planets, asteroids, orbit planner) now add the burn time at the push the engine
+  can really give, after heat (radiators) and electric power limits; the trip check warns when the burns alone take more
+  than 20 days and says what is holding the engine back; the autopilot line shows *engine held to X %* and why.
+- **🧪 Sandbox mode** (RULES `2110-sandbox.js`, single player): every technology, engine and weapon unlocked; building,
+  ordering and training instant and free (no materials, water, research points or energy used; battery kept full);
+  Earth-only fuel, supplies and recruits available anywhere. Flying stays real physics. Welcome-screen button, 🧪 Testing
+  toggle and a top-bar badge; saved with the game; no personal best; switched off automatically in multiplayer.
+- **📦 Cargo manager** (key ], top-bar button, 🛠 → ⛏ Inventory; rules `2107-cargo.js`): every loose item with mass and
+  share of the ship, drop any amount (kg, kits or missiles) through the airlock with a Δv preview (momentum conserved:
+  the path does not change), what built-in parts weigh, and what the ship is made of (materials from part recipes).
+- **Rocket Equation Lab** (`rocket-lab.html`, English/Español/中文): interactive speed-vs-fuel and burn-time charts for eight
+  of the game's engines, embedded in a new wiki page (the wiki can now embed pages and link to them) and linked from the
+  start page; a test keeps its engine numbers identical to the game's.
+- Translations for everything new (the audit now opens the cargo window, sandbox and a slow-engine trip check); wiki:
+  Getting Started (sandbox), Ship and Engineering (cargo), Flying and Orbits (trip estimates), Rocket Equation Lab.
+
 ## 0.33.0 — Proxima Centauri in under a day, no Andromeda, a far more realistic flight deck
 - **Andromeda removed.** The interstellar destination is **Proxima Centauri** (4.25 light-years). Deep-space time speeds
   (1 s = 9.5, 95, 950 years beyond 2,000 AU from every star) stay, so any ship that can leave the solar system gets

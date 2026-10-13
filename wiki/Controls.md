@@ -50,6 +50,10 @@ in-game guide (C).*
 | **F7** | 🧪 Part designer: invent your own radiators, batteries, reactors and armour |
 | **F2** | 🌡 Thermal: heat map, heat budget and radiator calculator |
 | **F3** | 👩‍🚀 Crew: duties, skills and training |
+| **]** | 📦 Cargo: everything on board, drop any amount |
+| **\\** | 🔬 Spectrometer: what an asteroid is made of, from its spectrum |
+| **;** | 📈 Flight recorder: the whole mission in charts |
+| **[** | 🔧 Engine workshop: reaction, propellant, tuning and size |
 | **F4** | 🛟 Safety slow-down on / off (slows time when something will kill the crew within a day) |
 | **F6** | 🛰 Orbit planner: geostationary, geosynchronous or any circular orbit |
 | **6** | 📡 Active / passive radar |

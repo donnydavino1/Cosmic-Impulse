@@ -25,10 +25,10 @@ function orbDraw(){if(ORW.classList.contains('h'))return;const P=s.dom,b=$('orbb
   <small>(<span>altitude</span> ${f1((r-P.R)/1e3,0)} km)</small></p>
  <table class="bldt"><tr><td>One orbit takes</td><td>${dur(per)}</td></tr><tr><td>Speed in that orbit</td><td>${f1(Math.sqrt(mu/r)/1e3,3)} km/s</td></tr>
   <tr><td>Your orbit now</td><td>${f1(r0/1e3,0)} km · <span>tilt</span> ${f1(inc*180/Math.PI,1)}°</td></tr><tr><td>Δv needed (estimate)</td><td>${f1(dv/1e3,2)} km/s</td></tr></table>
- ${low?'<p class="opsw-no">⚠ That is below the surface.</p>':''}${far?`<p class="opsw-no">⚠ That is too far: ${P.n}'s gravity cannot hold you there against the Sun's.</p>`:''}
+ ${low?'<p class="opsw-no">⚠ That is below the surface.</p>':''}${!low&&typeof aeroRho==='function'&&aeroRho(P,r-P.R)>0?'<p class="opsw-no">⚠ '+tr('That orbit is inside the atmosphere: drag will slow you and pull you down.')+'</p>':''}${far?`<p class="opsw-no">⚠ That is too far: ${P.n}'s gravity cannot hold you there against the Sun's.</p>`:''}
  <p><button id="orbgo" ${low||far?'disabled':''}>🛰 Fly to this orbit</button> <small class="opsn">The autopilot uses your engine and fuel. Speed up time (⏩) while it works.</small></p>`;
  b.querySelectorAll('input[name=orbt]').forEach(x=>x.onchange=()=>{ORB_P.type=x.value;ORB_P.r=null;orbDraw()});
  const ri=$('orbr');if(ri)ri.onchange=()=>{const v=+ri.value*1e3;if(v>0){ORB_P.r=v;orbDraw()}};
  $('orbgo').onclick=()=>{const nm=(ORB_P.type==='geo'?'Geostationary orbit':ORB_P.type==='sync'?'Geosynchronous orbit':'Circular orbit')+' around '+P.n;ORW.classList.add('h');
-  apAsk({name:nm,days:Math.max(.1,(per+2*Math.PI*Math.sqrt(r0**3/mu))/86400),extra:0,dvNeed:dv*1.2,dvHave:dvHave()},()=>{AP={name:nm,orb:{b:bi,r,eq:ORB_P.type==='geo'},stage:''};PRED=null;notify('🛰 Autopilot: '+nm+' ('+Math.round(r/1e3).toLocaleString()+' km from the centre). Speed up time while it flies.')})}}
+  apAsk({name:nm,days:Math.max(.1,(per+2*Math.PI*Math.sqrt(r0**3/mu))/86400)+burnDays(dv),burn:burnDays(dv),extra:0,dvNeed:dv*1.2,dvHave:dvHave()},()=>{AP={name:nm,orb:{b:bi,r,eq:ORB_P.type==='geo'},stage:''};PRED=null;notify('🛰 Autopilot: '+nm+' ('+Math.round(r/1e3).toLocaleString()+' km from the centre). Speed up time while it flies.')})}}
 {const nb=document.getElementById('navhead');if(nb){const bt=document.createElement('button');bt.textContent='🛰 Orbit planner (F6)';bt.style.marginLeft='10px';bt.onclick=e=>{e.stopPropagation();orbToggle()};nb.appendChild(bt)}}

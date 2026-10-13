@@ -80,3 +80,28 @@ radiadores del circuito alto el motor queda limitado a un 0,005 % del empuje, y 
 
 El casco de la nave inicial tiene 50 m² de radiadores integrados (ambas caras), suficientes para sus sistemas a pleno
 sol a la distancia de la Tierra.
+
+## Fluido de los tubos de calor
+
+Un tubo de calor es un tubo sellado: el metal líquido hierve en el extremo caliente, el vapor lleva el calor al
+extremo frío, se condensa y vuelve por una mecha. Cada metal solo funciona en su propia banda de temperatura, así que
+el fluido decide lo caliente que pueden funcionar tus radiadores de tubos de calor (de serie y diseñados). Cámbialo en
+🏭 Fabricar → **FLUIDO DE LOS TUBOS DE CALOR**; rellenar todos los radiadores es un solo trabajo.
+
+| Fluido | Límite | Masa del tubo | Calor disipado por m² (frente al sodio) |
+|---|---|---|---|
+| Potasio | 900 K | ×0,85 (acero fino) | 32 % |
+| Sodio (de serie) | 1.200 K | ×1 (aleación de níquel) | 100 % |
+| Litio | 1.500 K | ×1,4 (metal refractario) | 244 % |
+
+Como la potencia radiada crece con T⁴, los radiadores de litio disipan 2,4 veces más calor por m² que los de sodio,
+así que un gran motor de fusión necesita muchos menos, aunque cada uno pese más. Los radiadores de gotas usan estaño
+fundido y no se ven afectados.
+
+## Recubrimiento del casco
+
+El casco iluminado absorbe una fracción α de la luz solar, y ese calor va al circuito de la tripulación. 🏭 Fabricar →
+**RECUBRIMIENTO DEL CASCO**: pintura térmica blanca (α 0,30, de serie), placas reflectoras solares ópticas (cuarzo
+plateado, α 0,08, +300 kg: menos de un tercio del calor solar, y el casco aguanta una luz 3,75 veces más intensa antes
+de arder) o lámina dorada (el aspecto clásico, el mismo calor que la pintura, +20 kg). Sin parasol ni escudo térmico el
+casco empieza a arder por encima de 25 kW/m² × (0,30 / α).

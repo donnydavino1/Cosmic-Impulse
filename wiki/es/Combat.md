@@ -37,3 +37,28 @@ solo se ve a menos de 25 km. Si te pierden, vuelan a donde te vieron por última
 
 **Contra otros jugadores:** ver [[Multijugador|Multiplayer]]. Los impactos solo cuentan si ambos juegos usan las mismas
 reglas y física ([[Juego limpio y reglas|Fair Play and Rules]]).
+
+## Óptica del láser de pulsos
+
+🛠 → 🔫 Armas → **ÓPTICA DEL LÁSER DE PULSOS**. Un haz láser se abre por difracción: su mancha crece como 1,22 ×
+longitud de onda × distancia ÷ diámetro del espejo, así que el pulso solo entrega su energía mientras la mancha es menor
+que el objetivo. Elige **infrarrojo 1.064 nm** (5 MJ completos por pulso, menor alcance), **verde 532 nm** (frecuencia
+doblada: el doble de alcance, 60 % de la energía) o **ultravioleta 355 nm** (triplicada: el triple de alcance, 35 %). Un
+**espejo mayor** multiplica el alcance por su diámetro pero pesa 120 kg por m² extra y se fabrica con silicatos, hierro
+y algo de platino. El haz que ves toma el color de la luz (infrarrojo y ultravioleta son invisibles; se muestran rojo
+tenue y violeta).
+
+## Proyectiles del cañón de rieles
+
+🛠 → 🔫 Armas → **PROYECTILES DEL CAÑÓN DE RIELES**. Cada disparo da al proyectil los mismos 64 MJ, así que su velocidad
+es v = √(2E/m):
+
+| Proyectil | Velocidad de salida | Hierro por disparo |
+|---|---|---|
+| Aguja, 0,5 kg | 16 km/s | 0,5 kg |
+| Estándar, 2 kg | 8 km/s | 2 kg |
+| Pesado, 8 kg | 4 km/s | 8 kg |
+
+La energía del impacto es ½·m·v_rel² con la velocidad relativa al objetivo, así que una aguja rápida que lo encuentra
+de frente golpea más fuerte y le deja menos tiempo para esquivar. Los proyectiles pesados empujan más tu propia nave
+hacia atrás (momento de retroceso √(2E·m)).

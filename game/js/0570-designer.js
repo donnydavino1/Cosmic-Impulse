@@ -27,7 +27,7 @@ const desMat=(frac,m)=>{const o={};let sum=0;for(const k in frac){o[k]=Math.roun
 // p: {kind, ...dimensions} → a part definition (or {err})
 function desPart(p){let d;
  if(p.kind==='radiator'){const v=DES.radiator[p.type]||DES.radiator.lo,A=Math.max(10,Math.min(2000,+p.area||60)),carbon=!!p.carbon&&p.type!=='drop',m=A*v.kgm2*(carbon?.65:1);
-  d={cat:'therm',A,loop:p.type==='lo'?'lo':'hi',Tmax:v.T,m,mat:desMat(carbon?{carbon:.7,silicates:.3}:v.mat,m),req:carbon&&!v.req?'t_cf':v.req,
+  d={cat:'therm',A,loop:p.type==='lo'?'lo':'hi',Tmax:v.T,hp:p.type==='hi'?1:0,m,mat:desMat(carbon?{carbon:.7,silicates:.3}:v.mat,m),req:carbon&&!v.req?'t_cf':v.req,
    d:`${A} m² ${p.type==='lo'?'low-temperature':p.type==='hi'?'heat-pipe':'liquid-droplet'} radiator, up to ${v.T} K${carbon?', carbon-composite fins':''}.`}}
  else if(p.kind==='battery'){const v=DES.battery[p.type]||DES.battery.li,m=Math.max(20,Math.min(20000,+p.mass||500));
   d={cat:'store',m,cap:v.e*m,pmax:v.p*m,wear:!!v.wear,mat:desMat(v.mat,m),req:v.req,d:`${(v.e*m/1e6).toFixed(0)} MJ, up to ${(v.p*m/1e6).toFixed(2)} MW.`}}
