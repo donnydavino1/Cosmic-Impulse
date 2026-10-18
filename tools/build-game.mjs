@@ -30,7 +30,9 @@ export function buildGame({ write = true, release = false } = {}) {
     official.releases.push({ version: JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version, fp: rulesFp, date: new Date().toISOString().slice(0, 10) });
     writeFileSync(offPath, JSON.stringify(official, null, 2) + '\n');
   }
-  const stamp = `<script>const ORB_FP='${fp}',ORB_RULES_FP='${rulesFp}',ORB_OFFICIAL=${JSON.stringify(official.releases.map((r) => r.fp))};</script>\n`;
+  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+  // the release the player sees in 🎨 Customize → ABOUT THIS RELEASE (from package.json: version, releaseDate, releaseName)
+  const stamp = `<script>const ORB_VERSION=${JSON.stringify(pkg.version)},ORB_RELEASED=${JSON.stringify(pkg.releaseDate || '')},ORB_RELNAME=${JSON.stringify(pkg.releaseName || '')},ORB_FP='${fp}',ORB_RULES_FP='${rulesFp}',ORB_OFFICIAL=${JSON.stringify(official.releases.map((r) => r.fp))};</script>\n`;
   const stamped = core.replace('<!--@STAMP-->', () => stamp);
   const desktop = stamped.replace('<!--@PLATFORM-->', () => readFileSync(G('platform', 'desktop.html'), 'utf8'));
   const mobile = stamped

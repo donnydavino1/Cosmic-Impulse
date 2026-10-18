@@ -14,7 +14,7 @@ KEEP = set('''Cosmic Impulse ORB RULES RP AU NEO RTG ion VASIMR MPD JSON TLM GNU
  Kestrel Halcyon Tamsin Ophir Velka Corvo Nimbus Petra Aldra Brisa Cendre Dorrit Esk Fenwick Galt Hesper Ilsa Jory Kael Lumen Marrow Nyx Orrin
  Pell Quill Rook Sable Tarn Ulla Voss Wren Xan Yarrow Zell Ashby Brann Cove Dusk English Español Apophis Bennu Ryugu Eros Itokawa Didymos Ceres Vesta Psyche Eris Makemake Haumea Quaoar Gonggong Arrokoth Albion Sedna KBO Cinder Jackal Viper Magpie Hornet Shrike Wraith Talon Mantis'''.split())
 # whole texts that stay as they are: ship style names, file names, the rules fingerprint, the language picker
-KEEP_TEXT = {'Blue Lancer', 'Ada Reyes', 'Kenji Sato', 'Corsair', 'Ice Hauler', 'Nebula Runner', 'Solar Monk', 'Sunchaser (stock)', 'wiki.html', '○ Español', '● Español', '○ English', '● English'}
+KEEP_TEXT = {'t = m_fuel · vₑ² / (k · P)', 'v = c · tanh((vₑ/c) · ln(m₀/m₁))', 'Blue Lancer', 'Ada Reyes', 'Kenji Sato', 'Corsair', 'Ice Hauler', 'Nebula Runner', 'Solar Monk', 'Sunchaser (stock)', 'wiki.html', '○ Español', '● Español', '○ English', '● English'}
 # ---------- 2. message templates in the code (notify, alerts, discoveries, game over, status lines)
 def scan(src, i, stop):  # read a JS expression from i until a top-level character in stop; returns (text, end)
     d, q, out = 0, None, ''

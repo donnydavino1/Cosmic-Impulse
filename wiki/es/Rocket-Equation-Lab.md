@@ -5,7 +5,12 @@ ecuación del cohete (la velocidad que ganas con el combustible que llevas) y la
 (cuánto debe encenderse el motor para alcanzar cada velocidad). Los motores son los del juego: las mismas velocidades
 de escape, factores de empuje y potencias que en [[Motores|Engines]]. [Abrir el laboratorio en su propia página](rocket-lab.html).
 
-<!-- embed: rocket-lab.html -->
+**En el juego** el mismo laboratorio es una página de la pestaña de motores: 🛠 Ingeniería → 🚀 Motores y combustible →
+**📈 Laboratorio de cohetes** (**⤢ Pantalla completa** para la versión grande). Allí usa tus propios motores tal como
+los has ajustado y dimensionado, parte de la masa y el combustible reales de tu nave y marca *tu nave* en ambas
+gráficas. **↺ Usar mi nave tal como está** devuelve los controles a los valores en vivo.
+
+<!-- lab: engines -->
 
 ## Qué observar
 

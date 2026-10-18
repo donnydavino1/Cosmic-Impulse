@@ -70,5 +70,6 @@ next. See [[Build Your Own Cosmic Impulse]].
 ### Real, not cartoon
 
 Space is black and silent, light comes from one star, and ships are machines with mass, heat and limits. The
-default look aims for that: physically based lighting and materials, no glowing outlines. (Prefer the old stylized
-look? 🎨 Customize → STYLE → *Realistic look*.)
+physics never bends. The pictures, from v0.4.0, are shot like a film: physically based materials and one hard
+sunlight, plus a nebula sky, glowing stars and lens effects, the way a camera on a film set would see it. (Prefer
+plain black space? 🎨 Customize & settings → GRAPHICS → *Realistic*.)

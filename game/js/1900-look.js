@@ -2,7 +2,7 @@
 function PAINT_GEN(b){const c=[(b.c>>16)&255,(b.c>>8)&255,b.c&255],sd=b.n.length*7;return(x,y,z)=>{const n=fbm(x*4,y*4,z*4,5,sd),m=fbm(x*12,y*12,z*12,3,sd+1);return c.map(v=>Math.min(255,v*(.7+.5*n)*(.9+.2*m)))}}
 // ===== LOOK & FEEL: painted planets with glowing atmospheres, a nebula sky, and a debris field around your ship =====
 // Everything here is visual only. The debris never collides with anything and has no effect on the physics; turn it off
-// in 🎨 Customize → "Cinematic space debris" for realistic, nearly empty space.
+// in 🎨 Customize → "Space debris around the ship" for realistic, nearly empty space.
 const VIV={ok:true};
 // --- seamless 3D value noise (sampled on the sphere, so textures have no seam and no pinched poles)
 function vHash(x,y,z,sd){let h=(Math.imul(x,374761393)+Math.imul(y,668265263)+Math.imul(z,1274126177)+Math.imul(sd,974711))|0;h=Math.imul(h^(h>>>13),1274126177);h^=h>>>16;return(h>>>0)/4294967295}

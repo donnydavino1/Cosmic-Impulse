@@ -5,7 +5,12 @@ equation (speed gained for the fuel you carry), the right chart is the price in 
 reach each speed). The engines are the game's own: the same exhaust speeds, thrust factors and power as in
 [[Engines]]. [Open the lab on its own page](rocket-lab.html).
 
-<!-- embed: rocket-lab.html -->
+**In the game** the same lab is a page of the Engines tab: 🛠 Engineering → 🚀 Engines & fuel → **📈 Rocket lab**
+(**⤢ Full screen** for the big version). There it uses your own engines as you have tuned and sized them, starts
+from your ship's real mass and fuel, and marks *your ship* on both charts. **↺ Use my ship as it is now** resets the
+sliders to the live numbers.
+
+<!-- lab: engines -->
 
 ## What to look for
 

@@ -123,7 +123,7 @@ addEventListener('resize',drawArt);
  r=row('NEON TRIM');sw(r,'acc',['#38f2ff','#ff3df2','#b6ff3d','#ffe14d','#ff5a3d','#ffffff']);
  r=row('HULL SHAPE');[['modular','Modular (your 🧱 Builder layout)'],['sphere','Round pod'],['capsule','Long capsule'],['ring','Ring station']].forEach(([v,t])=>btn(r,()=>(CUST.shape===v?'● ':'○ ')+t,()=>{CUST.shape=v;saveC()}));
  r=row('SOLAR WINGS');[2,4].forEach(v=>btn(r,()=>(CUST.wings===v?'● ':'○ ')+v+' wings',()=>{CUST.wings=v;saveC()}));
- r=row('STYLE');btn(r,()=>(REAL()?'● ':'○ ')+'Realistic look (real lighting, no glows or outlines)',()=>{CUST.vis=REAL()?'stylized':'real';saveC();if(typeof applyVis==='function')applyVis()});btn(r,()=>(CUST.panel==='holo'?'● ':'○ ')+'Holographic solar panels',()=>{CUST.panel=CUST.panel==='holo'?'classic':'holo';saveC()});btn(r,()=>(CUST.scenery!=='realistic'?'● ':'○ ')+'Cinematic space debris (off = realistic, nearly empty space)',()=>{CUST.scenery=CUST.scenery==='realistic'?'cinematic':'realistic';saveC()});btn(r,()=>(CUST.art?'● ':'○ ')+'Neon art background in ship view',()=>{CUST.art=!CUST.art;saveC();drawArt()});
+ r=row('STYLE');btn(r,()=>(CUST.panel==='holo'?'● ':'○ ')+'Holographic solar panels',()=>{CUST.panel=CUST.panel==='holo'?'classic':'holo';saveC()});btn(r,()=>(CUST.scenery!=='realistic'?'● ':'○ ')+'Space debris around the ship (off = realistic, nearly empty space)',()=>{CUST.scenery=CUST.scenery==='realistic'?'cinematic':'realistic';saveC()});btn(r,()=>(CUST.art?'● ':'○ ')+'Neon art background in ship view',()=>{CUST.art=!CUST.art;saveC();drawArt()});
  r=row('VIEW');btn(r,()=>SV?'Close ship view':'🚀 Open ship view to see your ship',()=>toggleSV());
  $('custclose').onclick=()=>$('cust').classList.add('h')}
 

@@ -58,7 +58,10 @@ Rules of thumb:
 | `1760-ops.js` | mining drones and science probes (RULES): build jobs, deploy/recall, ore by composition, Hohmann probe trips, light-speed data, `s.ops` |
 | `1800-combat.js` | `CB` raid state, number-key weapons, raider AI, turrets, 2D effects layer `cfxDraw`, weapon bar |
 | `1900-look.js` | painted planets, atmospheres, nebula sky, debris field, holo panels, camera cycling, `unlockAll`, instant orders |
-| `1950-realism.js` | realistic look (default): filmic tone mapping, dim fill light, Milky Way sky, softer halos; `applyVis()` |
+| `1950-realism.js` | realistic look: filmic tone mapping, dim fill light, Milky Way sky, softer halos; `applyVis()` |
+| `1960-cinematic.js` | cinematic look (default from v0.4.0, `CINE()`, `CUST.vis='cinematic'`; `REAL()` stays true): nebula sky baked once on the GPU into a 4096×2048 render target (`cinBakeSky`), hero stars, star surface shaders with corona (`cinStarMat`), nebula fill + rim light and PMREM sky reflections in `SS`, running lights, lit hull windows (wraps `texMat`), finer Earth city lights; wraps `applyVis` |
+| `1965-atmospheres.js` | cinematic planets: atmosphere shells (`CATM`; note `ATM` is the RULES atmosphere table), surface detail via `onBeforeCompile`, Earth city specks, distance dimming |
+| `1966-cinematic-ship.js` | cinematic ship: shader plume, nozzle glow, bump/roughness from hull texture, panel glints, neutral hemisphere light, self-shadows (High), rubble-pile asteroids (wraps `mkRock`) |
 | `2000-vitals.js` | cockpit vitals strip |
 | `2100-survival.js` | life support, radiation, failures, game over |
 | `2200-save.js` | save/load slots (`saveGame/loadGame`) |
@@ -74,8 +77,12 @@ Rules of thumb:
 | `2595-builder-ui.js` | 🧱 Ship Builder window (key 7): side view, draft vs now, refit |
 | `2620-cockpit-styles.js` | cockpit styles (realistic, neo, military, retro, classic): widget skins + window frame; `ORB.cockpit`; overlay de-cluttering |
 | `2600-ui-extras.js` | misc UI refresh |
+| `2672-engine-lab.js` | **standalone** engine-lab component `engineLab(host,opt)` (no game globals): sliders, rocket-equation and burn-time charts, table, equations, es/zh dictionary `engineLab.TR`. Also inlined into `wiki.html` and `rocket-lab.html` by `tools/build-wiki.mjs` |
+| `2673-engine-lab-ui.js` | Engines tab pages (📈 Rocket lab / 🚀 Engines & fuel), live data from `DR`/`PW`/`mass()`, full-screen `labOpen()` |
 | `2700-trip-supplies.js` | supplies calculator |
 | `2800-multiplayer.js` | PeerJS, `RULES` fingerprint, ORB-NET messages, remote ship `RS` |
+| `2990-postfx.js` | lens and film effects for the cinematic look: `postBegin()` (called by the frame loop in 1000) redirects the frame into a multisampled render target; the last `frame` hook adds bloom (5-level dual filter), streaks, light rays from the brightest star, lens ghosts, chromatic fringe, vignette, grain, grade. `CUST.fx` high/low/off. **Must stay the last `frame` handler** |
+| `2995-bridge-ui.js` | 🎨 Customize & settings: ABOUT THIS RELEASE (`ORB_VERSION`, `ORB_RELEASED`, `ORB_RELNAME` stamped by `tools/build-game.mjs` from `package.json`), GRAPHICS (look, lens effects, grain, rays), INTERFACE (`body.bridge`, `css/400-bridge.css`) |
 
 ## How modules talk
 

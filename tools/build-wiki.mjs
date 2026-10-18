@@ -63,20 +63,20 @@ const mats = (m) => Object.entries(m || {}).map(([k, v]) => `${v} kg ${k}`).join
 const DT = {
   en: { head: "*Generated from the game's own rules files, so the numbers are always the ones the game uses.*", eT: 'Engines',
     eI: 'An engine trades **thrust** (how hard it pushes) against **exhaust speed** (how much speed each kilogram of propellant buys).\nThrust = k × power ÷ exhaust speed, so for the same power a slow exhaust pushes harder, and a fast exhaust goes farther.\nDelta-v = exhaust speed × ln(full mass ÷ empty mass) (the rocket equation; see [[The Laws of Cosmic Impulse]]).',
-    eC: ['Engine', 'Fuel', 'Exhaust speed', 'Specific impulse', 'Rated power', 'Thrust at rated power', 'Needs'], sun: 'none (sunlight)', start: 'starting engine', build: 'Build', energy: 'of energy',
+    eL: 'Rocket lab: every engine side by side', eC: ['Engine', 'Fuel', 'Exhaust speed', 'Specific impulse', 'Rated power', 'Thrust at rated power', 'Needs'], sun: 'none (sunlight)', start: 'starting engine', build: 'Build', energy: 'of energy',
     fT: 'Fuels', fC: ['Fuel', 'What it is', 'Energy to make (in space)', 'From Earth', "How it's made"],
     pT: 'Parts', pI: 'Every part has mass, is built from materials plus energy, and many need research first. Build them in 🛠 → 🏭 Fabricate.', pC: ['Part', 'Mass', 'Materials', 'Energy to build', 'Needs', 'What it does'],
     tT: 'Technologies', tI: 'Research points (RP) come from your crew and labs over time. Each technology may need others first.', tC: ['Technology', 'Cost', 'Needs', 'Effect'], note: '' },
   es: { head: '*Generado a partir de los propios archivos de reglas del juego, así que las cifras siempre son las que usa el juego.*', eT: 'Motores',
     eI: 'Un motor compensa **empuje** (cuánto empuja) con **velocidad de escape** (cuánta velocidad compra cada kilo de propelente).\nEmpuje = k × potencia ÷ velocidad de escape: con la misma potencia, un escape lento empuja más y uno rápido llega más lejos.\nDelta-v = velocidad de escape × ln(masa llena ÷ masa vacía) (la ecuación del cohete; ver [[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]]).',
-    eC: ['Motor', 'Combustible', 'Velocidad de escape', 'Impulso específico', 'Potencia nominal', 'Empuje a potencia nominal', 'Requiere'], sun: 'ninguno (luz solar)', start: 'motor inicial', build: 'Construcción', energy: 'de energía',
+    eL: 'Laboratorio de cohetes: todos los motores lado a lado', eC: ['Motor', 'Combustible', 'Velocidad de escape', 'Impulso específico', 'Potencia nominal', 'Empuje a potencia nominal', 'Requiere'], sun: 'ninguno (luz solar)', start: 'motor inicial', build: 'Construcción', energy: 'de energía',
     fT: 'Combustibles', fC: ['Combustible', 'Qué es', 'Energía para fabricarlo (en el espacio)', 'Desde la Tierra', 'Cómo se fabrica'],
     pT: 'Piezas', pI: 'Cada pieza tiene masa, se fabrica con materiales y energía, y muchas requieren investigación. Constrúyelas en 🛠 → 🏭 Fabricar.', pC: ['Pieza', 'Masa', 'Materiales', 'Energía para construir', 'Requiere', 'Qué hace'],
     tT: 'Tecnologías', tI: 'Los puntos de investigación (PI) vienen de tu tripulación y laboratorios con el tiempo. Cada tecnología puede requerir otras antes.', tC: ['Tecnología', 'Coste', 'Requiere', 'Efecto'],
     note: '> Los nombres y descripciones de la tabla salen de los archivos de reglas y aún están en inglés, igual que en el juego.' },
   zh: { head: '*本页由游戏自身的规则文件生成，所以数值永远与游戏一致。*', eT: '发动机',
     eI: '发动机在**推力**（推得多猛）和**排气速度**（每公斤推进剂能换来多少速度）之间权衡。\n推力 = k × 功率 ÷ 排气速度：同样的功率下，排气慢推力大，排气快则走得远。\nDelta-v = 排气速度 × ln(满载质量 ÷ 空载质量)（火箭方程；参见[[Cosmic Impulse 的定律|The Laws of Cosmic Impulse]]）。',
-    eC: ['发动机', '燃料', '排气速度', '比冲', '额定功率', '额定功率下推力', '前置要求'], sun: '无（阳光）', start: '初始发动机', build: '建造', energy: '能量',
+    eL: '火箭实验室：所有发动机并排比较', eC: ['发动机', '燃料', '排气速度', '比冲', '额定功率', '额定功率下推力', '前置要求'], sun: '无（阳光）', start: '初始发动机', build: '建造', energy: '能量',
     fT: '燃料', fC: ['燃料', '是什么', '制造能耗（太空中）', '从地球', '制造方式'],
     pT: '部件', pI: '每个部件都有质量，用材料加能量制造，很多还需要先研究。在 🛠 → 🏭 制造 中建造。', pC: ['部件', '质量', '材料', '建造能耗', '前置要求', '作用'],
     tT: '科技', tI: '研究点数（RP）随时间由船员和实验室产生。每项科技可能需要先完成其他科技。', tC: ['科技', '花费', '前置要求', '效果'],
@@ -93,7 +93,7 @@ export function dataPages(lang = 'en') {
     zh: { frame: '船架', store: '储能', gen: '发电', therm: '热管理', life: '生命维持', shield: '屏蔽', lab: '研究', fab: '制造', Energy: '能源', Thermal: '热管理', Materials: '材料', Propulsion: '推进', 'Life support': '生命维持', Shielding: '屏蔽', 'Industry & science': '工业与科学', Weapons: '武器' } }[lang] || {};
   const head = x.head + '\n\n';
   const g0 = 9.80665;
-  const eng = `# ${x.eT}\n\n${head}${x.eI}\n\n${row(x.eC)}
+  const eng = `# ${x.eT}\n\n${head}${x.eI}\n\n## ${x.eL}\n\n<!-- lab: engines -->\n\n${row(x.eC)}
 ${d.DR.map((e) => `| ${e.ic || ''} **${e.n}** | ${e.f ? (d.FUEL[e.f] || {}).n || e.f : x.sun} | ${sci(e.ve)} m/s | ${sci(e.ve / g0)} s | ${W_(e.pw)} | ${e.ve ? sci(e.k * e.pw / e.ve) + ' N' : '—'} | ${d.ENGR && d.ENGR[e.id] && d.ENGR[e.id].req ? tn(d.ENGR[e.id].req) : x.start} |`).join('\n')}
 
 ${d.DR.map((e) => `### ${e.ic || ''} ${e.n}\n${e.how || e.d || ''}${d.ENGR && d.ENGR[e.id] ? `\n\n${x.build}: ${mats(d.ENGR[e.id].mat)}; ${J_(d.ENGR[e.id].J)} ${x.energy}.` : ''}`).join('\n\n')}
@@ -171,6 +171,7 @@ function md(t, lang = 'en') { // small Markdown subset: headings, tables, lists,
   for (let i = 0; i < L.length; i++) {
     const l = L[i];
     if (/^```/.test(l)) { const c = []; while (++i < L.length && !/^```/.test(L[i])) c.push(esc(L[i])); out.push('<pre>' + c.join('\n') + '</pre>'); continue }
+    if (l.trim() === '<!-- lab: engines -->') { out.push(`<div class="elabmount" data-lang="${lang}"></div>`); continue }   // the engine lab (game/js/2672-engine-lab.js), inlined
     if (/^<!-- embed: [a-z0-9-]+\.html -->$/.test(l.trim())) { const u = l.trim().slice(12, -4); out.push(`<iframe class="embed" src="${u}?embed=1&amp;lang=${lang}" loading="lazy" title="${u}"></iframe>`); continue }   // an interactive page shown inside the wiki
     if (/^#{1,3} /.test(l)) { const n = l.match(/^#+/)[0].length; out.push(`<h${n}>${inl(l.slice(n + 1))}</h${n}>`); continue }
     if (/^\|/.test(l)) { const rows = []; while (i < L.length && /^\|/.test(L[i])) rows.push(L[i++]); i--;
@@ -182,6 +183,42 @@ function md(t, lang = 'en') { // small Markdown subset: headings, tables, lists,
     if (l.trim()) out.push('<p>' + inl(l) + '</p>');
   }
   return out.join('\n');
+}
+// the engine lab: one component (game/js/2672-engine-lab.js) used by the game, the wiki and rocket-lab.html
+const labEngines = () => gameData().DR.filter((e) => e.f && !e.sail).map((e) => ({ id: e.id, n: e.n, ve: e.ve, k: e.k, pw: e.pw }));
+const labSrc = () => readFileSync(join(root, 'game', 'js', '2672-engine-lab.js'), 'utf8');
+const pkgV = () => JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
+function labScript() { return `${labSrc()}\nconst ELAB_ENG=${JSON.stringify(labEngines())},ELAB_V=${JSON.stringify(pkgV())};` }
+export function buildLabPage() {
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rocket Equation Lab · Cosmic Impulse</title>
+<style>
+body{margin:0;background:#0c0e10;color:#eef0ee;padding:28px clamp(16px,4vw,40px) 48px;font:15px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+.top{max-width:1180px;margin:0 auto 14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:13px}.top a{color:#37c8f0;text-decoration:none}.top a:hover{text-decoration:underline}
+.langs{margin-left:auto;display:inline-flex;border:1px solid rgba(255,255,255,.1);border-radius:8px;overflow:hidden}.langs button{border:0;background:transparent;color:#bfc4c4;font:500 12px system-ui;padding:4px 9px;cursor:pointer}.langs button[aria-pressed="true"]{background:rgba(55,200,240,.14);color:#fff}
+body.embed{padding:0;background:transparent}body.embed .top{display:none}
+</style>
+</head>
+<body>
+<nav class="top"><a href="cosmic-impulse.html">▶ Cosmic Impulse</a><a id="wikilink" href="wiki.html#en/Rocket-Equation-Lab">📖 Wiki</a><span class="langs"><button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="zh">中文</button></span></nav>
+<div id="lab"></div>
+<script>
+${labScript()}
+(()=>{const P=new URLSearchParams(location.search);let L='en';try{const q=P.get('lang'),sv=localStorage.getItem('orbital-lang'),nv=(navigator.language||'en').slice(0,2);L=['en','es','zh'].includes(q)?q:['en','es','zh'].includes(sv)?sv:['es','zh'].includes(nv)?nv:'en'}catch(e){}
+ if(P.has('embed'))document.body.classList.add('embed');
+ const mount=()=>{const h=document.getElementById('lab');h.className='';engineLab(h,{engines:ELAB_ENG,lang:L,version:ELAB_V,theme:'dark',store:'orbital-elab-page'});document.documentElement.lang=L;
+  document.querySelectorAll('.langs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===L));document.getElementById('wikilink').href='wiki.html#'+L+'/Rocket-Equation-Lab'};
+ document.querySelectorAll('.langs button').forEach(b=>b.onclick=()=>{L=b.dataset.lang;try{localStorage.setItem('orbital-lang',L)}catch(e){}mount()});mount();
+ if(parent!==window){const post=()=>{try{parent.postMessage({lab:'rocket',h:document.documentElement.scrollHeight},'*')}catch(e){}};new ResizeObserver(post).observe(document.body);post()}})();
+</script>
+</body>
+</html>
+`;
+  writeFileSync(join(root, 'rocket-lab.html'), html);
 }
 export function buildWiki() {
   writeFileSync(W('Controls.md'), controlsPage());
@@ -235,16 +272,19 @@ nav .st{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(-
 .foot{margin-top:28px;padding-top:12px;border-top:1px solid #24305a;font-size:14px;color:var(--mut)}.foot div{margin:6px 0}.pn{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
 blockquote{border-left:3px solid var(--ac);margin:10px 0;padding:6px 14px;background:#121b3d;color:#f0e0c0}
 @media (max-width:720px){body{display:block}nav{width:auto;height:auto;position:static}main{padding:16px}}
+main.wide{max-width:1320px}.elabmount{margin:14px 0 26px}
 iframe.embed{display:block;width:100%;min-height:900px;border:0;border-radius:10px;margin:10px 0;background:transparent}
 </style></head><body><nav><h1>🪐 <span id="wt">Cosmic Impulse Wiki</span></h1><a id="play" href="cosmic-impulse.html" data-l="*">▶ Play</a><div id="langs">${Object.entries(LANGS).map(([l, n]) => `<button data-set="${l}">${n}</button>`).join('')}</div><input id="q" placeholder="Search…">${Object.values(navs).flat().join('')}</nav>
 <main>${pages}<p id="none" style="display:none">No page matches.</p></main>
 <script>
+${labScript()}
 addEventListener('message',e=>{const d=e.data;if(d&&d.lab&&d.h>0)document.querySelectorAll('iframe.embed').forEach(f=>{if(f.contentWindow===e.source)f.style.height=Math.ceil(d.h+4)+'px'})});
 const S=[...document.querySelectorAll('section')],A=[...document.querySelectorAll('nav a[data-l]:not(#play)')],C=${JSON.stringify(CHROME)};let L='en';try{L=localStorage.getItem('orbital-lang')||((navigator.language||'en').slice(0,2));}catch(e){}if(!['en','es','zh'].includes(L))L='en';
 function cur(){let h=decodeURIComponent(location.hash.slice(1))||'Home';if(!h.includes('/'))h=L+'/'+h;return h}
 function show(){const id=cur();L=id.split('/')[0];try{localStorage.setItem('orbital-lang',L)}catch(e){}document.documentElement.lang=L;const c=C[L],sec=document.getElementById(id),h=sec&&sec.querySelector('h1');document.title=(h&&id.split('/')[1]!=='Home'?h.textContent+' · ':'')+c.wiki;document.getElementById('wt').textContent=c.wiki;document.getElementById('q').placeholder=c.q;document.getElementById('none').textContent=c.none;document.getElementById('play').textContent=c.play;
  S.forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('nav .st').forEach(x=>x.style.display=x.dataset.l===L?'':'none');A.forEach(a=>{a.style.display=a.dataset.l===L?'':'none';a.classList.toggle('on',a.getAttribute('href')==='#'+id)});
- document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.set===L));scrollTo(0,0)}
+ document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.set===L));scrollTo(0,0);
+ const lab=sec&&sec.querySelector('.elabmount');document.querySelector('main').classList.toggle('wide',!!lab);if(lab&&!lab.dataset.done){lab.dataset.done=1;try{engineLab(lab,{engines:ELAB_ENG,lang:lab.dataset.lang,version:ELAB_V,theme:'dark',store:'orbital-elab-wiki'})}catch(e){console.warn(e)}}}
 document.querySelectorAll('#langs button').forEach(b=>b.onclick=()=>{location.hash=b.dataset.set+'/'+cur().split('/').slice(1).join('/')});
 addEventListener('hashchange',show);show();
 document.getElementById('q').oninput=e=>{const q=e.target.value.toLowerCase().trim();if(!q){show();return}let n=0;
@@ -254,4 +294,4 @@ document.getElementById('q').oninput=e=>{const q=e.target.value.toLowerCase().tr
   writeFileSync(join(root, 'wiki.html'), html);
   return names;
 }
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) console.log('wiki: ' + buildWiki().length + ' pages → wiki.html');
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) { buildLabPage(); console.log('wiki: ' + buildWiki().length + ' pages → wiki.html, and rocket-lab.html') }

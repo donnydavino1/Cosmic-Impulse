@@ -74,5 +74,6 @@ construir, sino las herramientas para inventar lo que viene después. Ver
 ### Real, no de dibujos animados
 
 El espacio es negro y silencioso, la luz viene de una estrella y las naves son máquinas con masa, calor y límites.
-El aspecto por defecto busca eso: iluminación y materiales físicos, sin contornos brillantes. (¿Prefieres el estilo
-antiguo? 🎨 Personalizar → ESTILO → *Aspecto realista*.)
+La física nunca se dobla. Las imágenes, desde la v0.4.0, se ruedan como en el cine: materiales físicos y una sola luz
+solar dura, más un cielo de nebulosas, estrellas que brillan y efectos de lente, como los vería una cámara en un rodaje.
+(¿Prefieres el espacio negro sin más? 🎨 Personalizar y ajustes → GRÁFICOS → *Realista*.)

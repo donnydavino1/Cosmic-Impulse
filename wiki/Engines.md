@@ -6,6 +6,10 @@ An engine trades **thrust** (how hard it pushes) against **exhaust speed** (how 
 Thrust = k × power ÷ exhaust speed, so for the same power a slow exhaust pushes harder, and a fast exhaust goes farther.
 Delta-v = exhaust speed × ln(full mass ÷ empty mass) (the rocket equation; see [[The Laws of Cosmic Impulse]]).
 
+## Rocket lab: every engine side by side
+
+<!-- lab: engines -->
+
 | Engine | Fuel | Exhaust speed | Specific impulse | Rated power | Thrust at rated power | Needs |
 |---|---|---|---|---|---|---|
 | 🔥 **Chemical rocket** | Rocket fuel | 4,410 m/s | 450 s | 1.2×10^8 W | 5.4×10^4 N | starting engine |

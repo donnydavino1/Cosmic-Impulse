@@ -248,5 +248,5 @@ function frame(now){requestAnimationFrame(frame);let rem=typeof UNI!=='undefined
   l.className='l mk';l.style.display='';l.textContent=(off?'➤ ':'◇ ')+b.n+' · '+(D>1e9?(D/AU).toFixed(3)+' AU':km(D));
   l.style.left=(x+1)/2*innerWidth+'px';l.style.top=(1-y)/2*innerHeight+'px'});
  if(FP)dust(now);if(SV)mp[N*3+2]=1e8;astLabels();mpLabels();
- funTick(now);if(fc++%4==0){hud($('hud'));refreshUI();cbUI();ORB.emit('ui')};vividPlanetTick();R.clear();R.render(sc,cam);{const CL=ssPrep();vividDebrisTick(now);if(CL){R.clearDepth();R.render(SS,SC)}cfxDraw(CL,now);ORB.emit('frame',now,CL)}}
+ funTick(now);if(fc++%4==0){hud($('hud'));refreshUI();cbUI();ORB.emit('ui')};vividPlanetTick();if(typeof postBegin==='function')postBegin();R.clear();R.render(sc,cam);{const CL=ssPrep();vividDebrisTick(now);if(CL){R.clearDepth();R.render(SS,SC)}cfxDraw(CL,now);ORB.emit('frame',now,CL)}}
 

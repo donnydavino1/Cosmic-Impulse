@@ -2,7 +2,10 @@
 
 **¿Es realista?** Las órbitas, la ecuación del cohete, la luz solar, el calor, la radiación y la relatividad usan
 física y unidades reales. Algunas cosas están simplificadas (y unas pocas son decisiones de juego, como los
-saqueadores). Los escombros espaciales cinematográficos son decoración que puedes desactivar.
+saqueadores). El cielo de nebulosas, los efectos de lente y
+los escombros espaciales son decoración que puedes desactivar.
+
+**¿Qué versión estoy jugando?** 🎨 Personalizar y ajustes (K) → *ACERCA DE ESTA VERSIÓN*, arriba del todo, o la pantalla de bienvenida.
 
 **¿Funciona en mi móvil?** Sí: `cosmic-impulse-mobile.html` es el mismo juego con controles táctiles y un menú ☰ que
 contiene todas las acciones.

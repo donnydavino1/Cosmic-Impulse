@@ -1,8 +1,10 @@
 # FAQ
 
 **Is it realistic?** Orbits, rocket equation, sunlight, heat, radiation and relativity use real physics and units.
-Some things are simplified (and a few are game choices, like raiders). Cinematic space debris is decoration you
-can turn off.
+Some things are simplified (and a few are game choices, like raiders). The nebula sky, lens effects and space debris
+are decoration you can turn off.
+
+**Which version am I playing?** 🎨 Customize & settings (K) → *ABOUT THIS RELEASE* at the top, or the welcome screen.
 
 **Does it work on my phone?** Yes: `cosmic-impulse-mobile.html` is the same game with touch controls and a ☰ menu
 containing every action.

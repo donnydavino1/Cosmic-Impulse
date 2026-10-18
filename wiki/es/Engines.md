@@ -6,6 +6,10 @@ Un motor compensa **empuje** (cuánto empuja) con **velocidad de escape** (cuán
 Empuje = k × potencia ÷ velocidad de escape: con la misma potencia, un escape lento empuja más y uno rápido llega más lejos.
 Delta-v = velocidad de escape × ln(masa llena ÷ masa vacía) (la ecuación del cohete; ver [[Las leyes de Cosmic Impulse|The Laws of Cosmic Impulse]]).
 
+## Laboratorio de cohetes: todos los motores lado a lado
+
+<!-- lab: engines -->
+
 | Motor | Combustible | Velocidad de escape | Impulso específico | Potencia nominal | Empuje a potencia nominal | Requiere |
 |---|---|---|---|---|---|---|
 | 🔥 **Cohete químico** | Combustible de cohete | 4,410 m/s | 450 s | 1.2×10^8 W | 5.4×10^4 N | motor inicial |
