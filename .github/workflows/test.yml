@@ -1,0 +1,15 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - name: Rules file is up to date
+        run: npm run rules && git diff --exit-code RULES.md
+      - name: Standalone build is up to date
+        run: npm run build && git diff --exit-code dist/

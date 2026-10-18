@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rocket Equation Lab · Cosmic Impulse</title>
+<style>
+body{margin:0;background:#0c0e10;color:#eef0ee;padding:28px clamp(16px,4vw,40px) 48px;font:15px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+.top{max-width:1180px;margin:0 auto 14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:13px}.top a{color:#37c8f0;text-decoration:none}.top a:hover{text-decoration:underline}
+.langs{margin-left:auto;display:inline-flex;border:1px solid rgba(255,255,255,.1);border-radius:8px;overflow:hidden}.langs button{border:0;background:transparent;color:#bfc4c4;font:500 12px system-ui;padding:4px 9px;cursor:pointer}.langs button[aria-pressed="true"]{background:rgba(55,200,240,.14);color:#fff}
+body.embed{padding:0;background:transparent}body.embed .top{display:none}
+</style>
+</head>
+<body>
+<nav class="top"><a href="cosmic-impulse.html">▶ Cosmic Impulse</a><a id="wikilink" href="wiki.html#en/Rocket-Equation-Lab">📖 Wiki</a><span class="langs"><button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="zh">中文</button></span></nav>
+<div id="lab"></div>
+<script>
+// ===== ENGINE LAB (client, standalone component): the rocket equation and burn times for every engine =====
+// One component, three places: the game (🛠 → 🚀 Engines & fuel → 📈 Rocket lab, fed live from DR and your ship;
+// see 2673-engine-lab-ui.js), the wiki (inlined by tools/build-wiki.mjs at <!-- lab: engines -->) and rocket-lab.html
+// (also written by build-wiki). It uses NO game globals: everything arrives in `opt`, so the same file runs anywhere.
+//   engineLab(host, {engines:[{id,n,ve,k,pw,f}], lang, tr, version, dry, ratio, pwx, focus, you, onMine, theme, store})
+//   → {render(), set(opt)}.  engines: exhaust speed ve (m/s), thrust factor k (F = k·P/ve), power pw (W).
+//   you (game only): {id, dry (t), ratio, pwx} = the ship as it is now, drawn as a ring on the charts.
+function engineLab(host,opt){
+ opt=Object.assign({lang:'en',theme:'auto',dry:100,ratio:2,pwx:1,show:'classic',store:'elab'},opt||{});
+ const C=299792458,YEAR=3.15576e7,DAY=86400,MAXR=20,VCAP=.99*C,NS='http://www.w3.org/2000/svg',TRD=engineLab.TR;
+ const T=s=>{const d=TRD[opt.lang];if(d&&d[s]!==undefined)return d[s];return opt.tr?opt.tr(s):s};
+ const ENGS=()=>(opt.engines||[]).filter(e=>e&&e.ve>0&&e.pw>0&&e.k>0);
+ const CLASSIC=['chem','ntr','gcnr','ion','dfd','fus','icf','am'];
+ const PAL=['--s1','--s2','--s3','--s4','--s5','--s6','--s7','--s8'];
+ let st={dry:opt.dry,ratio:opt.ratio,pwx:opt.pwx,focus:opt.focus||'ntr',show:opt.show,scale:'log'};
+ try{const sv=JSON.parse(localStorage.getItem(opt.store)||'null');if(sv&&!opt.you)Object.assign(st,sv)}catch(e){}
+ const save=()=>{try{localStorage.setItem(opt.store,JSON.stringify(st))}catch(e){}};
+ if(!document.getElementById('elab-css')){const s=document.createElement('style');s.id='elab-css';s.textContent=engineLab.CSS;document.head.appendChild(s)}
+ if(!document.getElementById('elab-font')){try{const l=document.createElement('link');l.id='elab-font';l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap';document.head.appendChild(l)}catch(e){}}
+ host.classList.add('elab');if(opt.theme==='dark')host.classList.add('elab-dark');
+ host.innerHTML=`<header><div class="ey"></div><h1></h1><p class="lede"></p></header>
+ <section class="ctr"><div class="ctl"><label><span data-k="Ship mass without fuel"></span> <output data-o="dry"></output></label><input data-i="dry" type="range" min="0" max="1000" step="1"></div>
+ <div class="ctl"><label><span data-k="Fuel carried"></span> <output data-o="fuel"></output></label><input data-i="fuel" type="range" min="0" max="1000" step="1"></div>
+ <div class="ctl"><label><span data-k="Engine size (power)"></span> <output data-o="pw"></output></label><input data-i="pw" type="range" min="-100" max="100" step="1"></div>
+ <div class="ctl wide"><div class="lab"><span><span data-k="Engines"></span> <em data-k="click one to follow it"></em></span><span class="seg" data-g="show"></span></div><div class="chips"></div></div>
+ <div class="ctl wide mine" hidden><button type="button" class="minebtn" data-k="↺ Use my ship as it is now"></button> <small data-o="mine"></small></div></section>
+ <section class="ro" aria-live="polite"></section>
+ <section class="charts"><figure><figcaption><div><h2 data-k="Top speed vs. fuel carried"></h2><p data-k="Each extra tonne of fuel adds less speed than the last: the curve is a logarithm."></p></div><span class="seg" data-g="scale"></span></figcaption><div class="plot" data-p="A"></div></figure>
+ <figure><figcaption><div><h2 data-k="Burn time to reach a speed"></h2><p data-k="For your ship mass and engine size. A line ends where you would need more than 20× the ship's mass in fuel."></p></div></figcaption><div class="plot" data-p="B"></div></figure></section>
+ <div class="tbx"><table><thead><tr><th data-k="Engine"></th><th data-k="Exhaust speed"></th><th data-k="Thrust"></th><th data-k="Fuel use"></th><th data-k="Speed with this fuel"></th><th data-k="Burn time"></th><th data-k="Push (start → end)"></th></tr></thead><tbody></tbody></table></div>
+ <section class="eqs"><div class="eq"><h3 data-k="Speed from fuel"></h3><code>Δv = vₑ · ln(m₀ / m₁)</code><p data-k="vₑ is the exhaust speed, m₀ the mass with fuel, m₁ without. Doubling the fuel does not double the speed."></p></div>
+ <div class="eq"><h3 data-k="Near light speed"></h3><code>v = c · tanh((vₑ/c) · ln(m₀/m₁))</code><p data-k="The same law in special relativity. It never reaches c; the game caps ships at 0.99 c."></p></div>
+ <div class="eq"><h3 data-k="Thrust from power"></h3><code>F = k · P / vₑ</code><p data-k="For the same power, a faster exhaust pushes more gently. That is why efficient engines are slow to accelerate."></p></div>
+ <div class="eq"><h3 data-k="Burn time"></h3><code>t = m_fuel · vₑ² / (k · P)</code><p data-k="Fuel flows at k·P/vₑ². A bigger engine (more power P) burns the same fuel faster; ship mass only matters through how much fuel you need."></p></div></section>
+ <p class="note" data-k="Ideal numbers: they assume full thrust the whole time. In the game, overheating (not enough radiators), the crew's g-limit, or not enough electric power for electric engines can hold the throttle down and make burns longer. Engine size is the game's engine resize (power × mass of the engine). The dashed lines mark speed changes from low Earth orbit: 3.2 km/s escapes Earth, about 9 km/s reaches 0.2 AU from the Sun, about 21 km/s falls into the Sun."></p>`;
+ const q=s=>host.querySelector(s),qa=s=>[...host.querySelectorAll(s)];
+ const I={dry:q('[data-i=dry]'),fuel:q('[data-i=fuel]'),pw:q('[data-i=pw]')};
+ // slider mappings: ship mass 1 t … 2,000 t (log), fuel 0 … 20× the ship, engine size ×0.1 … ×10 (log)
+ const toS={dry:t=>Math.round(Math.log10(Math.max(1,Math.min(2000,t)))/3.3*1000),fuel:r=>Math.round(Math.max(0,Math.min(MAXR,r))/MAXR*1000),pw:x=>Math.round(Math.log10(Math.max(.1,Math.min(10,x)))*100)};
+ const fromS={dry:v=>Math.round(Math.pow(10,v/1000*3.3)*10)/10,fuel:v=>Math.round(v/1000*MAXR*100)/100,pw:v=>Math.pow(10,v/100)};
+ const syncIn=()=>{I.dry.value=toS.dry(st.dry);I.fuel.value=toS.fuel(st.ratio);I.pw.value=toS.pw(st.pwx)};
+ // physics (the same laws as the game: relativistic rocket equation, thrust = k·P/ve)
+ const dv=(e,r)=>r<=0?0:Math.min(VCAP,C*Math.tanh((e.ve/C)*Math.log(1+r)));
+ const ratioFor=(e,v)=>Math.exp(Math.atanh(Math.min(v,VCAP)/C)*C/e.ve)-1;
+ const P=e=>e.pw*st.pwx,thrust=e=>e.k*P(e)/e.ve,flow=e=>e.k*P(e)/(e.ve*e.ve),burn=(e,r,kg)=>r*kg/flow(e);
+ const fx=(v,d)=>v.toLocaleString(opt.lang==='zh'?'zh-CN':opt.lang==='es'?'es-ES':'en-US',{maximumFractionDigits:d,minimumFractionDigits:0});
+ const fSpd=v=>v<1000?fx(v,0)+' m/s':v<.01*C?fx(v/1000,v<1e4?2:v<1e5?1:0)+' km/s':(v/C).toFixed(3)+' c';
+ const fT=t=>{if(!isFinite(t))return'—';if(t<90)return fx(t,t<10?1:0)+' s';if(t<5400)return fx(t/60,t<600?1:0)+' min';if(t<2*DAY)return fx(t/3600,t<36000?1:0)+' h';if(t<730*DAY)return fx(t/DAY,t<10*DAY?1:0)+' '+T('days');const y=t/YEAR;return fx(y,y<10?1:0)+' '+T('years')};
+ const fN=F=>F>=1e3?fx(F/1e3,F<1e4?1:0)+' kN':fx(F,F<10?2:0)+' N';
+ const fFlow=x=>x>=1?fx(x,x<10?1:0)+' kg/s':x*3600>=1?fx(x*3600,x*3600<10?1:0)+' kg/h':fx(x*86400,x*86400<10?2:1)+' kg/'+T('day');
+ const fA=a=>{const g=a/9.80665;return g>=.01?fx(g,g<1?2:1)+' g':a>=1e-3?fx(a*1000,1)+' mm/s²':a.toExponential(1)+' m/s²'};
+ const fM=t=>t>=1000?fx(t/1000,t<1e4?2:1)+' kt':fx(t,t<10?1:0)+' t';
+ const fW=w=>w>=1e9?fx(w/1e9,w<1e10?2:0)+' GW':w>=1e6?fx(w/1e6,w<1e7?2:0)+' MW':w>=1e3?fx(w/1e3,w<1e4?1:0)+' kW':fx(w,0)+' W';
+ const el=(tag,a,p)=>{const n=document.createElementNS(NS,tag);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n};
+ const axis=(kind,d0,d1,r0,r1)=>{const lg=kind==='log',a=lg?Math.log10(d0):d0,b=lg?Math.log10(d1):d1,f=v=>{const x=lg?Math.log10(Math.max(v,1e-300)):v;return r0+(x-a)/(b-a)*(r1-r0)};f.inv=p=>{const x=a+(p-r0)/(r1-r0)*(b-a);return lg?Math.pow(10,x):x};return f};
+ const path=pts=>{let d='',pen=false;for(const p of pts){if(!p||!isFinite(p[0])||!isFinite(p[1])){pen=false;continue}d+=(pen?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1);pen=true}return d};
+ // which engines are drawn, and their colours (colour follows the engine's place in the visible set, max 8 hues)
+ function vis(){const all=ENGS();let L=st.show==='all'?all:st.show==='mine'?all.filter(e=>e.mine):all.filter(e=>CLASSIC.includes(e.id));
+  if(!L.length)L=all.filter(e=>CLASSIC.includes(e.id));if(!L.length)L=all;const f=all.find(e=>e.id===st.focus);if(f&&!L.includes(f))L=[...L,f];
+  L.forEach((e,i)=>{e.c='var('+PAL[i%8]+')';e.dash=i>=8?'5 3':null});return L}
+ const focusE=L=>L.find(e=>e.id===st.focus)||L[0];
+ const charts={};
+ for(const k of['A','B']){const h=q('[data-p='+k+']'),svg=el('svg',{role:'img'},h),tip=document.createElement('div');tip.className='tip';tip.hidden=true;h.appendChild(tip);const c={el:h,svg,tip,w:600,k};charts[k]=c;
+  h.addEventListener('pointermove',ev=>hover(c,ev));h.addEventListener('pointerleave',()=>{tip.hidden=true;if(c.cross)c.cross.style.opacity=0});
+  try{new ResizeObserver(()=>{const w=Math.round(h.clientWidth);if(w&&w!==c.w){c.w=w;draw(k)}}).observe(h)}catch(e){}}
+ function frame(c,xs,ys,xt,yt,xl,yl){const{svg,w,h,M}=c;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.innerHTML='';
+  for(const t of yt){const y=ys(t.v);el('line',{x1:M.l,x2:w-M.r,y1:y,y2:y,class:'gr'},svg);el('text',{x:M.l-8,y:y+4,'text-anchor':'end'},svg).textContent=t.l}
+  for(const t of xt){const x=xs(t.v);el('line',{x1:x,x2:x,y1:M.t,y2:h-M.b,class:'gr'},svg);el('text',{x,y:h-M.b+18,'text-anchor':'middle'},svg).textContent=t.l}
+  el('line',{x1:M.l,x2:w-M.r,y1:h-M.b,y2:h-M.b,class:'ax'},svg);
+  el('text',{x:(M.l+w-M.r)/2,y:h-6,'text-anchor':'middle',class:'at'},svg).textContent=xl;
+  el('text',{x:12,y:(M.t+h-M.b)/2,'text-anchor':'middle',transform:`rotate(-90 12 ${(M.t+h-M.b)/2})`,class:'at'},svg).textContent=yl;
+  const id='elc'+Math.random().toString(36).slice(2,8),cl=el('clipPath',{id},el('defs',{},svg));el('rect',{x:M.l,y:M.t-2,width:w-M.l-M.r,height:h-M.t-M.b+4},cl);return el('g',{'clip-path':`url(#${id})`},svg)}
+ const kg=()=>st.dry*1000;
+ function drawA(){const c=charts.A,L=vis(),e=focusE(L);if(!e)return;c.h=Math.round(Math.min(420,Math.max(300,c.w*.66)));c.M={l:c.w<520?74:88,r:16,t:12,b:44};const{w,h,M}=c,lin=st.scale==='lin';
+  const xs=axis('lin',0,MAXR,M.l,w-M.r),ys=lin?axis('lin',0,60000,h-M.b,M.t):axis('log',100,3.2e8,h-M.b,M.t);
+  const xt=[0,2,4,6,8,10,12,14,16,18,20].filter(v=>w>520||v%4===0).map(v=>({v,l:v+'×'}));
+  const yt=(lin?[0,1e4,2e4,3e4,4e4,5e4,6e4].map(v=>[v,v/1000+' km/s']):[[100,'100 m/s'],[1e3,'1 km/s'],[1e4,'10 km/s'],[1e5,'100 km/s'],[1e6,'1,000 km/s'],[1e7,'10,000 km/s'],[1e8,'0.33 c']]).map(([v,l])=>({v,l}));
+  const g=frame(c,xs,ys,xt,yt,T('Fuel carried ÷ ship mass without fuel'),T('Speed change'));
+  for(const[v,l]of[[3200,'escape Earth'],[9000,'reach 0.2 AU'],[21400,'fall into the Sun'],[VCAP,'0.99 c cap']]){const y=ys(v);if(y<M.t-1||y>h-M.b+1)continue;
+   el('line',{x1:M.l,x2:w-M.r,y1:y,y2:y,class:'ref'},g);el('text',{x:M.l+6,y:v===VCAP?y+13:y-4,class:'rt'},g).textContent=T(l)}
+  for(const q2 of L){const pts=[];for(let i=0;i<=200;i++){const r=MAXR*i/200,v=dv(q2,r);pts.push([xs(r),v>0?ys(lin?v:Math.max(v,1)):NaN])}
+   const f=q2===e,a={d:path(pts),fill:'none',stroke:q2.c,'stroke-width':f?3:1.6,'stroke-opacity':f?1:.55,'stroke-linejoin':'round'};if(q2.dash)a['stroke-dasharray']=q2.dash;el('path',a,g)}
+  const r=st.ratio,v=dv(e,r);if(r>0){const y=ys(lin?v:Math.max(v,1));if(y>=M.t-1&&y<=h-M.b+1)el('circle',{cx:xs(r),cy:y,r:6,fill:e.c,class:'dot'},c.svg)}
+  you(c,(Y,ye)=>{const vv=dv(ye,Y.ratio),y=ys(lin?vv:Math.max(vv,1)),x=xs(Math.min(MAXR,Y.ratio));return[x,y]});
+  {const vE=dv(e,MAXR),y=ys(lin?vE:Math.max(vE,1));if(y>M.t+8&&y<h-M.b-4)el('text',{x:w-M.r-4,y:y-7,'text-anchor':'end',class:'dl'},c.svg).textContent=e.n2}
+  c.cross=el('line',{x1:0,x2:0,y1:M.t,y2:h-M.b,class:'cr'},c.svg);c.xs=xs;c.svg.setAttribute('aria-label',T('Top speed vs. fuel carried'))}
+ function drawB(){const c=charts.B,L=vis(),e=focusE(L);if(!e)return;c.h=Math.round(Math.min(420,Math.max(300,c.w*.66)));c.M={l:c.w<520?70:84,r:16,t:12,b:44};const{w,h,M}=c,m=kg();
+  const xs=axis('log',100,3e8,M.l,w-M.r),ys=axis('log',60,1e4*YEAR,h-M.b,M.t);
+  const xt=[[100,'100 m/s'],[1e3,'1 km/s'],[1e4,'10 km/s'],[1e5,'100 km/s'],[1e6,'1k km/s'],[1e7,'10k km/s'],[1e8,'0.33 c']].filter((x,i)=>w>520||i%2===0).map(([v,l])=>({v,l}));
+  const yt=[[60,'1 min'],[3600,'1 hour'],[DAY,'1 day'],[30*DAY,'1 month'],[YEAR,'1 year'],[10*YEAR,'10 years'],[100*YEAR,'100 years'],[1e3*YEAR,'1,000 yr'],[1e4*YEAR,'10,000 yr']].map(([v,l])=>({v,l:T(l)}));
+  const g=frame(c,xs,ys,xt,yt,T('Speed change reached'),T('Burn time'));
+  [[3200,'escape Earth'],[9000,'0.2 AU'],[21400,'into the Sun']].forEach(([v,l],i)=>{const x=xs(v);el('line',{x1:x,x2:x,y1:M.t,y2:h-M.b,class:'ref'},g);el('text',{x:x+4,y:M.t+12+i*14,class:'rt'},g).textContent=T(l)});
+  for(const q2 of L){const vmax=dv(q2,MAXR),pts=[];for(let i=0;i<=240;i++){const v=Math.pow(10,2+i/240*Math.log10(3e6));if(v>vmax)break;pts.push([xs(v),ys(Math.max(burn(q2,ratioFor(q2,v),m),1))])}
+   const f=q2===e,a={d:path(pts),fill:'none',stroke:q2.c,'stroke-width':f?3:1.6,'stroke-opacity':f?1:.55,'stroke-linejoin':'round'};if(q2.dash)a['stroke-dasharray']=q2.dash;el('path',a,g);
+   const last=pts[pts.length-1];if(last&&last[0]<w-M.r-2)el('circle',{cx:last[0],cy:last[1],r:f?4:2.5,class:'end',stroke:q2.c,'stroke-opacity':f?1:.7},g)}
+  const r=st.ratio,v=dv(e,r);if(r>0){const x=xs(v),y=ys(Math.max(burn(e,r,m),1));if(x>=M.l&&x<=w-M.r&&y>=M.t&&y<=h-M.b)el('circle',{cx:x,cy:y,r:6,fill:e.c,class:'dot'},c.svg)}
+  you(c,(Y,ye)=>{const vv=dv(ye,Y.ratio),F=ye.k*ye.pw*Y.pwx/(ye.ve*ye.ve);return[xs(Math.max(vv,100)),ys(Math.max(Y.ratio*Y.dry*1000/F,1))]});
+  c.cross=el('line',{x1:0,x2:0,y1:M.t,y2:h-M.b,class:'cr'},c.svg);c.xs=xs;c.svg.setAttribute('aria-label',T('Burn time to reach a speed'))}
+ // your ship as it is now (game only): a ring with a label
+ function you(c,at){const Y=opt.you;if(!Y)return;const ye=ENGS().find(x=>x.id===Y.id);if(!ye||!(Y.ratio>0))return;const[x,y]=at(Y,ye),M=c.M;if(!(x>=M.l&&x<=c.w-M.r&&y>=M.t&&y<=c.h-M.b))return;
+  el('circle',{cx:x,cy:y,r:9,class:'you'},c.svg);el('text',{x:x+12,y:y+4,class:'yt'},c.svg).textContent=T('your ship')}
+ function hover(c,ev){const L=vis(),e=focusE(L);if(!e||!c.xs)return;const r=c.svg.getBoundingClientRect(),px=(ev.clientX-r.left)*c.w/r.width,M=c.M;if(px<M.l||px>c.w-M.r){c.tip.hidden=true;c.cross.style.opacity=0;return}
+  c.cross.setAttribute('x1',px);c.cross.setAttribute('x2',px);c.cross.style.opacity=.5;const xv=c.xs.inv(px),m=kg();
+  const rows=L.map(q2=>{const val=c.k==='A'?fSpd(dv(q2,xv)):xv>dv(q2,MAXR)?T('out of reach'):fT(burn(q2,ratioFor(q2,xv),m));return`<div class="r${q2===e?' f':''}" style="--c:${q2.c}"><i></i><em>${q2.n2}</em><span>${val}</span></div>`}).join('');
+  const hd=c.k==='A'?`${T('Fuel =')} ${fx(xv,1)}${T('× ship mass')} (${fM(xv*st.dry)})`:`${T('To reach')} ${fSpd(xv)}`;
+  c.tip.innerHTML=`<div class="h">${hd}</div>${rows}`;c.tip.hidden=false;const tw=c.tip.offsetWidth,hw=c.el.clientWidth;let left=ev.clientX-c.el.getBoundingClientRect().left+14;if(left+tw>hw)left=Math.max(0,left-tw-28);c.tip.style.left=left+'px';c.tip.style.top='8px'}
+ const draw=k=>{if(k==='A')drawA();else drawB()};
+ function texts(){qa('[data-k]').forEach(n=>{n.textContent=T(n.dataset.k)});
+  q('.ey').textContent=T('Cosmic Impulse · engines from the game')+(opt.version?' (v'+opt.version+')':'');q('h1').textContent=T('How fast can each engine get you, and how long does the burn take?');
+  q('.lede').textContent=T('Move the sliders. The left chart is the rocket equation: speed gained for the fuel you carry. The right chart is the price in time: how long the engine must burn to reach each speed. Click an engine to follow it.');
+  const seg=(g,items,cur,fn)=>{const s=q('[data-g='+g+']');s.innerHTML='';for(const[v,l]of items){const b=document.createElement('button');b.type='button';b.textContent=T(l);b.setAttribute('aria-pressed',v===cur);b.onclick=()=>fn(v);s.appendChild(b)}};
+  seg('show',[['classic','The eight classics'],...(ENGS().some(e=>e.mine)?[['mine','Engines you have']]:[]),['all','All engines']],st.show,v=>{st.show=v;save();render()});
+  seg('scale',[['log','All engines'],['lin','Zoom 0–60 km/s']],st.scale,v=>{st.scale=v;save();render()});
+  const mb=q('.mine');mb.hidden=!opt.you;if(opt.you){const Y=opt.you,ye=ENGS().find(x=>x.id===Y.id);q('[data-o=mine]').textContent=ye?`${ye.n2} · ${fM(Y.dry)} · ${T('fuel')} ${fx(Y.ratio,2)}× · ${fW(ye.pw*Y.pwx)}`:''}}
+ function render(){const all=ENGS();all.forEach(e=>{e.n2=T(e.n)});const L=vis(),e=focusE(L);texts();if(!e)return;
+  q('[data-o=dry]').textContent=fM(st.dry);q('[data-o=fuel]').textContent=fx(st.ratio,1)+'× = '+fM(st.ratio*st.dry);q('[data-o=pw]').textContent='×'+fx(st.pwx,st.pwx<1?2:1)+' · '+fW(P(e));
+  const box=q('.chips');box.innerHTML='';for(const q2 of L){const b=document.createElement('button');b.type='button';b.className='chip';b.style.setProperty('--c',q2.c);b.setAttribute('aria-pressed',q2===e);b.innerHTML='<i></i>';b.appendChild(document.createTextNode(q2.n2));b.onclick=()=>{st.focus=q2.id;save();render()};box.appendChild(b)}
+  const m=kg(),r=st.ratio,v=dv(e,r),F=thrust(e),t=burn(e,r,m);
+  q('.ro').innerHTML='';[[T('Engine'),e.n2,T('exhaust')+' '+fSpd(e.ve)],[T('Speed change'),fSpd(v),v>=.01*C?fx(Math.round(v/1000),0)+' km/s':T('with')+' '+fM(r*st.dry)+' '+T('of fuel')],[T('Burn time'),fT(t),T('at full thrust')],[T('Thrust'),fN(F),T('burns')+' '+fFlow(flow(e))],[T('Push'),fA(F/(m*(1+r)))+' → '+fA(F/m),T('full tanks → empty')]].forEach(([a,b,c2])=>{const d=document.createElement('div');d.innerHTML='<span></span><b></b><small></small>';d.children[0].textContent=a;d.children[1].textContent=b;d.children[2].textContent=c2;q('.ro').appendChild(d)});
+  const tb=q('tbody');tb.innerHTML='';for(const q2 of L){const vq=dv(q2,r),Fq=thrust(q2),tr=document.createElement('tr');if(q2===e)tr.className='focus';tr.style.setProperty('--c',q2.c);
+   [q2.n2,fSpd(q2.ve),fN(Fq),fFlow(flow(q2)),fSpd(vq),fT(burn(q2,r,m)),fA(Fq/(m*(1+r)))+' → '+fA(Fq/m)].forEach((x,i)=>{const td=document.createElement('td');if(!i)td.innerHTML='<i></i>';td.appendChild(document.createTextNode(x));tr.appendChild(td)});tr.onclick=()=>{st.focus=q2.id;save();render()};tb.appendChild(tr)}
+  drawA();drawB()}
+ for(const k of['dry','fuel','pw'])I[k].addEventListener('input',()=>{const v=fromS[k](+I[k].value);if(k==='dry')st.dry=v;else if(k==='fuel')st.ratio=v;else st.pwx=v;save();render()});
+ // stop the game's flying keys while a slider has focus
+ host.addEventListener('keydown',e=>e.stopPropagation());
+ const mine=()=>{const Y=opt.you;if(!Y)return;st.dry=Math.max(1,Math.min(2000,Y.dry));st.ratio=Math.max(0,Math.min(MAXR,Y.ratio));st.pwx=Math.max(.1,Math.min(10,Y.pwx||1));st.focus=Y.id;if(st.show==='classic'&&!CLASSIC.includes(Y.id))st.show='mine';syncIn();render()};
+ q('.minebtn').onclick=mine;
+ if(opt.you)mine();else{syncIn();render()}
+ return{render,mine,set(o){Object.assign(opt,o);render()},get lang(){return opt.lang}}}
+engineLab.CSS=`.elab{--bg:#f4f5f3;--surface:#fcfcfb;--ink:#0f1214;--ink-2:#4c5156;--muted:#848a8f;--grid:#e3e5e1;--axis:#c3c6c0;--accent:#0a7ea4;--accent-soft:rgba(10,126,164,.12);--ring:rgba(15,18,20,.10);--ref:#9a9fa3;
+ --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300;--s7:#6250d6;--s8:#e34948;
+ --display:"Saira Semi Condensed","Arial Narrow",system-ui,sans-serif;--body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+ display:grid;gap:22px;max-width:1180px;margin:0 auto;color:var(--ink);font:15px/1.55 var(--body);text-align:left;letter-spacing:normal;text-transform:none}
+.elab.elab-dark{--bg:#0c0e10;--surface:#15181a;--ink:#eef0ee;--ink-2:#bfc4c4;--muted:#868c8f;--grid:#262a2c;--axis:#3a3f42;--accent:#37c8f0;--accent-soft:rgba(55,200,240,.14);--ring:rgba(255,255,255,.10);--ref:#6f7578;
+ --s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#2f9e2f;--s7:#9085e9;--s8:#e66767;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .elab{--bg:#0c0e10;--surface:#15181a;--ink:#eef0ee;--ink-2:#bfc4c4;--muted:#868c8f;--grid:#262a2c;--axis:#3a3f42;--accent:#37c8f0;--accent-soft:rgba(55,200,240,.14);--ring:rgba(255,255,255,.10);--ref:#6f7578;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#2f9e2f;--s7:#9085e9;--s8:#e66767}}
+:root[data-theme="dark"] .elab,body.dark .elab{--bg:#0c0e10;--surface:#15181a;--ink:#eef0ee;--ink-2:#bfc4c4;--muted:#868c8f;--grid:#262a2c;--axis:#3a3f42;--accent:#37c8f0;--accent-soft:rgba(55,200,240,.14);--ring:rgba(255,255,255,.10);--ref:#6f7578;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#2f9e2f;--s7:#9085e9;--s8:#e66767}
+.elab *{box-sizing:border-box}
+.elab header{display:grid;gap:6px;max-width:72ch}
+.elab .ey{font:500 12px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.elab h1{font:700 clamp(26px,4vw,40px)/1.05 var(--display);letter-spacing:.01em;margin:0;color:var(--ink);text-wrap:balance}
+.elab .lede{color:var(--ink-2);margin:0}
+.elab .ctr{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 22px;background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:16px 18px}
+.elab .ctl{display:grid;gap:6px;min-width:0}.elab .ctl.wide{grid-column:1/-1}
+.elab .ctl label,.elab .ctl .lab{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+.elab .ctl .lab em{font-style:normal;color:var(--muted);margin-left:6px}
+.elab output{font:500 13px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.elab input[type=range]{width:100%;accent-color:var(--accent);margin:0;background:none;border:0;padding:0}
+.elab .chips{display:flex;flex-wrap:wrap;gap:8px}
+.elab button{font:500 13px var(--body);cursor:pointer;text-transform:none;letter-spacing:normal;box-shadow:none;min-height:0}
+.elab .chip{display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 9px;border-radius:999px;border:1px solid var(--ring);background:transparent;color:var(--ink-2);margin:0}
+.elab .chip i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.elab .chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--ink)}
+.elab button:focus-visible,.elab input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.elab .seg{display:inline-flex;border:1px solid var(--ring);border-radius:8px;overflow:hidden}
+.elab .seg button{border:0;border-radius:0;background:transparent;color:var(--ink-2);font-size:12px;padding:5px 10px;margin:0}
+.elab .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink)}
+.elab .minebtn{border:1px solid var(--accent);background:var(--accent-soft);color:var(--ink);border-radius:8px;padding:6px 12px;margin:0}
+.elab .mine{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.elab .mine[hidden]{display:none}.elab .mine small{color:var(--ink-2);font:12px var(--mono);margin-left:8px}
+.elab .ro{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;background:var(--ring);border-radius:10px;overflow:hidden;border:1px solid var(--ring)}
+.elab .ro div{background:var(--surface);padding:12px 14px;display:grid;gap:2px;min-width:0}
+.elab .ro span{font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.elab .ro b{font:500 19px/1.2 var(--mono);font-variant-numeric:tabular-nums;overflow-wrap:anywhere;color:var(--ink)}
+.elab .ro small{color:var(--ink-2);font-size:12px}
+.elab .charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:18px}
+.elab figure{margin:0;background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:14px 14px 10px;display:grid;gap:8px;min-width:0}
+.elab figcaption{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.elab figcaption h2{font:700 19px/1.2 var(--display);margin:0;color:var(--ink);border:0;padding:0}
+.elab figcaption p{margin:2px 0 0;color:var(--ink-2);font-size:13px;max-width:52ch}
+.elab .plot{position:relative;min-width:0}
+.elab .plot svg{display:block;width:100%;height:auto;overflow:visible}
+.elab .plot svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.elab .plot svg .gr{stroke:var(--grid);stroke-width:1}.elab .plot svg .ax{stroke:var(--axis);stroke-width:1}
+.elab .plot svg .at{fill:var(--ink-2);font-family:var(--body);font-size:12px}
+.elab .plot svg .ref{stroke:var(--ref);stroke-width:1;stroke-dasharray:4 4}.elab .plot svg .rt{fill:var(--ink-2);font-size:10.5px}
+.elab .plot svg .dl{fill:var(--ink);font-family:var(--body);font-size:12px;font-weight:600}
+.elab .plot svg .dot{stroke:var(--surface);stroke-width:2}.elab .plot svg .end{fill:var(--surface);stroke-width:1.6}
+.elab .plot svg .cr{stroke:var(--ink-2);stroke-width:1;opacity:0}
+.elab .plot svg .you{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:3 2}.elab .plot svg .yt{fill:var(--ink);font-family:var(--body);font-size:11px;font-weight:600}
+.elab .tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--ring);box-shadow:0 6px 20px rgba(0,0,0,.18);border-radius:8px;padding:8px 10px;font:12px/1.45 var(--mono);color:var(--ink);min-width:170px;z-index:2;font-variant-numeric:tabular-nums}
+.elab .tip .h{color:var(--ink-2);margin-bottom:4px;font-family:var(--body);font-weight:600}
+.elab .tip .r{display:flex;align-items:center;gap:6px;justify-content:space-between}
+.elab .tip .r i{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.elab .tip .r em{font-style:normal;color:var(--ink-2);flex:1}.elab .tip .r.f{font-weight:600}
+.elab .tbx{background:var(--surface);border:1px solid var(--ring);border-radius:10px;overflow-x:auto}
+.elab table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px;margin:0;background:none;border:0}
+.elab th,.elab td{padding:9px 12px;text-align:right;border:0;border-bottom:1px solid var(--grid);white-space:nowrap;background:none;color:var(--ink)}
+.elab th{font-weight:600;color:var(--ink-2);font-size:12px;letter-spacing:.03em;font-family:var(--body);text-transform:none}
+.elab td{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.elab th:first-child,.elab td:first-child{text-align:left;font-family:var(--body)}
+.elab td:first-child i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:8px}
+.elab tr.focus td{background:var(--accent-soft)}.elab tbody tr{cursor:pointer}
+.elab .eqs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.elab .eq{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:14px 16px;display:grid;gap:6px;min-width:0}
+.elab .eq h3{margin:0;font:700 16px var(--display);color:var(--ink)}
+.elab .eq code{font:500 15px var(--mono);color:var(--ink);overflow-wrap:anywhere;background:none;padding:0}
+.elab .eq p{margin:0;color:var(--ink-2);font-size:13px}
+.elab .note{color:var(--muted);font-size:12.5px;max-width:90ch;margin:0}
+@media (prefers-reduced-motion:reduce){.elab *{transition:none!important}}`;
+// translations for the wiki and the standalone page (in the game, text not listed here falls back to the game's translator)
+engineLab.TR={"es":{"Cosmic Impulse · engines from the game":"Cosmic Impulse · motores del juego","How fast can each engine get you, and how long does the burn take?":"¿Qué velocidad te da cada motor y cuánto dura el encendido?","Move the sliders. The left chart is the rocket equation: speed gained for the fuel you carry. The right chart is the price in time: how long the engine must burn to reach each speed. Click an engine to follow it.":"Mueve los controles. La gráfica de la izquierda es la ecuación del cohete: la velocidad que ganas con el combustible que llevas. La de la derecha es el precio en tiempo: cuánto debe encenderse el motor para alcanzar cada velocidad. Haz clic en un motor para seguirlo.","Ship mass without fuel":"Masa de la nave sin combustible","Fuel carried":"Combustible a bordo","Engine size (power)":"Tamaño del motor (potencia)","Engines":"Motores","click one to follow it":"haz clic en uno para seguirlo","Top speed vs. fuel carried":"Velocidad máxima según el combustible","Each extra tonne of fuel adds less speed than the last: the curve is a logarithm.":"Cada tonelada extra de combustible añade menos velocidad que la anterior: la curva es un logaritmo.","All engines":"Todos los motores","Zoom 0–60 km/s":"Zoom 0–60 km/s","Burn time to reach a speed":"Tiempo de encendido para alcanzar una velocidad","For your ship mass and engine size. A line ends where you would need more than 20× the ship's mass in fuel.":"Para la masa de tu nave y el tamaño de tu motor. Una línea termina donde necesitarías más de 20 veces la masa de la nave en combustible.","Engine":"Motor","Exhaust speed":"Velocidad de escape","Thrust":"Empuje","Fuel use":"Consumo","Speed with this fuel":"Velocidad con este combustible","Burn time":"Tiempo de encendido","Push (start → end)":"Aceleración (inicio → fin)","Speed from fuel":"Velocidad a partir del combustible","vₑ is the exhaust speed, m₀ the mass with fuel, m₁ without. Doubling the fuel does not double the speed.":"vₑ es la velocidad de escape, m₀ la masa con combustible, m₁ sin él. Duplicar el combustible no duplica la velocidad.","Near light speed":"Cerca de la velocidad de la luz","The same law in special relativity. It never reaches c; the game caps ships at 0.99 c.":"La misma ley en relatividad especial. Nunca llega a c; el juego limita las naves a 0,99 c.","Thrust from power":"Empuje a partir de la potencia","For the same power, a faster exhaust pushes more gently. That is why efficient engines are slow to accelerate.":"Con la misma potencia, un escape más rápido empuja con más suavidad. Por eso los motores eficientes aceleran despacio.","Fuel flows at k·P/vₑ². A bigger engine (more power P) burns the same fuel faster; ship mass only matters through how much fuel you need.":"El combustible fluye a k·P/vₑ². Un motor más grande (más potencia P) quema el mismo combustible más deprisa; la masa de la nave solo importa por el combustible que necesitas.","Ideal numbers: they assume full thrust the whole time. In the game, overheating (not enough radiators), the crew's g-limit, or not enough electric power for electric engines can hold the throttle down and make burns longer. Engine size is the game's engine resize (power × mass of the engine). The dashed lines mark speed changes from low Earth orbit: 3.2 km/s escapes Earth, about 9 km/s reaches 0.2 AU from the Sun, about 21 km/s falls into the Sun.":"Cifras ideales: suponen empuje máximo todo el tiempo. En el juego, el sobrecalentamiento (pocos radiadores), el límite de g de la tripulación o la falta de electricidad para los motores eléctricos pueden reducir el empuje y alargar los encendidos. El tamaño del motor es el redimensionado del juego (potencia × masa del motor). Las líneas discontinuas marcan cambios de velocidad desde órbita baja terrestre: 3,2 km/s para escapar de la Tierra, unos 9 km/s para llegar a 0,2 UA del Sol y unos 21 km/s para caer al Sol.","Chemical rocket":"Cohete químico","Nuclear thermal":"Nuclear térmico","Gas-core nuclear":"Nuclear de núcleo gaseoso","Ion thruster":"Propulsor iónico","Direct fusion drive":"Motor de fusión directa","Fusion drive":"Motor de fusión","Inertial-fusion pulse":"Pulsos de fusión inercial","Antimatter photon":"Fotónico de antimateria","exhaust":"escape","Speed change":"Cambio de velocidad","with":"con","of fuel":"de combustible","at full thrust":"a empuje máximo","burns":"consume","Push":"Aceleración","full tanks → empty":"tanques llenos → vacíos","Fuel carried ÷ ship mass without fuel":"Combustible ÷ masa de la nave sin combustible","Speed change reached":"Cambio de velocidad alcanzado","escape Earth":"escapar de la Tierra","reach 0.2 AU":"llegar a 0,2 UA","fall into the Sun":"caer al Sol","0.99 c cap":"límite 0,99 c","0.2 AU":"0,2 UA","into the Sun":"al Sol","out of reach":"inalcanzable","Fuel =":"Combustible =","× ship mass":"× masa de la nave","To reach":"Para alcanzar","days":"días","years":"años","1 min":"1 min","1 hour":"1 hora","1 day":"1 día","1 month":"1 mes","1 year":"1 año","10 years":"10 años","100 years":"100 años","1,000 yr":"1.000 años","10,000 yr":"10.000 años","Helicon magnetoplasma engine":"Motor de magnetoplasma helicón","Nuclear thermal rocket":"Cohete nuclear térmico","Solar sail":"Vela solar","Magnetic-confinement fusion drive":"Motor de fusión por confinamiento magnético","Antimatter photon rocket":"Cohete de fotones de antimateria","MPD thruster":"Propulsor MPD","Inertial-fusion pulse drive":"Motor de pulsos de fusión inercial","Beamed-core antimatter drive":"Motor de antimateria de núcleo dirigido","Hall-effect thruster":"Propulsor de efecto Hall","Arcjet":"Arcjet","Solar thermal rocket":"Cohete solar térmico","Gas-core nuclear rocket":"Cohete nuclear de núcleo gaseoso","Electric sail":"Vela eléctrica","The eight classics":"Los ocho clásicos","Engines you have":"Tus motores","↺ Use my ship as it is now":"↺ Usar mi nave tal como está","fuel":"combustible","day":"día","your ship":"tu nave"},"zh":{"Cosmic Impulse · engines from the game":"Cosmic Impulse · 游戏中的发动机","How fast can each engine get you, and how long does the burn take?":"每种发动机能让你飞多快？点火要多久？","Move the sliders. The left chart is the rocket equation: speed gained for the fuel you carry. The right chart is the price in time: how long the engine must burn to reach each speed. Click an engine to follow it.":"拖动滑块。左图是火箭方程：携带的燃料能换来多少速度。右图是时间代价：发动机要点火多久才能达到每个速度。点击某个发动机来跟踪它。","Ship mass without fuel":"不含燃料的飞船质量","Fuel carried":"携带燃料","Engine size (power)":"发动机尺寸（功率）","Engines":"发动机","click one to follow it":"点击一个来跟踪","Top speed vs. fuel carried":"最高速度与携带燃料","Each extra tonne of fuel adds less speed than the last: the curve is a logarithm.":"每多一吨燃料带来的速度都比上一吨少：曲线是对数。","All engines":"所有发动机","Zoom 0–60 km/s":"放大 0–60 km/s","Burn time to reach a speed":"达到某个速度所需的点火时间","For your ship mass and engine size. A line ends where you would need more than 20× the ship's mass in fuel.":"按你的飞船质量和发动机尺寸计算。曲线在需要超过 20 倍飞船质量的燃料处结束。","Engine":"发动机","Exhaust speed":"排气速度","Thrust":"推力","Fuel use":"燃料消耗","Speed with this fuel":"这些燃料的速度","Burn time":"点火时间","Push (start → end)":"加速度（开始 → 结束）","Speed from fuel":"燃料换速度","vₑ is the exhaust speed, m₀ the mass with fuel, m₁ without. Doubling the fuel does not double the speed.":"vₑ 是排气速度，m₀ 是含燃料质量，m₁ 是不含燃料质量。燃料翻倍，速度不会翻倍。","Near light speed":"接近光速","The same law in special relativity. It never reaches c; the game caps ships at 0.99 c.":"狭义相对论中的同一定律。永远达不到 c；游戏把飞船限制在 0.99 c。","Thrust from power":"功率换推力","For the same power, a faster exhaust pushes more gently. That is why efficient engines are slow to accelerate.":"功率相同时，排气越快推力越小。这就是高效发动机加速慢的原因。","Fuel flows at k·P/vₑ². A bigger engine (more power P) burns the same fuel faster; ship mass only matters through how much fuel you need.":"燃料流量为 k·P/vₑ²。更大的发动机（更大功率 P）烧完同样燃料更快；飞船质量只通过所需燃料量产生影响。","Ideal numbers: they assume full thrust the whole time. In the game, overheating (not enough radiators), the crew's g-limit, or not enough electric power for electric engines can hold the throttle down and make burns longer. Engine size is the game's engine resize (power × mass of the engine). The dashed lines mark speed changes from low Earth orbit: 3.2 km/s escapes Earth, about 9 km/s reaches 0.2 AU from the Sun, about 21 km/s falls into the Sun.":"理想数值：假设全程满推力。在游戏中，过热（散热器不足）、乘员的 g 限制或电推进发动机电力不足都会压低油门、延长点火时间。发动机尺寸即游戏中的发动机改尺寸（功率 × 发动机质量）。虚线标出从近地轨道出发的速度变化：3.2 km/s 逃离地球，约 9 km/s 到达距太阳 0.2 AU，约 21 km/s 落入太阳。","Chemical rocket":"化学火箭","Nuclear thermal":"核热","Gas-core nuclear":"气芯核","Ion thruster":"离子推进器","Direct fusion drive":"直接聚变驱动","Fusion drive":"聚变推进","Inertial-fusion pulse":"惯性聚变脉冲","Antimatter photon":"反物质光子","exhaust":"排气","Speed change":"速度变化","with":"使用","of fuel":"燃料","at full thrust":"满推力","burns":"消耗","Push":"加速度","full tanks → empty":"满箱 → 空箱","Fuel carried ÷ ship mass without fuel":"携带燃料 ÷ 不含燃料的飞船质量","Speed change reached":"达到的速度变化","escape Earth":"逃离地球","reach 0.2 AU":"到达 0.2 AU","fall into the Sun":"落入太阳","0.99 c cap":"0.99 c 上限","0.2 AU":"0.2 AU","into the Sun":"落入太阳","out of reach":"无法达到","Fuel =":"燃料 =","× ship mass":"× 飞船质量","To reach":"达到","days":"天","years":"年","1 min":"1 分钟","1 hour":"1 小时","1 day":"1 天","1 month":"1 个月","1 year":"1 年","10 years":"10 年","100 years":"100 年","1,000 yr":"1,000 年","10,000 yr":"10,000 年","Helicon magnetoplasma engine":"螺旋波磁等离子体发动机","Nuclear thermal rocket":"核热火箭","Solar sail":"太阳帆","Magnetic-confinement fusion drive":"磁约束聚变驱动","Antimatter photon rocket":"反物质光子火箭","MPD thruster":"MPD 推进器","Inertial-fusion pulse drive":"惯性聚变脉冲驱动","Beamed-core antimatter drive":"束流核心反物质驱动","Hall-effect thruster":"霍尔效应推进器","Arcjet":"电弧推进器","Solar thermal rocket":"太阳热能火箭","Gas-core nuclear rocket":"气芯核火箭","Electric sail":"电帆","The eight classics":"八种经典发动机","Engines you have":"你拥有的发动机","↺ Use my ship as it is now":"↺ 使用我飞船的当前状态","fuel":"燃料","day":"天","your ship":"你的飞船"}};
+
+const ELAB_ENG=[{"id":"chem","n":"Chemical rocket","ve":4413,"k":2,"pw":120000000},{"id":"ion","n":"Ion thruster","ve":29420,"k":1.2,"pw":50000},{"id":"vas","n":"Helicon magnetoplasma engine","ve":50000,"k":1.2,"pw":200000},{"id":"ntr","n":"Nuclear thermal rocket","ve":8800,"k":2,"pw":300000000},{"id":"fus","n":"Magnetic-confinement fusion drive","ve":14989622.9,"k":2,"pw":1000000000},{"id":"am","n":"Antimatter photon rocket","ve":299792458,"k":1,"pw":1000000000000},{"id":"mpd","n":"MPD thruster","ve":40000,"k":1,"pw":1000000},{"id":"icf","n":"Inertial-fusion pulse drive","ve":8993773.74,"k":2,"pw":5000000000},{"id":"beam","n":"Beamed-core antimatter drive","ve":98931511.14,"k":1.2,"pw":100000000000},{"id":"hall","n":"Hall-effect thruster","ve":19000,"k":1.1,"pw":20000},{"id":"arc","n":"Arcjet","ve":12000,"k":0.7,"pw":30000},{"id":"solth","n":"Solar thermal rocket","ve":8000,"k":2,"pw":5000000},{"id":"gcnr","n":"Gas-core nuclear rocket","ve":30000,"k":2,"pw":5000000000},{"id":"dfd","n":"Direct fusion drive","ve":98000,"k":2,"pw":10000000}],ELAB_V="0.4.0";
+(()=>{const P=new URLSearchParams(location.search);let L='en';try{const q=P.get('lang'),sv=localStorage.getItem('orbital-lang'),nv=(navigator.language||'en').slice(0,2);L=['en','es','zh'].includes(q)?q:['en','es','zh'].includes(sv)?sv:['es','zh'].includes(nv)?nv:'en'}catch(e){}
+ if(P.has('embed'))document.body.classList.add('embed');
+ const mount=()=>{const h=document.getElementById('lab');h.className='';engineLab(h,{engines:ELAB_ENG,lang:L,version:ELAB_V,theme:'dark',store:'orbital-elab-page'});document.documentElement.lang=L;
+  document.querySelectorAll('.langs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===L));document.getElementById('wikilink').href='wiki.html#'+L+'/Rocket-Equation-Lab'};
+ document.querySelectorAll('.langs button').forEach(b=>b.onclick=()=>{L=b.dataset.lang;try{localStorage.setItem('orbital-lang',L)}catch(e){}mount()});mount();
+ if(parent!==window){const post=()=>{try{parent.postMessage({lab:'rocket',h:document.documentElement.scrollHeight},'*')}catch(e){}};new ResizeObserver(post).observe(document.body);post()}})();
+</script>
+</body>
+</html>
